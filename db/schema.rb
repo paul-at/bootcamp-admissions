@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160904104643) do
+ActiveRecord::Schema.define(version: 20160905223056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "answers", force: :cascade do |t|
+    t.integer  "app_form_id"
+    t.string   "question"
+    t.text     "answer"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["app_form_id"], name: "index_answers_on_app_form_id", using: :btree
+  end
 
   create_table "app_forms", force: :cascade do |t|
     t.string   "aasm_state"
@@ -37,4 +46,5 @@ ActiveRecord::Schema.define(version: 20160904104643) do
     t.index ["updated_at"], name: "index_app_forms_on_updated_at", using: :btree
   end
 
+  add_foreign_key "answers", "app_forms"
 end

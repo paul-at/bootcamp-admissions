@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
-  resources :app_forms
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  resources :app_forms do
+    resources :answers
+  end
 end

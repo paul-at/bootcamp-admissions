@@ -25,9 +25,10 @@ class AppFormsController < ApplicationController
     @app_form = AppForm.new(app_form_params)
 
     if @app_form.save
+      save_answers!
       render plain: 'Application was successfully submitted.'
     else
-      format.json { render json: @app_form.errors, status: :unprocessable_entity }
+      render json: @app_form.errors, status: :unprocessable_entity
     end
   end
 
@@ -54,5 +55,12 @@ class AppFormsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def app_form_params
       params.require(:app_form).permit(:firstname, :lastname, :email, :country, :residence, :gender, :dob, :referral)
+    end
+
+    def save_answers!
+      return unless params[:app_form][:answers]
+      params[:app_form][:answers].each do |question, answer|
+        Answer.create!(app_form: @app_form, question: question, answer: answer)
+      end
     end
 end

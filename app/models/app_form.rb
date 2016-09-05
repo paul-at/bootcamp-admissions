@@ -1,6 +1,8 @@
 class AppForm < ApplicationRecord
   include AASM
 
+  has_many :answers
+
   aasm enum: false do
     state :applied, initial: true
     state :decided_to_invite, :rejected_application, :invite_email_sent
