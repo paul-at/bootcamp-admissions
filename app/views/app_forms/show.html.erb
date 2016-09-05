@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Firstname:</strong>
+  <%= @app_form.firstname %>
+</p>
+
+<p>
+  <strong>Lastname:</strong>
+  <%= @app_form.lastname %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @app_form.email %>
+</p>
+
+<p>
+  <strong>Country:</strong>
+  <%= @app_form.country %>
+</p>
+
+<p>
+  <strong>Residence:</strong>
+  <%= @app_form.residence %>
+</p>
+
+<p>
+  <strong>Gender:</strong>
+  <%= @app_form.gender %>
+</p>
+
+<p>
+  <strong>Dob:</strong>
+  <%= @app_form.dob %>
+</p>
+
+<p>
+  <strong>Referral:</strong>
+  <%= @app_form.referral %>
+</p>
+
+<%= link_to 'Edit', edit_app_form_path(@app_form) %> |
+<%= link_to 'Back', app_forms_path %>

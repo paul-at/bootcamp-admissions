@@ -1,0 +1,57 @@
+<%= form_for(app_form) do |f| %>
+  <% if app_form.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(app_form.errors.count, "error") %> prohibited this app_form from being saved:</h2>
+
+      <ul>
+      <% app_form.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :firstname %>
+    <%= f.text_field :firstname %>
+  </div>
+
+  <div class="field">
+    <%= f.label :lastname %>
+    <%= f.text_field :lastname %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+  </div>
+
+  <div class="field">
+    <%= f.label :country %>
+    <%= f.text_field :country %>
+  </div>
+
+  <div class="field">
+    <%= f.label :residence %>
+    <%= f.text_field :residence %>
+  </div>
+
+  <div class="field">
+    <%= f.label :gender %>
+    <%= f.text_field :gender %>
+  </div>
+
+  <div class="field">
+    <%= f.label :dob %>
+    <%= f.date_select :dob %>
+  </div>
+
+  <div class="field">
+    <%= f.label :referral %>
+    <%= f.text_field :referral %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,7 +1,7 @@
 class AppForm < ApplicationRecord
   include AASM
 
-  aasm do
+  aasm enum: false do
     state :applied, initial: true
     state :decided_to_invite, :rejected_application, :invite_email_sent
     state :interview_scheduled, :interviewed, :rejected_after_interview, :unable_to_interview
@@ -11,7 +11,7 @@ class AppForm < ApplicationRecord
       transitions from: :applied, to: :decided_to_invite
     end
 
-    event :email do
+    event :send_email do
       transitions from: :decided_to_invite, to: :invite_email_sent
     end
 
@@ -66,4 +66,13 @@ class AppForm < ApplicationRecord
       transitions from: [ :scholarship, :cancelled, :extension ], to: :admitted
     end
   end
+
+  validates :firstname, presence: true
+  validates :lastname, presence: true
+  validates :email, presence: true
+  validates :country, presence: true, length: { is: 2 }
+  validates :residence, presence: true, length: { is: 2 }
+  validates :gender, presence: true, length: { is: 1 }
+  validates :dob, presence: true
+  validates :terms_and_conditions, acceptance: true
 end
