@@ -1,6 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  klass: one
   firstname: MyString
   lastname: MyString
   email: MyString
@@ -11,6 +12,7 @@ one:
   referral: MyString
 
 two:
+  klass: two
   firstname: MyString
   lastname: MyString
   email: MyString

@@ -20,4 +20,10 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  activerecord:
+    models:
+      klass: Class
+    attributes:
+      klass:
+        deposit: Deposit threshold
+        tuition: Full tuition threshold

@@ -1,0 +1,57 @@
+<%= form_for(klass) do |f| %>
+  <% if klass.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(klass.errors.count, "error") %> prohibited this class from being saved:</h2>
+
+      <ul>
+      <% klass.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :subject_id %>
+    <%= select_tag 'klass[subject_id]',
+      options_for_select(Subject.all.map { |subject| [subject.title, subject.id] }),
+      class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :title %>
+    <%= f.text_field :title, class: 'form-control', placeholder: 'I.e. Class 1 (Student)' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :deposit %>
+    <div class="input-group">
+      <div class="input-group-addon">$</div>
+      <%= f.text_field :deposit, class: 'form-control' %>
+    </div>
+    <small class="form-text text-muted">The applicant will be considered to paid deposit once balance reaches the value.</small>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :tuition %>
+    <div class="input-group">
+      <div class="input-group-addon">$</div>
+      <%= f.text_field :tuition, class: 'form-control' %>
+    </div>
+    <small class="form-text text-muted">The applicant will be considered to paid full tuition fee once balance reaches the value.</small>
+  </div>
+
+  <fieldset class="form-group">
+    <div class="form-check">
+      <%= f.label :archived, class: 'form-check-label' do %>
+        <%= f.check_box :archived, class: 'form-check-input' %>
+        Archive class
+      <% end %>
+      <small class="form-text text-muted">Archive finished class.</small>
+    </div>
+  </fieldset>
+
+  <div class="form-group">
+    <%= f.submit class: 'btn btn-primary' %>
+  </div>
+<% end %>

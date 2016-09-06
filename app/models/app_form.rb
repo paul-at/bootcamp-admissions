@@ -1,6 +1,7 @@
 class AppForm < ApplicationRecord
   include AASM
 
+  belongs_to :klass
   has_many :answers
 
   aasm enum: false do

@@ -54,7 +54,7 @@ class AppFormsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def app_form_params
-      params.require(:app_form).permit(:firstname, :lastname, :email, :country, :residence, :gender, :dob, :referral)
+      params.require(:app_form).permit(:klass_id, :firstname, :lastname, :email, :country, :residence, :gender, :dob, :referral)
     end
 
     def save_answers!

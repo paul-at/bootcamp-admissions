@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>BootcampAdmissions</title>
+    <title>Bootcamp Admissions</title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -9,6 +9,24 @@
   </head>
 
   <body>
-    <%= yield %>
+    <% if @settings_page %>
+      <div class="container">
+        <h1>Settings</h1>
+      </div>
+    <% end %>
+
+    <div class="container">
+      <div class="row">
+        <% if @settings_page %>
+          <div class="col-md-4">
+            <%= render 'settings_navigation' %>
+          </div>
+          <div class="col-md-8">
+        <% else %>
+          <div class="col-md-12">
+        <% end %>
+          <%= yield %>
+        </div>
+    </div>
   </body>
 </html>
