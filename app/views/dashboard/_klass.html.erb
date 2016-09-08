@@ -2,29 +2,45 @@
 
 <div class="row">
   <div class="col-md-3">
-    <%= statistic_group [:applied, :today], klass %>
+    <%= statistic_group [:applications, :today], klass %>
   </div>
   <div class="col-md-3">
-    <%= statistic_group [:invited, :rejected], klass %>
+    <%= statistic_group [:round_1_interviews, :scheduled, :completed, :round_1_rejected], klass %>
   </div>
   <div class="col-md-3">
-    <%= statistic_group [:interviewed], klass %>
+    <%= statistic_group [:adcom_decision, :waiting_decision, :decision_made, :rejected, :waitlist], klass %>
   </div>
   <div class="col-md-3">
-    <%= statistic_group [:admitted_and_coming, :scholarships_granted], klass %>
+    <%= statistic_group [:admitted, :scholarship, :extension, :not_coming], klass %>
   </div>
 </div>
 <div class="row" style="padding-top:5pt">
   <div class="col-md-3">
-    <%= statistic_group [:new], klass %>
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-action">
+        Not reviewed
+      </li>
+      <li class="list-group-item list-group-item-action">
+        For Chi-Chu Review
+      </li>
+      <li class="list-group-item list-group-item-action">
+        For Francis Review
+      </li>
+      <li class="list-group-item list-group-item-action">
+        For Andrew Review
+      </li>
+      <li class="list-group-item list-group-item-action">
+        Reviewed and in limbo
+      </li>
+    </ul>
   </div>
   <div class="col-md-3">
-    <%= statistic_group [:invite_emails_pending], klass %>
+    <%= statistic_group [:invite_emails_pending, :reject_emails_pending], klass %>
   </div>
   <div class="col-md-3">
-    <%= statistic_group [:waitlist, :interviews_scheduled], klass %>
+    <%= statistic_group [:admitted, :scholarship, :no_scholarship, :shortlist], klass %>
   </div>
   <div class="col-md-3">
-    <%= statistic_group [:deposit_pending, :tuition_pending, :extensions], klass %>
+    <%= statistic_group [:without_scholarship, :deposit_pending, :tuition_pending], klass %>
   </div>
 </div>
