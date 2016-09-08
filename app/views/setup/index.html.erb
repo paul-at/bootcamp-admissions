@@ -1,0 +1,9 @@
+<h2>Generate Random Data</h2>
+
+<%= form_tag({ action: 'fake' }, { class: 'form-inline' }) do %>
+  <div class="form-group">
+    <label for="count">How many applications</label>
+    <%= number_field_tag :count, '500' %>
+  </div>
+  <button type="submit" class="btn btn-primary">Generate</button>
+<% end %>

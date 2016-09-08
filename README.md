@@ -14,6 +14,8 @@ To generate automated documentation using railroady gem in development environme
 
 * Database initialization
 
+Set ALLOW_FAKER environment variable to enable fake data generator at /setup/.
+
 * How to run the test suite
 
 * Services (job queues, cache servers, search engines, etc.)
