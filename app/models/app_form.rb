@@ -39,7 +39,7 @@ class AppForm < ApplicationRecord
 
     event :wont_come do
       transitions from: [ :decided_to_invite, :invite_email_sent, :interview_scheduled ], to: :unable_to_interview
-      transitions from: [ :admitted, :waitlisted, :extension, :scholarship, :deposit_paid, :tuition_paid ], to: :not_coming
+      transitions from: [ :admitted, :waitlisted, :extension, :scholarship_granted, :deposit_paid, :tuition_paid ], to: :not_coming
     end
 
     event :admit do
@@ -85,6 +85,10 @@ class AppForm < ApplicationRecord
   validates :dob, presence: true
   validates :terms_and_conditions, acceptance: true
 
+  def similar
+    AppForm.where('(firstname = ? AND lastname = ? OR email = ?) AND klass_id <> ?', firstname, lastname, email, klass_id)
+  end
+
   # scopes available for external querying
   def self.searches
     {
@@ -100,12 +104,12 @@ class AppForm < ApplicationRecord
       completed: self.where('aasm_state in (?)', [:unable_to_interview, :interviewed, :waitlisted, :admitted, :scholarship_shortlisted, :scholarship_granted, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :not_coming]),
       round_1_rejected: self.where('aasm_state in (?)', [:decided_to_reject_application, :application_reject_email_sent]),
 
-      adcom_decision: self.where('aasm_state in (?)', [:interviewed, :waitlisted, :admitted, :scholarship, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :not_coming]),
+      adcom_decision: self.where('aasm_state in (?)', [:interviewed, :waitlisted, :admitted, :scholarship_shortlisted, :scholarship_granted, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :not_coming]),
       waiting_decision: self.where('aasm_state = ?', :interviewed),
       decision_made: self.where('aasm_state in (?)', [:waitlisted, :admitted, :scholarship_shortlisted, :scholarship_granted, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :not_coming]),
       rejected: self.where('aasm_state = ?', :rejected_after_interview),
       waitlist: self.where('aasm_state = ?', :waitlisted),
-      admitted: self.where('aasm_state in (?)', [:admitted, :scholarship_shortlisted, :scholarship_granted, :not_coming]),
+      admitted: self.where('aasm_state in (?)', [:admitted, :scholarship_shortlisted, :scholarship_granted, :not_coming, :deposit_paid, :extension, :tuition_paid]),
       scholarship: self.where('aasm_state = ?', :scholarship_granted),
       no_scholarship: self.where('aasm_state in (?)', [:admitted, :deposit_paid, :tuition_paid, :extension]),
       shortlist: self.where('aasm_state = ?', :scholarship_shortlisted),
@@ -117,7 +121,7 @@ class AppForm < ApplicationRecord
       extension: self.where('aasm_state = ?', :extension),
 
       invite_emails_pending: self.where('aasm_state = ?', :decided_to_invite),
-      reject_emails_pending: self.where('aasm_state = ?', :decided_to_reject),
+      reject_emails_pending: self.where('aasm_state = ?', :decided_to_reject_application),
     }
   end
 end
