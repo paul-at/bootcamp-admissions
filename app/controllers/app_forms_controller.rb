@@ -5,13 +5,11 @@ class AppFormsController < ApplicationController
   skip_before_action :verify_authenticity_token, :only => [:create]
 
   # GET /app_forms
-  # GET /app_forms.json
   def index
-    @app_forms = AppForm.all
+    @app_forms = AppForm.searches[params[:search].to_sym].where(klass_id: params[:klass_id].to_i)
   end
 
   # GET /app_forms/1
-  # GET /app_forms/1.json
   def show
   end
 

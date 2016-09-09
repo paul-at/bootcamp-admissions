@@ -1,43 +1,36 @@
-<p id="notice"><%= notice %></p>
+<h2>
+  <%= params[:search].humanize %>
+  <small class="text-muted"><%= Klass.find_by_id(params[:klass_id].to_i).full_title %></small>
+</h2>
 
-<h1>App Forms</h1>
-
-<table>
+<table class="table table-sm">
   <thead>
     <tr>
-      <th></th>
       <th>Firstname</th>
       <th>Lastname</th>
       <th>Email</th>
       <th>Country</th>
       <th>Residence</th>
       <th>Gender</th>
-      <th>Dob</th>
-      <th>Referral</th>
-      <th colspan="3"></th>
+      <th>Applied</th>
+      <th>Status</th>
+      <th>Changed</th>
     </tr>
   </thead>
 
   <tbody>
     <% @app_forms.each do |app_form| %>
       <tr>
-        <td><%= app_form.aasm_state %></td>
-        <td><%= app_form.firstname %></td>
-        <td><%= app_form.lastname %></td>
+        <td><%= link_to app_form.firstname, app_form %></td>
+        <td><%= link_to app_form.lastname, app_form %></td>
         <td><%= app_form.email %></td>
-        <td><%= app_form.country %></td>
-        <td><%= app_form.residence %></td>
+        <td><i class="flag f16 <%= app_form.country.downcase %>"></i> <%= app_form.country %></td>
+        <td><i class="flag f16 <%= app_form.residence.downcase %>"></i> <%= app_form.residence %></td>
         <td><%= app_form.gender %></td>
-        <td><%= app_form.dob %></td>
-        <td><%= app_form.referral %></td>
-        <td><%= link_to 'Show', app_form %></td>
-        <td><%= link_to 'Edit', edit_app_form_path(app_form) %></td>
-        <td><%= link_to 'Destroy', app_form, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= app_form.created_at.to_s(:short) %></td>
+        <td><%= app_form.aasm_state.humanize %></td>
+        <td><%= app_form.updated_at.to_s(:short) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'New App Form', new_app_form_path %>

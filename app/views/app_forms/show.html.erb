@@ -1,44 +1,108 @@
-<p id="notice"><%= notice %></p>
+<h2>
+  <%= @app_form.firstname + ' ' + @app_form.lastname %>
+  <small class="text-muted"><%= @app_form.klass.full_title %></small>
+</h2>
 
-<p>
-  <strong>Firstname:</strong>
-  <%= @app_form.firstname %>
-</p>
+<% if flash[:notice] %>
+  <div class="alert alert-info" role="alert">
+    <%= notice %>
+  </div>
+<% end %>
 
-<p>
-  <strong>Lastname:</strong>
-  <%= @app_form.lastname %>
-</p>
+<div class="col-md-6"><div class="appformsection">
+  <h4>Personal Details</h4>
 
-<p>
-  <strong>Email:</strong>
-  <%= @app_form.email %>
-</p>
+  <%= form_for @app_form, url: { action: 'update' } do |f| %>
 
-<p>
-  <strong>Country:</strong>
-  <%= @app_form.country %>
-</p>
+    <div class="form-group">
+      <%= f.label :firstname %>
+      <%= f.text_field :firstname, class: 'form-control' %>
+    </div>
 
-<p>
-  <strong>Residence:</strong>
-  <%= @app_form.residence %>
-</p>
+    <div class="form-group">
+      <%= f.label :lastname %>
+      <%= f.text_field :lastname, class: 'form-control' %>
+    </div>
 
-<p>
-  <strong>Gender:</strong>
-  <%= @app_form.gender %>
-</p>
+    <div class="form-group">
+      <%= f.label :email %>
+      <%= f.email_field :email, class: 'form-control' %>
+    </div>
 
-<p>
-  <strong>Dob:</strong>
-  <%= @app_form.dob %>
-</p>
+    <div class="form-group">
+      <%= f.label :country %>
+      <%= f.select :country, options_for_select(ISO3166::Country.translations.collect{ |code,name| [ name, code ] }, selected: @app_form.country), {}, class: 'form-control' %>
+    </div>
 
-<p>
-  <strong>Referral:</strong>
-  <%= @app_form.referral %>
-</p>
+    <div class="form-group">
+      <%= f.label :residence %>
+      <%= f.select :residence, options_for_select(ISO3166::Country.translations.collect{ |code,name| [ name, code ] }, selected: @app_form.residence), {}, class: 'form-control' %>
+    </div>
 
-<%= link_to 'Edit', edit_app_form_path(@app_form) %> |
-<%= link_to 'Back', app_forms_path %>
+    <div class="form-group">
+      <%= f.label :gender %>
+      <%= f.text_field :gender, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :dob %>
+      <%= f.date_select :dob, start_year: Date.today.year-100, end_year: Date.today.year-14, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :referral %>
+      <%= f.text_field :referral, class: 'form-control' %>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+  <% end %>
+</div></div>
+
+<div class="col-md-6"><div class="appformsection">
+  <h4>Application Overview</h4>
+
+  <p>Created on <%= @app_form.created_at.to_s(:long) %>.<br>
+  Last changed <%= time_ago_in_words @app_form.updated_at %> ago.</p>
+
+  <h1 class="display-4"><%= @app_form.aasm_state.humanize %></h1>
+</div></div>
+
+<div class="col-md-6"><div class="appformsection">
+  <h4>Actions</h4>
+  <fieldset class="form-group">
+  <% @app_form.aasm.events(:permitted => true).map(&:name).each do |event| %>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+        <%= event.to_s.humanize %>
+      </label>
+    </div>
+  <% end %>
+  </fieldset>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</div></div>
+
+<div class="col-md-6"><div class="appformsection">
+  <h4>Previous Applications</h4>
+  <% if @app_form.similar.count == 0 %>
+    <em>None found.</em>
+  <% else %>
+    <ul>
+      <% @app_form.similar.each do |app| %>
+        <li><%= link_to app.klass.full_title, app %></li>
+      <% end %>
+    </ul>
+  <% end %>
+</div></div>
+
+<div class="col-md-12">
+<div class="appformsection">
+  <h4>Answers and Files</h4>
+  <dl>
+  <% @app_form.answers.each do |answer| %>
+    <dt><%= answer.question.humanize %></dt>
+    <dd><%= answer.answer %></dd>
+  <% end %>
+  </dl>
+</div>
+</div>

@@ -12,4 +12,8 @@ class Klass < ApplicationRecord
     AppForm.searches.each { |s,sc| klass_searches[s] = sc.where(klass: self) }
     return klass_searches
   end
+
+  def full_title
+    subject.title + ' ' + self.title
+  end
 end

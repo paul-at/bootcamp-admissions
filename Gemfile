@@ -28,13 +28,18 @@ gem 'jbuilder', '~> 2.5'
 
 # UI look and feel
 gem 'bootstrap', '~> 4.0.0.alpha3.1'
+# World flags for display
+gem 'world-flags', github: 'world-flags/world-flags'
+# Country codes
+gem 'countries'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-# Data handling
+# State machine
 gem 'aasm'
-gem 'faker' # Generate fake data for testing
+# Generate fake data for testing
+gem 'faker'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

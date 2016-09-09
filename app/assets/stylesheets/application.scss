@@ -1,2 +1,9 @@
 // Custom bootstrap variables must be set or imported before bootstrap itself.
 @import "bootstrap";
+// Country flags
+@import "flags/basic";
+@import "flags/flags16";
+@import "flags/flags32";
+
+// Pages
+@import "app_forms";
