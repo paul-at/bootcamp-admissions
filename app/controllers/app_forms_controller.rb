@@ -2,7 +2,8 @@ class AppFormsController < ApplicationController
   before_action :set_app_form, only: [:show, :update]
 
   # Allow to file application from third-party website
-  skip_before_action :verify_authenticity_token, :only => [:create]
+  skip_before_action :verify_authenticity_token, :only => [:create, :new]
+  skip_before_action :authenticate_user!, only: [:create, :new]
 
   # GET /app_forms
   def index

@@ -1,0 +1,12 @@
+# Newly registered user implies that admin&staff should be false, which is verified in tests
+#
+one:
+  email: 'one'
+
+admin:
+  email: 'two'
+  admin: true
+
+staff:
+  email: 'three'
+  staff: true

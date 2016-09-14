@@ -13,15 +13,18 @@ class KlassesController < ApplicationController
   # GET /klasses/new
   def new
     @klass = Klass.new
+    authorize! :manage, @klass
   end
 
   # GET /klasses/1/edit
   def edit
+    authorize! :manage, @klass
   end
 
   # POST /klasses
   def create
     @klass = Klass.new(klass_params)
+    authorize! :manage, @klass
 
     respond_to do |format|
       if @klass.save
@@ -34,6 +37,8 @@ class KlassesController < ApplicationController
 
   # PATCH/PUT /klasses/1
   def update
+    authorize! :manage, @klass
+
     respond_to do |format|
       if @klass.update(klass_params)
         format.html { redirect_to klasses_url, notice: 'Class was successfully updated.' }
@@ -45,6 +50,8 @@ class KlassesController < ApplicationController
 
   # DELETE /klasses/1
   def destroy
+    authorize! :manage, @klass
+
     if @klass.app_forms.count == 0
       @klass.destroy
       redirect_to klasses_url, notice: 'Class was successfully destroyed.'

@@ -13,16 +13,19 @@ class SubjectsController < ApplicationController
   # GET /subjects/new
   def new
     @subject = Subject.new
+    authorize! :manage, @subject
   end
 
   # GET /subjects/1/edit
   def edit
+    authorize! :manage, @subject
   end
 
   # POST /subjects
   # POST /subjects.json
   def create
     @subject = Subject.new(subject_params)
+    authorize! :manage, @subject
 
     respond_to do |format|
       if @subject.save
@@ -38,6 +41,8 @@ class SubjectsController < ApplicationController
   # PATCH/PUT /subjects/1
   # PATCH/PUT /subjects/1.json
   def update
+    authorize! :manage, @subject
+    
     respond_to do |format|
       if @subject.update(subject_params)
         format.html { redirect_to subjects_path, notice: 'Subject was successfully updated.' }

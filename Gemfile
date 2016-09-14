@@ -25,6 +25,8 @@ gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
+# Mail delivery
+gem 'sparkpost_rails'
 
 # UI look and feel
 gem 'bootstrap', '~> 4.0.0.alpha3.1'
@@ -40,6 +42,10 @@ gem 'countries'
 gem 'aasm'
 # Generate fake data for testing
 gem 'faker'
+# Authentication
+gem 'devise'
+# Authorisation
+gem 'cancancan', '~> 1.10'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
