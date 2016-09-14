@@ -1,0 +1,23 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Staff</th>
+      <th>Administrator</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <% if user != current_user %>
+          <td><%= check_box_tag user.id.to_s + '_staff', 'yes', user.staff, onClick: "$.post('#{user.id.to_s}', { staff: this.checked } )" %></td>
+          <td><%= check_box_tag user.id.to_s + '_admin', 'yes', user.admin, onClick: "$.post('#{user.id.to_s}', { admin: this.checked } )" %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
