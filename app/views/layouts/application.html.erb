@@ -16,6 +16,18 @@
     <% end %>
 
     <div class="container">
+
+      <% if flash[:notice] %>
+        <div class="alert alert-info" role="alert">
+          <%= notice %>
+        </div>
+      <% end %>
+      <% if flash[:alert] %>
+        <div class="alert alert-danger" role="alert">
+          <%= alert %>
+        </div>
+      <% end %>
+
       <div class="row">
         <% if @settings_page %>
           <div class="col-md-4">

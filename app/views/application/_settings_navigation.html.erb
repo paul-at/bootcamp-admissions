@@ -1,4 +1,11 @@
 <ul class="nav nav-pills nav-stacked">
-  <li class="nav-item"><a href="/subjects/" class="nav-link<% if controller_name == 'subjects' %> active<% end %>">Subjects</a></li>
-  <li class="nav-item"><a href="/klasses/" class="nav-link<% if controller_name == 'klasses' %> active<% end %>">Classes</a></li>
+  <% [
+    [ 'subjects', 'Subjects' ],
+    [ 'klasses', 'Classes' ],
+    [ 'administrators', 'Users' ],
+  ].each do |item| %>
+    <li class="nav-item">
+      <a href="/<%= item[0] %>/" class="nav-link<% if controller_name == item[0] %> active<% end %>"><%= item[1] %></a>
+    </li>
+  <% end %>
 </ul>

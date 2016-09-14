@@ -6,7 +6,7 @@ class SetupController < ApplicationController
 
   def fake
     subject = Subject.create!(title: Faker::Educator.course)
-    klass_id = Klass.create!(title: 'Class 1', subject: subject).id
+    klass_id = Klass.create!(title: 'Class 1', subject_id: subject.id).id
 
     states = AppForm.aasm.states.map(&:name)
 
