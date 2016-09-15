@@ -4,51 +4,57 @@
 </h2>
 
 <div class="col-md-6"><div class="appformsection">
-  <h4>Personal Details</h4>
+  <h4>
+    Personal Details
+    <button class="btn pull-xs-right"
+      onClick="$('.edit_app_form :input').prop('disabled', false); this.style.display = 'none';">
+      Edit
+    </button>
+  </h4>
 
   <%= form_for @app_form, url: { action: 'update' } do |f| %>
 
     <div class="form-group">
       <%= f.label :firstname %>
-      <%= f.text_field :firstname, class: 'form-control' %>
+      <%= f.text_field :firstname, class: 'form-control', disabled: 'true' %>
     </div>
 
     <div class="form-group">
       <%= f.label :lastname %>
-      <%= f.text_field :lastname, class: 'form-control' %>
+      <%= f.text_field :lastname, class: 'form-control', disabled: 'true' %>
     </div>
 
     <div class="form-group">
       <%= f.label :email %>
-      <%= f.email_field :email, class: 'form-control' %>
+      <%= f.email_field :email, class: 'form-control', disabled: 'true' %>
     </div>
 
     <div class="form-group">
       <%= f.label :country %>
-      <%= f.select :country, options_for_select(ISO3166::Country.translations.collect{ |code,name| [ name, code ] }, selected: @app_form.country), {}, class: 'form-control' %>
+      <%= f.select :country, options_for_select(ISO3166::Country.translations.collect{ |code,name| [ name, code ] }, selected: @app_form.country), {}, class: 'form-control', disabled: 'true' %>
     </div>
 
     <div class="form-group">
       <%= f.label :residence %>
-      <%= f.select :residence, options_for_select(ISO3166::Country.translations.collect{ |code,name| [ name, code ] }, selected: @app_form.residence), {}, class: 'form-control' %>
+      <%= f.select :residence, options_for_select(ISO3166::Country.translations.collect{ |code,name| [ name, code ] }, selected: @app_form.residence), {}, class: 'form-control', disabled: 'true' %>
     </div>
 
     <div class="form-group">
       <%= f.label :gender %>
-      <%= f.text_field :gender, class: 'form-control' %>
+      <%= f.text_field :gender, class: 'form-control', disabled: 'true' %>
     </div>
 
     <div class="form-group">
       <%= f.label :dob %>
-      <%= f.date_select :dob, start_year: Date.today.year-100, end_year: Date.today.year-14, class: 'form-control' %>
+      <%= f.date_select :dob, start_year: Date.today.year-100, end_year: Date.today.year-14, class: 'form-control', disabled: 'true' %>
     </div>
 
     <div class="form-group">
       <%= f.label :referral %>
-      <%= f.text_field :referral, class: 'form-control' %>
+      <%= f.text_field :referral, class: 'form-control', disabled: 'true' %>
     </div>
 
-    <button type="submit" class="btn btn-primary">Update</button>
+    <button type="submit" class="btn btn-primary" disabled>Update</button>
   <% end %>
 </div></div>
 
