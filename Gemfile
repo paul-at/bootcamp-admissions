@@ -34,6 +34,8 @@ gem 'bootstrap', '~> 4.0.0.alpha3.1'
 gem 'world-flags', github: 'world-flags/world-flags'
 # Country codes
 gem 'countries'
+# Icons
+gem "font-awesome-rails"
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
