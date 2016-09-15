@@ -99,6 +99,11 @@ class AppForm < ApplicationRecord
   validates :dob, presence: true
   validates :terms_and_conditions, acceptance: true
 
+  def age
+    now = Time.now.utc.to_date
+    now.year - dob.year - ((now.month > dob.month || (now.month == dob.month && now.day >= dob.day)) ? 0 : 1)
+  end
+
   def similar
     AppForm.where('(firstname = ? AND lastname = ? OR email = ?) AND klass_id <> ?', firstname, lastname, email, klass_id)
   end
