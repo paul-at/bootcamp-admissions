@@ -7,9 +7,11 @@ class AppForm < ApplicationRecord
   aasm enum: false do
     state :applied, initial: true
     state :decided_to_invite, :invite_email_sent, :decided_to_reject_application, :application_reject_email_sent
-    state :interview_scheduled, :interviewed, :rejected_after_interview, :unable_to_interview
+    state :interview_scheduled, :interviewed, :rejected_after_interview, :invite_no_response, :no_show
+    state :decision_reject_email_sent, :waitlist_email_sent, :admit_email_sent
     state :admitted, :waitlisted, :extension, :deposit_paid, :tuition_paid, :not_coming
-    state :scholarship_shortlisted, :scholarship_granted
+    state :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded
+    state :coming
 
     event :invite do
       transitions from: :applied, to: :decided_to_invite
@@ -18,15 +20,18 @@ class AppForm < ApplicationRecord
     event :email_sent do
       transitions from: :decided_to_invite, to: :invite_email_sent
       transitions from: :decided_to_reject_application, to: :application_reject_email_sent
+      transitions from: :rejected_after_interview, to: :decision_reject_email_sent
+      transitions from: :waitlisted, to: :waitlist_email_sent
+      transitions from: :admitted, to: :admit_email_sent
     end
 
     event :reject do
-      transitions from: [ :applied, :decided_to_invite ], to: :decided_to_reject_application
-      transitions from: [ :interviewed, :waitlisted ], to: :rejected_after_interview
+      transitions from: :applied, to: :decided_to_reject_application
+      transitions from: [ :interviewed, :waitlist_email_sent ], to: :rejected_after_interview
     end
 
     event :schedule_interview do
-      transitions from: [ :decided_to_invite, :invite_email_sent ], to: :interview_scheduled
+      transitions from: :invite_email_sent, to: :interview_scheduled
     end
 
     event :interview do
@@ -34,16 +39,24 @@ class AppForm < ApplicationRecord
     end
 
     event :reschedule do
-      transitions from: [ :interview_scheduled, :unable_to_interview ], to: :interview_scheduled
+      transitions from: [ :interview_scheduled, :invite_no_response, :no_show ], to: :interview_scheduled
+    end
+
+    event :no_response do
+      transitions from: :invite_email_sent, to: :invite_no_response
     end
 
     event :wont_come do
-      transitions from: [ :decided_to_invite, :invite_email_sent, :interview_scheduled ], to: :unable_to_interview
-      transitions from: [ :admitted, :waitlisted, :extension, :scholarship_granted, :deposit_paid, :tuition_paid ], to: :not_coming
+      transitions from: [ :admit_email_sent, :scholarship_not_awarded, :extension, :scholarship_awarded, :deposit_paid, :tuition_paid ], to: :not_coming
+      transitions from: :interview_scheduled, to: :no_show
+    end
+
+    event :will_come do
+      transitions from: [ :scholarship_awarded, :tuition_paid ], to: :coming
     end
 
     event :admit do
-      transitions from: [ :interviewed, :waitlisted ] , to: :admitted
+      transitions from: [ :interviewed, :waitlist_email_sent ] , to: :admitted
     end
 
     event :waitlist do
@@ -51,25 +64,26 @@ class AppForm < ApplicationRecord
     end
 
     event :grant_extension do
-      transitions from: :admitted, to: :extension
+      transitions from: [ :admit_email_sent, :scholarship_not_awarded ], to: :extension
     end
 
     event :shortlist_for_scholarship do
-      transitions from: :admitted, to: :scholarship_shortlisted
+      transitions from: [ :interviewed, :waitlist_email_sent ], to: :scholarship_shortlisted
     end
 
     event :grant_scholarship do
-      transitions from: :scholarship_shortlisted, to: :scholarship_granted
+      transitions from: :scholarship_shortlisted, to: :scholarship_awarded
     end
 
     event :no_scholarship do
-      transitions from: :scholarship_shortlisted, to: :admitted
+      transitions from: :scholarship_shortlisted, to: :scholarship_not_awarded
     end
 
     event :payment do
-      transitions from: [ :admitted, :deposit_paid, :extension ], to: :tuition_paid # TODO:, guard: paid_for?(bootcamp.tuition)
-      transitions from: :admitted, to: :deposit_paid # TODO:, guard: paid_for?(bootcamp.deposit)
-      transitions from: :admitted, to: :admitted
+      transitions from: [ :admit_email_sent, :scholarship_not_awarded, :deposit_paid, :extension ], to: :tuition_paid # TODO:, guard: paid_for?(bootcamp.tuition)
+      transitions from: [ :admit_email_sent, :scholarship_not_awarded ], to: :deposit_paid # TODO:, guard: paid_for?(bootcamp.deposit)
+      transitions from: :admit_email_sent, to: :admit_email_sent
+      transitions from: :scholarship_not_awarded, to: :scholarship_not_awarded
       transitions from: :deposit_paid, to: :deposit_paid
       transitions from: :tuition_paid, to: :tuition_paid
       transitions from: :extension, to: :extension
@@ -93,35 +107,40 @@ class AppForm < ApplicationRecord
   def self.searches
     {
       applications: self.all,
-      # TODO: replace these
       today: self.where('created_at >= ?', Date.today),
-      # TODO: replace with count of applications w/o votes
-      # TODO: replace with count of applications for each class team member to review
+
+      coming: self.where('aasm_state = ?', :coming),
+      not_coming: self.where('aasm_state = ?', :not_coming),
+
+
+      interviews: self.where('aasm_state in (?)', [:decided_to_invite, :invite_email_sent, :interview_scheduled, :invite_no_response, :no_show, :interviewed, :waitlisted, :waitlist_email_sent, :admitted, :admit_email_sent, :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :decision_reject_email_sent, :coming, :not_coming]),
+      _invite_emails_pending: self.where('aasm_state = ?', :decided_to_invite),
+      _invite_emails_sent: self.where('aasm_state in (?)', [:invite_email_sent, :interview_scheduled, :invite_no_response, :no_show, :interviewed, :waitlisted, :waitlist_email_sent, :admitted, :admit_email_sent, :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :decision_reject_email_sent, :coming, :not_coming]),
+
+      interviews_rejected: self.where('aasm_state in (?)', [:decided_to_reject_application, :application_reject_email_sent]),
+      _interview_reject_emails_sent: self.where('aasm_state = ?', :application_reject_email_sent),
+      _interview_reject_emails_pending: self.where('aasm_state = ?', :decided_to_reject_application),
+
+      # TODO: count of applications w/o votes
+      # TODO: count of applications for each class team member to review
       # TODO: "limbo:" apps reviewed by all team members but not progressed
 
-      round_1_interviews: self.where('aasm_state in (?)', [:invite_email_sent, :interview_scheduled, :unable_to_interview, :interviewed, :waitlisted, :admitted, :scholarship_shortlisted, :scholarship_granted, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :not_coming]),
-      scheduled: self.where('aasm_state = ?', :interview_scheduled),
-      completed: self.where('aasm_state in (?)', [:unable_to_interview, :interviewed, :waitlisted, :admitted, :scholarship_shortlisted, :scholarship_granted, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :not_coming]),
-      round_1_rejected: self.where('aasm_state in (?)', [:decided_to_reject_application, :application_reject_email_sent]),
 
-      adcom_decision: self.where('aasm_state in (?)', [:interviewed, :waitlisted, :admitted, :scholarship_shortlisted, :scholarship_granted, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :not_coming]),
-      waiting_decision: self.where('aasm_state = ?', :interviewed),
-      decision_made: self.where('aasm_state in (?)', [:waitlisted, :admitted, :scholarship_shortlisted, :scholarship_granted, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :not_coming]),
-      rejected: self.where('aasm_state = ?', :rejected_after_interview),
-      waitlist: self.where('aasm_state = ?', :waitlisted),
-      admitted: self.where('aasm_state in (?)', [:admitted, :scholarship_shortlisted, :scholarship_granted, :not_coming, :deposit_paid, :extension, :tuition_paid]),
-      scholarship: self.where('aasm_state = ?', :scholarship_granted),
-      no_scholarship: self.where('aasm_state in (?)', [:admitted, :deposit_paid, :tuition_paid, :extension]),
-      shortlist: self.where('aasm_state = ?', :scholarship_shortlisted),
+      interviewed: self.where('aasm_state in (?)', [:interviewed, :waitlisted, :waitlist_email_sent, :admitted, :admit_email_sent, :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :decision_reject_email_sent, :coming, :not_coming]),
+      no_show: self.where('aasm_state = ?', :no_show),
 
-      without_scholarship: self.where('aasm_state in (?)', [:admitted, :deposit_paid, :tuition_paid]),
-      deposit_pending: self.where('aasm_state = ?', :admitted),
-      tuition_pending: self.where('aasm_state in (?)', [:admitted, :deposit_paid]),
-      not_coming: self.where('aasm_state = ?', :not_coming),
-      extension: self.where('aasm_state = ?', :extension),
 
-      invite_emails_pending: self.where('aasm_state = ?', :decided_to_invite),
-      reject_emails_pending: self.where('aasm_state = ?', :decided_to_reject_application),
+      admitted: self.where('aasm_state in (?)', [:admitted, :admit_email_sent, :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded, :deposit_paid, :extension, :tuition_paid, :coming, :not_coming]),
+      _admit_emails_pending: self.where('aasm_state = ?', :admitted),
+      _admit_emails_sent: self.where('aasm_state in (?)', [:admit_email_sent, :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded, :deposit_paid, :extension, :tuition_paid, :coming, :not_coming]),
+
+      rejected: self.where('aasm_state in (?)', [:rejected_after_interview, :decision_reject_email_sent]),
+      _reject_emails_sent: self.where('aasm_state = ?', :decision_reject_email_sent),
+      _reject_emails_pending: self.where('aasm_state = ?', :rejected_after_interview),
+
+      waitlisted: self.where('aasm_state in (?)', [:waitlisted, :waitlist_email_sent]),
+      _waitlist_emails_sent: self.where('aasm_state = ?', :waitlist_email_sent),
+      _waitlist_emails_pending: self.where('aasm_state = ?', :waitlisted),
     }
   end
 end

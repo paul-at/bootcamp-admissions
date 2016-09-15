@@ -7,12 +7,17 @@ module DashboardHelper
 
   # Applications statistic with a link to search
   def statistic(item, klass)
+    raise "Undefined search #{item}" unless klass.searches.has_key?(item)
+
     count = klass.searches[item].count
+
+    link_text = h(item.to_s.humanize)
+    link_text = '<small>' + link_text + '</small>' if item.to_s[0] == '_'
 
     body = '<span class="tag tag-default tag-pill pull-xs-right">' +
       count.to_s +
       '</span>' +
-      h(item.to_s.humanize)
+      link_text
 
     options = {
       controller: 'app_forms',
