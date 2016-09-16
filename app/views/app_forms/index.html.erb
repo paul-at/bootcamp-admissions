@@ -3,18 +3,19 @@
   <small class="text-muted"><%= Klass.find_by_id(params[:klass_id].to_i).full_title %></small>
 </h2>
 
-<table class="table table-sm">
+<table class="table table-sm tablesorter" id="applicationList">
   <thead>
     <tr>
-      <th>Firstname</th>
-      <th>Lastname</th>
-      <th>Email</th>
-      <th>Country</th>
-      <th>Residence</th>
-      <th>Gender</th>
-      <th>Applied</th>
-      <th>Status</th>
-      <th>Changed</th>
+      <th>Firstname <%= fa_icon 'sort' %></th>
+      <th>Lastname <%= fa_icon 'sort' %></th>
+      <th>Email <%= fa_icon 'sort' %></th>
+      <th>Country <%= fa_icon 'sort' %></th>
+      <th>Residence <%= fa_icon 'sort' %></th>
+      <th>G.<%= fa_icon 'sort' %></th>
+      <th>Age <%= fa_icon 'sort' %></th>
+      <th>Applied <%= fa_icon 'sort' %></th>
+      <th>Status <%= fa_icon 'sort' %></th>
+      <th>Changed <%= fa_icon 'sort' %></th>
     </tr>
   </thead>
 
@@ -27,6 +28,7 @@
         <td><i class="flag f16 <%= app_form.country.downcase %>"></i> <%= app_form.country %></td>
         <td><i class="flag f16 <%= app_form.residence.downcase %>"></i> <%= app_form.residence %></td>
         <td><%= app_form.gender %></td>
+        <td><%= app_form.age %></td>
         <td><%= app_form.created_at.to_s(:short) %></td>
         <td><%= app_form.aasm_state.humanize %></td>
         <td><%= app_form.updated_at.to_s(:short) %></td>
@@ -34,3 +36,11 @@
     <% end %>
   </tbody>
 </table>
+
+<script>
+$(document).ready(function() 
+    { 
+        $("#applicationList").tablesorter(); 
+    } 
+); 
+</script>

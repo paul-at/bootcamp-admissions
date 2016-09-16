@@ -36,6 +36,7 @@ gem 'world-flags', github: 'world-flags/world-flags'
 gem 'countries'
 # Icons
 gem "font-awesome-rails"
+gem 'jquery-tablesorter'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
