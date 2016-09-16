@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @payment_tier.title %>
+</p>
+
+<p>
+  <strong>Deposit:</strong>
+  <%= @payment_tier.deposit %>
+</p>
+
+<p>
+  <strong>Tuition:</strong>
+  <%= @payment_tier.tuition %>
+</p>
+
+<%= link_to 'Edit', edit_payment_tier_path(@payment_tier) %> |
+<%= link_to 'Back', payment_tiers_path %>

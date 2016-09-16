@@ -27,6 +27,8 @@ en:
       app_form:
         aasm_state: Status override
       klass:
+        payment_tier: Default Payment Tier
+        admission_committee_members: Admission committee
+      payment_tier:
         deposit: Deposit threshold
         tuition: Full tuition threshold
-        admission_committee_members: Admission committee

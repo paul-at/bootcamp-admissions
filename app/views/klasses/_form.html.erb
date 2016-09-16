@@ -25,21 +25,12 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :deposit %>
-    <div class="input-group">
-      <div class="input-group-addon">$</div>
-      <%= f.text_field :deposit, class: 'form-control' %>
-    </div>
-    <small class="form-text text-muted">The applicant will be considered to paid deposit once balance reaches the value.</small>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :tuition %>
-    <div class="input-group">
-      <div class="input-group-addon">$</div>
-      <%= f.text_field :tuition, class: 'form-control' %>
-    </div>
-    <small class="form-text text-muted">The applicant will be considered to paid full tuition fee once balance reaches the value.</small>
+    <%= f.label :payment_tier %>
+    <%= select_tag 'klass[payment_tier_id]',
+      options_for_select([['None',nil]] + PaymentTier.all.map { |tier| [tier.title, tier.id] },
+        klass.payment_tier_id),
+      class: 'form-control' %>
+    <small class="form-text text-muted">Default Payment Tier to apply to new applications.</small>
   </div>
 
   <div class="form-group">

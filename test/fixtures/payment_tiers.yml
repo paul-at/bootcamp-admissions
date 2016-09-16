@@ -1,16 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  subject: one
   title: MyString
-  archived: false
+  deposit: 9.99
+  tuition: 9.99
 
 two:
-  subject: two
   title: MyString
-  archived: false
-
-three:
-  subject: two
-  title: MyString
-  archived: false
+  deposit: 9.99
+  tuition: 9.99

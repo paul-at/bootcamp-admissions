@@ -1,5 +1,6 @@
 class Klass < ApplicationRecord
   belongs_to :subject
+  belongs_to :payment_tier
   has_many :app_forms
   has_many :admission_committee_members, dependent: :destroy
 

@@ -26,7 +26,7 @@ class KlassesControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:admin)
 
     assert_difference('Klass.count') do
-      post klasses_url, params: { klass: { archived: @klass.archived, deposit: @klass.deposit, subject_id: @klass.subject_id, title: @klass.title, tuition: @klass.tuition } }
+      post klasses_url, params: { klass: { archived: @klass.archived, subject_id: @klass.subject_id, title: @klass.title } }
     end
 
     assert_redirected_to klasses_url
@@ -42,7 +42,7 @@ class KlassesControllerTest < ActionDispatch::IntegrationTest
   test "should update klass" do
     sign_in users(:admin)
 
-    patch klass_url(@klass), params: { klass: { archived: @klass.archived, deposit: @klass.deposit, subject_id: @klass.subject_id, title: @klass.title, tuition: @klass.tuition } }
+    patch klass_url(@klass), params: { klass: { archived: @klass.archived, subject_id: @klass.subject_id, title: @klass.title } }
     assert_redirected_to klasses_url
   end
 

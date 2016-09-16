@@ -1,0 +1,26 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Tier</th>
+      <th>Deposit</th>
+      <th>Tuition</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @payment_tiers.each do |payment_tier| %>
+      <tr>
+        <td><%= link_to payment_tier.title, payment_tier %></td>
+        <td style="text-align:right"><%= number_to_currency payment_tier.deposit %></td>
+        <td style="text-align:right"><%= number_to_currency payment_tier.tuition %></td>
+        <td><%= link_to 'Edit', edit_payment_tier_path(payment_tier) %></td>
+        <td><%= link_to 'Destroy', payment_tier, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Payment Tier', new_payment_tier_path %>
