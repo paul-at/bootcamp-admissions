@@ -48,6 +48,12 @@ class PaymentTiersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should destroy payment_tier" do
+    # Prevent referencing classes from interfering
+    @payment_tier.klasses.each do |klass|
+      AppForm.where(klass: klass).destroy_all
+      klass.destroy
+    end
+
     sign_in users(:admin)
     assert_difference('PaymentTier.count', -1) do
       delete payment_tier_url(@payment_tier)

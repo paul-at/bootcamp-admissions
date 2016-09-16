@@ -2,7 +2,7 @@ class AppForm < ApplicationRecord
   include AASM
 
   belongs_to :klass
-  has_many :answers
+  has_many :answers, dependent: :destroy
 
   aasm enum: false do
     state :applied, initial: true

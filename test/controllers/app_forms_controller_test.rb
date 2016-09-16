@@ -37,6 +37,12 @@ class AppFormsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should apply default payment tier to new applications" do
+    post app_forms_url, params: { app_form: { klass_id: @klass.id, country: @app_form.country, dob: @app_form.dob, email: @app_form.email, firstname: @app_form.firstname, gender: @app_form.gender, lastname: @app_form.lastname, referral: @app_form.referral, residence: @app_form.residence } }
+
+    assert_equal @klass.payment_tier_id, AppForm.last.payment_tier_id
+  end
+
   test "should show app_form" do
     sign_in users(:staff)
   

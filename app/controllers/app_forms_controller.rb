@@ -22,6 +22,7 @@ class AppFormsController < ApplicationController
   # POST /app_forms
   def create
     @app_form = AppForm.new(app_form_params)
+    @app_form.payment_tier_id = @app_form.klass.payment_tier_id
 
     if @app_form.save
       save_answers!
