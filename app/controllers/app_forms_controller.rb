@@ -1,5 +1,5 @@
 class AppFormsController < ApplicationController
-  before_action :set_app_form, only: [:show, :update, :event]
+  before_action :set_app_form, only: [:show, :update, :event, :payment]
 
   # Allow to file application from third-party website
   skip_before_action :verify_authenticity_token, :only => [:create, :new]
@@ -63,6 +63,13 @@ class AppFormsController < ApplicationController
     rescue RuntimeError => e
       redirect_to @app_form, alert: 'Error: ' + e.inspect
     end
+  end
+
+  def payment
+    @app_form.paid = params[:paid].to_f
+    @app_form.payment if @app_form.may_payment?
+    @app_form.save
+    redirect_to @app_form, notice: 'Payment recorded.'
   end
 
   private

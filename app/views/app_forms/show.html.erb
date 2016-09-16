@@ -117,3 +117,18 @@
   </dl>
 </div>
 </div>
+
+<div class="col-md-12">
+<div class="appformsection">
+  <h4>Balance Paid</h4>
+  <%= form_tag({ action: 'payment' }, class: 'form-inline') do %>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-addon">$</div>
+        <%= number_field_tag 'paid', @app_form.paid, step: 'any', min: 0, class: 'form-control' %>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  <% end %>
+</div>
+</div>

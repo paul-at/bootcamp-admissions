@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :app_forms do
     member do
       post 'event'
+      post 'payment'
     end
   end
   get 'administrators', to: 'administrators#index'
