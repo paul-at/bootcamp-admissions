@@ -1,6 +1,7 @@
 class Klass < ApplicationRecord
   belongs_to :subject
   has_many :app_forms
+  has_many :admission_committee_members, dependent: :destroy
 
   validates :title, presence: true
 

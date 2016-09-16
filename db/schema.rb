@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160914133401) do
+ActiveRecord::Schema.define(version: 20160916010650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "admission_committee_members", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "klass_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["klass_id"], name: "index_admission_committee_members_on_klass_id", using: :btree
+    t.index ["user_id"], name: "index_admission_committee_members_on_user_id", using: :btree
+  end
 
   create_table "answers", force: :cascade do |t|
     t.integer  "app_form_id"
@@ -84,6 +93,8 @@ ActiveRecord::Schema.define(version: 20160914133401) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  add_foreign_key "admission_committee_members", "klasses"
+  add_foreign_key "admission_committee_members", "users"
   add_foreign_key "answers", "app_forms"
   add_foreign_key "app_forms", "klasses"
   add_foreign_key "klasses", "subjects"

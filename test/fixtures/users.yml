@@ -1,12 +1,12 @@
 # Newly registered user implies that admin&staff should be false, which is verified in tests
 #
 one:
-  email: 'one'
+  email: 'one@mit'
 
 admin:
-  email: 'two'
+  email: 'two@mit'
   admin: true
 
 staff:
-  email: 'three'
+  email: 'three@mit'
   staff: true

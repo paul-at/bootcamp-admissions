@@ -27,3 +27,4 @@ en:
       klass:
         deposit: Deposit threshold
         tuition: Full tuition threshold
+        admission_committee_members: Admission committee

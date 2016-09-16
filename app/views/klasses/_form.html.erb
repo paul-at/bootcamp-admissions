@@ -14,7 +14,8 @@
   <div class="form-group">
     <%= f.label :subject_id %>
     <%= select_tag 'klass[subject_id]',
-      options_for_select(Subject.all.map { |subject| [subject.title, subject.id] }),
+      options_for_select(Subject.all.map { |subject| [subject.title, subject.id] },
+        klass.subject_id),
       class: 'form-control' %>
   </div>
 
@@ -39,6 +40,21 @@
       <%= f.text_field :tuition, class: 'form-control' %>
     </div>
     <small class="form-text text-muted">The applicant will be considered to paid full tuition fee once balance reaches the value.</small>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :admission_committee_members %>
+    <fieldset class="input-group">
+      <% members = klass.admission_committee_members.map(&:user_id) %>
+      <% User.all.each do |user| %>
+        <div class="form-check">
+          <label class="form-check-label">
+            <%= check_box_tag "klass[admission_committee_members[#{user.id}]]", 'yes', members.include?(user.id), class: 'form-check-input' %>
+            <%= user.name %>
+          </label>
+        </div>
+      <% end %>
+    </fieldset>
   </div>
 
   <fieldset class="form-group">

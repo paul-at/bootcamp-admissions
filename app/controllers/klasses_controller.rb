@@ -26,6 +26,8 @@ class KlassesController < ApplicationController
     @klass = Klass.new(klass_params)
     authorize! :manage, @klass
 
+    update_klass_committee
+
     respond_to do |format|
       if @klass.save
         format.html { redirect_to klasses_url, notice: 'Class was successfully created.' }
@@ -38,6 +40,8 @@ class KlassesController < ApplicationController
   # PATCH/PUT /klasses/1
   def update
     authorize! :manage, @klass
+
+    update_klass_committee
 
     respond_to do |format|
       if @klass.update(klass_params)
@@ -69,5 +73,25 @@ class KlassesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def klass_params
       params.require(:klass).permit(:subject_id, :title, :archived, :deposit, :tuition)
+    end
+
+    def update_klass_committee
+      if params[:klass] && params[:klass][:admission_committee_members]
+        members = params[:klass][:admission_committee_members].keys
+      else
+        members = []
+      end
+      # Ensure all user ids are integer
+      members = members.map{|x| x.to_i}
+      # Remove unchecked members if any
+      @klass.admission_committee_members.each do |member|
+        member.destroy unless members.include?(member.user_id)
+      end
+      # Add missing
+      members.each do |member|
+        unless @klass.admission_committee_members.exists?(user_id: member)
+          @klass.admission_committee_members.build(user_id: member)
+        end
+      end
     end
 end
