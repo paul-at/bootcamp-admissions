@@ -59,6 +59,11 @@
     </div>
 
     <div class="form-group">
+      <%= f.label :payment_tier %>
+      <%= f.select :payment_tier_id, options_for_select(PaymentTier.list_for_select, selected: @app_form.payment_tier_id), {}, class: 'form-control', disabled: 'true' %>
+    </div>
+
+    <div class="form-group">
       <%= f.label :aasm_state %>
       <%= f.select :aasm_state, options_for_select(AppForm.aasm.states.collect(&:name), selected: @app_form.aasm_state), {}, class: 'form-control', disabled: 'true' %>
     </div>

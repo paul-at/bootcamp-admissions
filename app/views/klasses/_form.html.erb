@@ -27,8 +27,7 @@
   <div class="form-group">
     <%= f.label :payment_tier %>
     <%= select_tag 'klass[payment_tier_id]',
-      options_for_select([['None',nil]] + PaymentTier.all.map { |tier| [tier.title, tier.id] },
-        klass.payment_tier_id),
+      options_for_select(PaymentTier.list_for_select, klass.payment_tier_id),
       class: 'form-control' %>
     <small class="form-text text-muted">Default Payment Tier to apply to new applications.</small>
   </div>

@@ -152,10 +152,12 @@ class AppForm < ApplicationRecord
 
   private
   def deposit_paid?
+    return false unless payment_tier
     paid >= payment_tier.deposit
   end
 
   def tuition_paid?
+    return false unless payment_tier
     paid >= payment_tier.tuition
   end
 end
