@@ -58,6 +58,11 @@
       <%= f.text_field :referral, class: 'form-control', disabled: 'true' %>
     </div>
 
+    <div class="form-group">
+      <%= f.label :aasm_state %>
+      <%= f.select :aasm_state, options_for_select(AppForm.aasm.states.collect(&:name), selected: @app_form.aasm_state), {}, class: 'form-control', disabled: 'true' %>
+    </div>
+
     <button type="submit" class="btn btn-primary" disabled>Update</button>
   <% end %>
 </div></div>
@@ -67,23 +72,25 @@
 
   <p>Created on <%= @app_form.created_at.to_s(:long) %>.<br>
   Last changed <%= time_ago_in_words @app_form.updated_at %> ago.</p>
-
-  <h1 class="display-4"><%= @app_form.aasm_state.humanize %></h1>
 </div></div>
 
 <div class="col-md-6"><div class="appformsection">
-  <h4>Actions</h4>
-  <fieldset class="form-group">
-  <% @app_form.aasm.events(:permitted => true).map(&:name).each do |event| %>
-    <div class="form-check">
-      <label class="form-check-label">
-        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-        <%= event.to_s.humanize %>
-      </label>
-    </div>
+  <h1 class="display-4"><%= @app_form.aasm_state.humanize %></h1>
+  <% unless @app_form.aasm.events.empty? %>
+    <%= form_tag action: 'event' do %>
+      <fieldset class="form-group">
+      <% @app_form.aasm.events(:permitted => true).map(&:name).each do |event| %>
+        <div class="form-check">
+          <label class="form-check-label">
+            <%= radio_button_tag 'event', event, nil, class: 'form-radio-input' %>
+            <%= event.to_s.humanize %>
+          </label>
+        </div>
+      <% end %>
+      </fieldset>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    <% end %>
   <% end %>
-  </fieldset>
-  <button type="submit" class="btn btn-primary">Submit</button>
 </div></div>
 
 <div class="col-md-6"><div class="appformsection">

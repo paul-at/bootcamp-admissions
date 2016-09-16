@@ -1,5 +1,5 @@
 class AppFormsController < ApplicationController
-  before_action :set_app_form, only: [:show, :update]
+  before_action :set_app_form, only: [:show, :update, :event]
 
   # Allow to file application from third-party website
   skip_before_action :verify_authenticity_token, :only => [:create, :new]
@@ -45,6 +45,26 @@ class AppFormsController < ApplicationController
     end
   end
 
+  def event
+    unless params[:event]
+      redirect_to @app_form, alert: 'Action not selected.'
+      return
+    end
+
+    unless @app_form.aasm.events.map(&:name).include?(params[:event].to_sym)
+      redirect_to @app_form, alert: "Action #{params[:event]} is not available."
+      return
+    end
+
+    begin
+      @app_form.send(params[:event])
+      @app_form.save!
+      redirect_to @app_form
+    rescue RuntimeError => e
+      redirect_to @app_form, alert: 'Error: ' + e.inspect
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_app_form
@@ -53,7 +73,7 @@ class AppFormsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def app_form_params
-      params.require(:app_form).permit(:klass_id, :firstname, :lastname, :email, :country, :residence, :gender, :dob, :referral)
+      params.require(:app_form).permit(:klass_id, :firstname, :lastname, :email, :country, :residence, :gender, :dob, :referral, :aasm_state)
     end
 
     def save_answers!

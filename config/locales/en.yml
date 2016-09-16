@@ -24,6 +24,8 @@ en:
     models:
       klass: Class
     attributes:
+      app_form:
+        aasm_state: Status override
       klass:
         deposit: Deposit threshold
         tuition: Full tuition threshold

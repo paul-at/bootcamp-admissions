@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   root 'dashboard#index'
   resources :klasses
   resources :subjects
-  resources :app_forms
+  resources :app_forms do
+    member do
+      post 'event'
+    end
+  end
   get 'administrators', to: 'administrators#index'
   post 'administrators/(:id)', to: 'administrators#update'
 
