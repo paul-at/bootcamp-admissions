@@ -2,6 +2,7 @@ class AppForm < ApplicationRecord
   include AASM
 
   belongs_to :klass
+  belongs_to :payment_tier
   has_many :answers, dependent: :destroy
 
   aasm enum: false do
@@ -80,8 +81,8 @@ class AppForm < ApplicationRecord
     end
 
     event :payment do
-      transitions from: [ :admit_email_sent, :scholarship_not_awarded, :deposit_paid, :extension ], to: :tuition_paid # TODO:, guard: paid_for?(bootcamp.tuition)
-      transitions from: [ :admit_email_sent, :scholarship_not_awarded ], to: :deposit_paid # TODO:, guard: paid_for?(bootcamp.deposit)
+      transitions from: [ :admit_email_sent, :scholarship_not_awarded, :deposit_paid, :extension ], to: :tuition_paid, guard: :tuition_paid?
+      transitions from: [ :admit_email_sent, :scholarship_not_awarded ], to: :deposit_paid, guard: :deposit_paid?
       transitions from: :admit_email_sent, to: :admit_email_sent
       transitions from: :scholarship_not_awarded, to: :scholarship_not_awarded
       transitions from: :deposit_paid, to: :deposit_paid
@@ -147,5 +148,14 @@ class AppForm < ApplicationRecord
       _waitlist_emails_sent: self.where('aasm_state = ?', :waitlist_email_sent),
       _waitlist_emails_pending: self.where('aasm_state = ?', :waitlisted),
     }
+  end
+
+  private
+  def deposit_paid?
+    paid >= payment_tier.deposit
+  end
+
+  def tuition_paid?
+    paid >= payment_tier.tuition
   end
 end

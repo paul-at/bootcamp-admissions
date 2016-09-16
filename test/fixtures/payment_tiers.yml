@@ -1,9 +1,7 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
   title: MyString
   deposit: 9.99
-  tuition: 9.99
+  tuition: 20
 
 two:
   title: MyString

@@ -53,6 +53,7 @@ class PaymentTiersControllerTest < ActionDispatch::IntegrationTest
       AppForm.where(klass: klass).destroy_all
       klass.destroy
     end
+    AppForm.where(payment_tier: @payment_tier).destroy_all
 
     sign_in users(:admin)
     assert_difference('PaymentTier.count', -1) do
