@@ -13,6 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require bootstrap-sprockets
+//= require bootstrap/util
+//= require bootstrap/alert
+//= require bootstrap/button
+//= require bootstrap/dropdown
 //= require jquery-tablesorter
 //= require_tree .

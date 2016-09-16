@@ -29,7 +29,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'sparkpost_rails'
 
 # UI look and feel
-gem 'bootstrap', '~> 4.0.0.alpha3.1'
+gem 'bootstrap', '~> 4.0.0.alpha4'
 # World flags for display
 gem 'world-flags', github: 'world-flags/world-flags'
 # Country codes

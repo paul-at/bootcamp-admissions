@@ -38,9 +38,9 @@
 </table>
 
 <script>
-$(document).ready(function() 
-    { 
-        $("#applicationList").tablesorter(); 
-    } 
-); 
+document.addEventListener("turbolinks:load", function() {
+    $('table.tablesorter').each(function( index ) {
+      $( this ).tablesorter();
+    });
+});
 </script>
