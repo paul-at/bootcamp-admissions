@@ -105,7 +105,7 @@ class AppForm < ApplicationRecord
   end
 
   def similar
-    AppForm.where('(firstname = ? AND lastname = ? OR email = ?) AND klass_id <> ?', firstname, lastname, email, klass_id)
+    AppForm.where('(firstname = ? AND lastname = ? OR email = ?) AND id <> ?', firstname, lastname, email, id)
   end
 
   # scopes available for external querying
