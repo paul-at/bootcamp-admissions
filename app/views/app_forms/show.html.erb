@@ -105,7 +105,7 @@
   <% else %>
     <ul>
       <% @app_form.similar.each do |app| %>
-        <li><%= link_to app.klass.full_title, app %></li>
+        <li><%= link_to app.created_at.to_s(:short) + ' ' + app.klass.full_title, app %> - <%= app.aasm_state.humanize %></li>
       <% end %>
     </ul>
   <% end %>
@@ -132,7 +132,13 @@
   <dl>
   <% @app_form.answers.each do |answer| %>
     <dt><%= answer.question.humanize %></dt>
-    <dd><%= answer.answer %></dd>
+    <dd>
+      <% if answer.answer[0..6] == 'http://' %>
+        <%= link_to answer.answer, answer.answer %>
+      <% else %>
+        <%= answer.answer %>
+      <% end %>
+    </dd>
   <% end %>
   </dl>
 
