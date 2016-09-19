@@ -43,6 +43,9 @@ gem 'jquery-tablesorter'
 
 # State machine
 gem 'aasm'
+# Uploads store
+gem 'paperclip'
+gem 'aws-sdk', '~> 2.3'
 # Generate fake data for testing
 gem 'faker'
 # Authentication

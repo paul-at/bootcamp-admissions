@@ -2,13 +2,19 @@
 
 ## Installation and prerequisites
 
-* System dependencies
+### System dependencies
 
 This application generally behaves like a normal Rails application.
 
 To generate automated documentation using railroady gem in development environment, [Graphviz](http://www.graphviz.org) is required.
 
-* Configuration
+### Configuration
+
+Set following environment variables for production:
+* S3_BUCKET_NAME
+* AWS_ACCESS_KEY_ID
+* AWS_SECRET_ACCESS_KEY
+* AWS_REGION
 
 * Database creation
 

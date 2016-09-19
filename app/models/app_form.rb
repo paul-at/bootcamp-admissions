@@ -4,6 +4,7 @@ class AppForm < ApplicationRecord
   belongs_to :klass
   belongs_to :payment_tier
   has_many :answers, dependent: :destroy
+  has_many :attachments
 
   aasm enum: false do
     state :applied, initial: true

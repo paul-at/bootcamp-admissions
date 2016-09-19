@@ -1,6 +1,6 @@
 <h1>New App Form</h1>
 
-<%= form_for(@app_form) do |f| %>
+<%= form_for(@app_form, html: { multipart: true }) do |f| %>
   <% if @app_form.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@app_form.errors.count, "error") %> prohibited this app_form from being saved:</h2>
@@ -14,7 +14,7 @@
   <% end %>
 
 
-  <%= f.hidden_field :klass_id %>
+  <%= f.hidden_field :klass_id, value: 5 %>
 
   <div class="field">
     <%= f.label :firstname %>
@@ -59,6 +59,11 @@
   <div class="field">
     <%= label_tag 'app_form[answers[why_do_you_come]]', 'Why do you want to come to the bootcamp?' %>
     <%= text_area_tag 'app_form[answers[why_do_you_come]]' %>
+  </div>
+
+  <div class="field">
+    <%= label_tag 'app_form[uploads[cv]]', 'CV' %>
+    <%= file_field_tag 'app_form[uploads[cv]]' %>
   </div>
 
   <div class="actions">

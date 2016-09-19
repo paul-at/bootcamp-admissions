@@ -24,8 +24,14 @@ class AppFormsController < ApplicationController
     @app_form = AppForm.new(app_form_params)
     @app_form.payment_tier_id = @app_form.klass.payment_tier_id
 
+    unless validate_uploads
+      render plain: 'Attachment is too big, size limit ' + Rails.application.config.uploads_max_size.to_s
+      return
+    end
+
     if @app_form.save
       save_answers!
+      save_uploads!
       render plain: 'Application was successfully submitted.'
     else
       render json: @app_form.errors, status: :unprocessable_entity
@@ -88,6 +94,24 @@ class AppFormsController < ApplicationController
       return unless params[:app_form][:answers]
       params[:app_form][:answers].each do |question, answer|
         Answer.create!(app_form: @app_form, question: question, answer: answer)
+      end
+    end
+
+    def validate_uploads
+      if params[:app_form][:uploads]
+        params[:app_form][:uploads].each do |field, upload|
+          if upload.size > Rails.application.config.uploads_max_size
+            return false
+          end
+        end
+      end
+      return true
+    end
+
+    def save_uploads!
+      return unless params[:app_form][:uploads]
+      params[:app_form][:uploads].each do |field, upload|
+        Attachment.create(app_form: @app_form, field: field, upload: upload)
       end
     end
 end
