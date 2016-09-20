@@ -76,7 +76,7 @@
   <h4>Application Overview</h4>
 
   <p>Created on <%= @app_form.created_at.to_s(:long) %>.<br>
-  Last changed <%= time_ago_in_words @app_form.updated_at %> ago.</p>
+  Last changed <a href="#history" data-turbolinks="false"><%= time_ago_in_words @app_form.updated_at %> ago</a>.</p>
 </div></div>
 
 <div class="col-md-6"><div class="appformsection">
@@ -174,7 +174,7 @@
 
 <div class="col-md-12">
 <div class="appformsection">
-  <h4>Application History</h4>
+  <h4><a name="history">Application History</a></h4>
   <table class="table table-sm table-striped">
   <thead>
     <tr>
@@ -188,7 +188,7 @@
   <tbody>
     <tr>
       <td colspan="3">Applied</td>
-      <td><em><%= time_ago_in_words @app_form.created_at %> ago</em></td>
+      <td colspan="2"><em><%= time_ago_in_words @app_form.created_at %> ago</em></td>
     </tr>
     <% @app_form.histories.each do |history| %>
       <tr>
