@@ -1,5 +1,5 @@
 class AppFormsController < ApplicationController
-  before_action :set_app_form, only: [:show, :update, :event, :payment]
+  before_action :set_app_form, only: [:show, :update, :event, :payment, :comment]
 
   # Allow to file application from third-party website
   skip_before_action :verify_authenticity_token, :only => [:create, :new]
@@ -80,6 +80,15 @@ class AppFormsController < ApplicationController
     @app_form.save
     log_change
     redirect_to @app_form, notice: 'Payment recorded.'
+  end
+
+  def comment
+    History.create({
+      app_form: @app_form,
+      text: params[:note],
+      user: current_user
+    })
+    redirect_to @app_form, notice: 'Note recorded.'
   end
 
   private

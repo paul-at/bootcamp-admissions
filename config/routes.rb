@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     member do
       post 'event'
       post 'payment'
+      post 'comment'
     end
   end
   get 'administrators', to: 'administrators#index'

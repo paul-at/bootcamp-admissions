@@ -160,6 +160,18 @@
 </div>
 </div>
 
+<div class="col-md-6">
+<div class="appformsection">
+  <h4>Leave Note</h4>
+  <%= form_tag({ action: 'comment' }, class: 'form') do %>
+    <div class="form-group">
+      <%= text_area_tag 'note', '', class: 'form-control' %>
+    </div>
+    <button type="submit" class="btn btn-primary">Leave Note</button>
+  <% end %>
+</div>
+</div>
+
 <div class="col-md-12">
 <div class="appformsection">
   <h4>Application History</h4>
@@ -192,9 +204,9 @@
           </td>
         <% else %>
           <td colspan="3">
-            <div class="card card-block"><p class="card-text">
-              <%= history.text %>
-            </p></div>
+            <div class="card card-block">
+              <%= simple_format history.text, class: 'card-text' %>
+            </div>
           </td>
         <% end %>
         <td>
