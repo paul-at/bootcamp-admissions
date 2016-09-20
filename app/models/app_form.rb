@@ -5,6 +5,8 @@ class AppForm < ApplicationRecord
   belongs_to :payment_tier
   has_many :answers, dependent: :destroy
   has_many :attachments
+  has_many :histories, dependent: :destroy
+  attr_accessor :log_user
 
   aasm enum: false do
     state :applied, initial: true
@@ -14,6 +16,8 @@ class AppForm < ApplicationRecord
     state :admitted, :waitlisted, :extension, :deposit_paid, :tuition_paid, :not_coming
     state :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded
     state :coming
+
+    after_all_transitions :log_status_change
 
     event :invite do
       transitions from: :applied, to: :decided_to_invite
@@ -160,5 +164,15 @@ class AppForm < ApplicationRecord
   def tuition_paid?
     return false unless payment_tier
     paid >= payment_tier.tuition
+  end
+
+  def log_status_change
+    History.create({
+      app_form: self, 
+      text: "Action #{aasm.current_event.to_s.humanize}",
+      from: aasm.from_state.to_s.humanize,
+      to: aasm.to_state.to_s.humanize,
+      user: @log_user,
+    })
   end
 end

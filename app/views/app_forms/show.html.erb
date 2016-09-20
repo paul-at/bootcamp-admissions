@@ -145,7 +145,7 @@
 </div>
 </div>
 
-<div class="col-md-12">
+<div class="col-md-6">
 <div class="appformsection">
   <h4>Balance Paid</h4>
   <%= form_tag({ action: 'payment' }, class: 'form-inline') do %>
@@ -157,5 +157,57 @@
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   <% end %>
+</div>
+</div>
+
+<div class="col-md-12">
+<div class="appformsection">
+  <h4>Application History</h4>
+  <table class="table table-sm table-striped">
+  <thead>
+    <tr>
+      <th>What</th>
+      <th>From</th>
+      <th>To</th>
+      <th>When</th>
+      <th>By Who</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td colspan="3">Applied</td>
+      <td><em><%= time_ago_in_words @app_form.created_at %> ago</em></td>
+    </tr>
+    <% @app_form.histories.each do |history| %>
+      <tr>
+        <% if history.from || history.to %>
+          <td>
+            <%= history.text %>
+          </td>
+          <td>
+            <%= history.from %>
+          </td>
+          <td>
+            <%= history.to %>
+          </td>
+        <% else %>
+          <td colspan="3">
+            <div class="card card-block"><p class="card-text">
+              <%= history.text %>
+            </p></div>
+          </td>
+        <% end %>
+        <td>
+          <em><%= time_ago_in_words history.created_at %> ago</em>
+        </td>
+        <% if history.user %>
+          <td>
+            <%= history.user.name %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+    </tbody>
+    </table>
 </div>
 </div>

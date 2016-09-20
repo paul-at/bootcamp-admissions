@@ -41,12 +41,14 @@ class AppFormsController < ApplicationController
   # PATCH/PUT /app_forms/1
   # PATCH/PUT /app_forms/1.json
   def update
+    @app_form.assign_attributes(app_form_params)
     respond_to do |format|
-      if @app_form.update(app_form_params)
+      if @app_form.save
+        log_change
         format.html { redirect_to @app_form, notice: 'App form was successfully updated.' }
         format.json { render :show, status: :ok, location: @app_form }
       else
-        format.html { render :edit }
+        format.html { render :show }
         format.json { render json: @app_form.errors, status: :unprocessable_entity }
       end
     end
@@ -76,6 +78,7 @@ class AppFormsController < ApplicationController
     @app_form.paid = params[:paid].to_f
     @app_form.payment if @app_form.may_payment?
     @app_form.save
+    log_change
     redirect_to @app_form, notice: 'Payment recorded.'
   end
 
@@ -83,6 +86,7 @@ class AppFormsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_app_form
       @app_form = AppForm.find(params[:id])
+      @app_form.log_user = current_user
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -112,6 +116,22 @@ class AppFormsController < ApplicationController
       return unless params[:app_form][:uploads]
       params[:app_form][:uploads].each do |field, upload|
         Attachment.create(app_form: @app_form, field: field, upload: upload)
+      end
+    end
+
+    def log_change
+      @app_form.previous_changes.each do |field, change|
+        next if field == 'updated_at'
+        if field == 'payment_tier_id'
+          change.map! { |tier| tier.nil? ? 'None' : PaymentTier.find(tier).title }
+        end
+        History.create({
+          app_form: @app_form, 
+          text: "Field #{field.humanize}", 
+          from: change[0],
+          to: change[1],
+          user: current_user,
+        })
       end
     end
 end
