@@ -6,6 +6,8 @@ class AppForm < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :attachments
   has_many :histories, dependent: :destroy
+  has_many :votes, dependent: :destroy
+
   attr_accessor :log_user
 
   aasm enum: false do

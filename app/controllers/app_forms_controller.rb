@@ -12,6 +12,8 @@ class AppFormsController < ApplicationController
 
   # GET /app_forms/1
   def show
+    interview_event = @app_form.histories.where(to: 'Interviewed').last
+    @interviewer = interview_event.user if interview_event
   end
 
   # GET /app_forms/new

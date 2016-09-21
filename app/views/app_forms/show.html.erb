@@ -99,6 +99,53 @@
 </div></div>
 
 <div class="col-md-6"><div class="appformsection">
+  <table class="table">
+    <tbody>
+      <tr>
+        <td>
+          Screening
+        </td>
+        <td>
+          <% @app_form.klass.admission_committee_members.each do |voter| %>
+            <span class="<% if voter.user.id == current_user.id %>voter-current <% end %>tag tag-default" id="voter<%= voter.user.id %>"><%= voter.user.name %></span>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div id="screening-vote" style="display:none">
+            <div class="btn-group" role="group">
+              <%= link_to 'Reject', @app_form.id.to_s + '/votes?vote=false', method: :post, remote: true, class: 'btn btn-secondary' %>
+              <%= link_to 'Invite', @app_form.id.to_s + '/votes?vote=true', method: :post, remote: true, class: 'btn btn-secondary' %>
+            </div>
+          </div>
+          <div id="screening-revoke" style="display:none">
+            <%= link_to 'Revoke', @app_form.id.to_s + '/votes', method: :delete, remote: true, class: 'btn btn-secondary' %>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Interviewed by
+        </td>
+        <td colspan="<%= @app_form.klass.admission_committee_members.count %>">
+          <% if @interviewer %>
+            <%= @interviewer.name %>
+          <% else %>
+            &mdash;
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Average score
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div></div>
+
+<div class="col-md-6"><div class="appformsection">
   <h4>Previous Applications</h4>
   <% if @app_form.similar.count == 0 %>
     <em>None found.</em>
