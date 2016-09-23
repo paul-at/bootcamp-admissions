@@ -13,8 +13,10 @@
     </div>
   <% end %>
 
-
-  <%= f.hidden_field :klass_id, value: 5 %>
+  <div class="field">
+    Class
+    <%= f.select :klass_id, options_for_select(Klass.active.collect{ |klass| [ klass.full_title, klass.id ] }), {}, class: 'form-control' %>
+  </div>
 
   <div class="field">
     <%= f.label :firstname %>

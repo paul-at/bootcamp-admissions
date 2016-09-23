@@ -5,5 +5,5 @@ one:
   klass: one
 
 two:
-  user: two
+  user: staff
   klass: two
