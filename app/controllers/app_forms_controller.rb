@@ -7,7 +7,7 @@ class AppFormsController < ApplicationController
 
   # GET /app_forms
   def index
-    @app_forms = AppForm.searches[params[:search].to_sym].where(klass_id: params[:klass_id].to_i)
+    @app_forms = Klass.find(params[:klass_id]).searches[params[:search].to_sym]
   end
 
   # GET /app_forms/1

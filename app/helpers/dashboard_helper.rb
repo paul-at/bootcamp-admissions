@@ -1,12 +1,12 @@
 module DashboardHelper
   def statistic_group(items, klass)
     raw '<ul class="list-group">' +
-      items.map { |i| statistic(i, klass) }.join +
+      items.map { |i| statistic(i, klass, 'list-group-item list-group-item-action') }.join +
       '</ul>'
   end
 
   # Applications statistic with a link to search
-  def statistic(item, klass)
+  def statistic(item, klass, html_class='')
     raise "Undefined search #{item}" unless klass.searches.has_key?(item)
 
     count = klass.searches[item].count
@@ -26,7 +26,6 @@ module DashboardHelper
       klass_id: klass.id,
     }
 
-    html_class = 'list-group-item list-group-item-action'
     html_class += ' disabled' if count == 0
 
     link_to body.html_safe, options, class: html_class

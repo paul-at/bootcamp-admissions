@@ -150,12 +150,13 @@ class AppForm < ApplicationRecord
 
       interviews: self.where('aasm_state in (?)', [:decided_to_invite, :invite_email_sent, :interview_scheduled, :invite_no_response, :no_show, :interviewed, :waitlisted, :waitlist_email_sent, :admitted, :admit_email_sent, :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :decision_reject_email_sent, :coming, :not_coming]),
       _invite_emails_pending: self.where('aasm_state = ?', :decided_to_invite),
-      _invite_emails_sent: self.where('aasm_state in (?)', [:invite_email_sent, :interview_scheduled, :invite_no_response, :no_show, :interviewed, :waitlisted, :waitlist_email_sent, :admitted, :admit_email_sent, :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :decision_reject_email_sent, :coming, :not_coming]),
+      #_invite_emails_sent: self.where('aasm_state in (?)', [:invite_email_sent, :interview_scheduled, :invite_no_response, :no_show, :interviewed, :waitlisted, :waitlist_email_sent, :admitted, :admit_email_sent, :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :decision_reject_email_sent, :coming, :not_coming]),
 
       interviews_rejected: self.where('aasm_state in (?)', [:decided_to_reject_application, :application_reject_email_sent]),
-      _interview_reject_emails_sent: self.where('aasm_state = ?', :application_reject_email_sent),
+      #_interview_reject_emails_sent: self.where('aasm_state = ?', :application_reject_email_sent),
       _interview_reject_emails_pending: self.where('aasm_state = ?', :decided_to_reject_application),
 
+      not_reviewed: self.where('aasm_state = ? AND (SELECT COUNT(*) FROM votes WHERE votes.app_form_id = app_forms.id) = 0', :applied),
       # TODO: count of applications w/o votes
       # TODO: count of applications for each class team member to review
       # TODO: "limbo:" apps reviewed by all team members but not progressed
@@ -167,16 +168,32 @@ class AppForm < ApplicationRecord
 
       admitted: self.where('aasm_state in (?)', [:admitted, :admit_email_sent, :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded, :deposit_paid, :extension, :tuition_paid, :coming, :not_coming]),
       _admit_emails_pending: self.where('aasm_state = ?', :admitted),
-      _admit_emails_sent: self.where('aasm_state in (?)', [:admit_email_sent, :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded, :deposit_paid, :extension, :tuition_paid, :coming, :not_coming]),
+      #_admit_emails_sent: self.where('aasm_state in (?)', [:admit_email_sent, :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded, :deposit_paid, :extension, :tuition_paid, :coming, :not_coming]),
 
       rejected: self.where('aasm_state in (?)', [:rejected_after_interview, :decision_reject_email_sent]),
-      _reject_emails_sent: self.where('aasm_state = ?', :decision_reject_email_sent),
+      #_reject_emails_sent: self.where('aasm_state = ?', :decision_reject_email_sent),
       _reject_emails_pending: self.where('aasm_state = ?', :rejected_after_interview),
 
       waitlisted: self.where('aasm_state in (?)', [:waitlisted, :waitlist_email_sent]),
-      _waitlist_emails_sent: self.where('aasm_state = ?', :waitlist_email_sent),
+      #_waitlist_emails_sent: self.where('aasm_state = ?', :waitlist_email_sent),
       _waitlist_emails_pending: self.where('aasm_state = ?', :waitlisted),
     }
+  end
+
+  def self.dynamic_screening_searches(admission_committee_members)
+    i = 0
+    names = self.dynamic_screening_searches_names(admission_committee_members)
+    result = Hash.new
+    admission_committee_members.each do |user|
+      result[names[i]] = self.where('aasm_state = ? AND (SELECT COUNT(*) FROM votes WHERE votes.app_form_id = app_forms.id AND votes.user_id = ?) = 0', :applied, user.id)
+      i += 1
+    end
+    result[names[i]] = self.where("aasm_state = ? AND (SELECT COUNT(user_id) FROM votes WHERE app_form_id = app_forms.id GROUP BY user_id) >= ?", :applied, admission_committee_members.count)
+    result
+  end
+
+  def self.dynamic_screening_searches_names(admission_committee_members)
+    admission_committee_members.map(&:name).map{|user| "for_#{user}_review".to_sym } + [:reviewed_and_in_limbo]
   end
 
   private

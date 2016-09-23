@@ -111,7 +111,7 @@
           <% end %>
         </td>
       </tr>
-      <tr>
+      <tr<% if !@app_form.applied? %> style="display:none"<% end %>>
         <td>
           <div id="screening-vote" style="display:none">
             <div class="btn-group" role="group">

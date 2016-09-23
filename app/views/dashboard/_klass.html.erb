@@ -19,12 +19,8 @@
   </div>
   <div class="col-md-3">
     <%= statistic_group [
-      :interviews, 
-      :_invite_emails_pending, 
-      :_invite_emails_sent, 
+      :interviews,  
       :interviews_rejected,
-      :_interview_reject_emails_sent,
-      :_interview_reject_emails_pending,
     ], klass %>
   </div>
   <div class="col-md-3">
@@ -33,11 +29,7 @@
   <div class="col-md-3">
     <%= statistic_group [
       :admitted,
-      :_admit_emails_sent,
-      :_admit_emails_pending,
       :rejected,
-      :_reject_emails_sent,
-      :_reject_emails_pending,
     ], klass %>
   </div>
 </div>
@@ -46,31 +38,30 @@
     <%= statistic_group [:coming, :not_coming], klass %>
   </div>
   <div class="col-md-3">
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-action">
-        Not reviewed
-      </li>
-      <li class="list-group-item list-group-item-action">
-        For Chi-Chu Review
-      </li>
-      <li class="list-group-item list-group-item-action">
-        For Francis Review
-      </li>
-      <li class="list-group-item list-group-item-action">
-        For Andrew Review
-      </li>
-      <li class="list-group-item list-group-item-action">
-        Reviewed and in limbo
-      </li>
-    </ul>
+    <%= statistic_group [
+        :not_reviewed,
+      ] + klass.dynamic_screening_searches_names, klass %>
   </div>
   <div class="col-md-3">
   </div>
   <div class="col-md-3">
     <%= statistic_group [
       :waitlisted,
-      :_waitlist_emails_sent,
-      :_waitlist_emails_pending,
     ], klass %>
   </div>
+</div>
+
+<div class="row" style="margin-top:1em">
+  <div class="col-md-2">
+    Todo
+  </div>
+  <% [
+    :_invite_emails_pending,
+    :_interview_reject_emails_pending,
+    :_admit_emails_pending,
+    :_reject_emails_pending,
+    :_waitlist_emails_pending,
+  ].each do |item| %>
+    <%= statistic item, klass, 'col-md-2' %>
+  <% end %>
 </div>

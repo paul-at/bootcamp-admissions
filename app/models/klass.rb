@@ -11,8 +11,14 @@ class Klass < ApplicationRecord
 
   def searches
     klass_searches = Hash.new
-    AppForm.searches.each { |s,sc| klass_searches[s] = sc.where(klass: self) }
+    AppForm.searches.
+      merge(AppForm.dynamic_screening_searches(admission_committee_members.map(&:user))).
+      each { |s,sc| klass_searches[s] = sc.where(klass: self) }
     return klass_searches
+  end
+
+  def dynamic_screening_searches_names
+    AppForm.dynamic_screening_searches_names(admission_committee_members.map(&:user))
   end
 
   def full_title
