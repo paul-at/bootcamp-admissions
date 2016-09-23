@@ -1,0 +1,28 @@
+<%= fields_for scores do |f| %>
+  <%= f.fields_for :scores do |user_scores| %>
+    <%= user_scores.hidden_field :app_form_id %>
+    <%= user_scores.hidden_field :criterion %>
+
+    <div class="form-group row">
+      <%= user_scores.label :score, user_scores.object.criterion, class:"col-xs-2 col-form-label" %>
+      <div class="col-xs-10"><div class="form-control-static">
+        <% (1..5).each do |i| %>
+          <label class="form-check-inline">
+            <%= user_scores.radio_button :score, i, class: 'form-check-input' %>
+            <%= i %>
+          </label>
+        <% end %>
+      </div></div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-xs-12">
+        <%= user_scores.text_field :reason, class: 'form-control form-control-sm', placeholder: 'Reason' %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="form-group row">
+    <%= f.submit 'Submit scores', class: 'btn btn-primary' %>
+  </div>
+<% end %>

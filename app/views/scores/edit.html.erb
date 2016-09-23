@@ -1,0 +1,15 @@
+<h2>
+  <%= @app_form.firstname + ' ' + @app_form.lastname %>
+  <small class="text-muted"><%= @app_form.klass.full_title %></small>
+</h2>
+
+<p>
+  <%= link_to 'Back to application', @app_form %> |
+  <%= link_to 'Back to scores', app_form_scores_path(app_form_id: @app_form.id) %>
+</p>
+
+<h3>Editing Scores</h3>
+
+<%= form_tag action: :create do -%>
+  <%= render 'form', scores: @app_form.scores_for(current_user) %>
+<% end -%>

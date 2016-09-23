@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  app_form: one
+  user: one
+  criterion: MyString
+  score: 1
+  reason: MyString
+
+two:
+  app_form: two
+  user: two
+  criterion: MyString
+  score: 1
+  reason: MyString

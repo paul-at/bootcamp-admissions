@@ -33,5 +33,8 @@ class Ability
     else # staff permissions
       can :read, :all
     end
+    can :score, AppForm do |app_form|
+      app_form.klass.admission_committee_members.where(user: user).any?
+    end
   end
 end

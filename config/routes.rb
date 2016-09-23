@@ -5,6 +5,11 @@ Rails.application.routes.draw do
 
   # Application forms
   resources :app_forms do
+    resources :scores do
+      collection do
+        get 'edit', to: 'scores#edit'
+      end
+    end
     resources :votes do
       collection do
         delete '/', to: 'votes#destroy'

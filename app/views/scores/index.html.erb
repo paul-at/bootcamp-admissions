@@ -1,0 +1,66 @@
+<h2>
+  <%= @app_form.firstname + ' ' + @app_form.lastname %> Scores
+  <small class="text-muted"><%= @app_form.klass.full_title %></small>
+</h2>
+
+<p><%= link_to 'Back to application', @app_form %></p>
+
+<% if @app_form.klass.admission_committee_members.where(user: current_user).count > 0 &&
+    @app_form.scores.where(user: current_user).count == 0 %>
+  <!-- Current user is in the class admissions committee and hasn't entered scores yet -->
+  <%= form_tag do -%>
+    <%= render 'form', scores: @app_form.scores_for(current_user) %>
+  <% end -%>
+<% end %>
+
+<% totals = Hash.new %>
+<table class="table">
+  <thead>
+    <th>Scoring</th>
+    <% @app_form.klass.admission_committee_members.each do |committee_member| %>
+      <th style="text-align: center">
+        <%= committee_member.user.name %>
+      </th>
+    <% end %>
+  </thead>
+  <tbody>
+    <% @app_form.klass.scoring_criteria_as_array.each do |criterion| %>
+      <tr>
+        <td>
+          <p><%= criterion %></p>
+        </td>
+        <% @app_form.klass.admission_committee_members.each do |committee_member| %>
+          <td>
+            <% score = @app_form.scores.find{|s| s.user_id == committee_member.user_id && s.criterion == criterion } %>
+            <p style="text-align: center">
+              <% if score && score.score %>
+                <% totals[committee_member.user_id] = totals[committee_member.user_id] ? (totals[committee_member.user_id] + score.score) : score.score %>
+                  <% (1..5).each do |i| %>
+                    <% if score.score == i %>
+                      <big><%= i %></big>
+                    <% else %>
+                      <small class="text-muted"><%= i %></small>
+                    <% end %>
+                  <% end %>
+              <% else %>
+                &mdash;
+              <% end %>
+            </p>
+            <%= score ? score.reason : '' %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+    <tr>
+      <th scope="row">Total</th>
+      <% @app_form.klass.admission_committee_members.each do |committee_member| %>
+        <td style="text-align:center">
+          <big><%= totals[committee_member.user_id] %></big>
+          <% if committee_member.user_id == current_user.id %>
+            <br>
+            <%= link_to 'Edit', { action: 'edit' }, class: 'btn' %>
+          <% end %>
+        </td>
+      <% end %>
+  </tbody>
+</table>

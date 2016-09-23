@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160920044122) do
+ActiveRecord::Schema.define(version: 20160922044637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,10 +89,11 @@ ActiveRecord::Schema.define(version: 20160920044122) do
   create_table "klasses", force: :cascade do |t|
     t.integer  "subject_id"
     t.string   "title"
-    t.boolean  "archived",        default: false, null: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.boolean  "archived",         default: false, null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.integer  "payment_tier_id"
+    t.text     "scoring_criteria"
     t.index ["payment_tier_id"], name: "index_klasses_on_payment_tier_id", using: :btree
     t.index ["subject_id"], name: "index_klasses_on_subject_id", using: :btree
   end
@@ -103,6 +104,19 @@ ActiveRecord::Schema.define(version: 20160920044122) do
     t.decimal  "tuition",    precision: 10, scale: 2
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+  end
+
+  create_table "scores", force: :cascade do |t|
+    t.integer  "app_form_id"
+    t.integer  "user_id"
+    t.string   "criterion"
+    t.integer  "score"
+    t.string   "reason"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["app_form_id"], name: "index_scores_on_app_form_id", using: :btree
+    t.index ["criterion"], name: "index_scores_on_criterion", using: :btree
+    t.index ["user_id"], name: "index_scores_on_user_id", using: :btree
   end
 
   create_table "subjects", force: :cascade do |t|
@@ -151,6 +165,8 @@ ActiveRecord::Schema.define(version: 20160920044122) do
   add_foreign_key "histories", "users"
   add_foreign_key "klasses", "payment_tiers"
   add_foreign_key "klasses", "subjects"
+  add_foreign_key "scores", "app_forms"
+  add_foreign_key "scores", "users"
   add_foreign_key "votes", "app_forms"
   add_foreign_key "votes", "users"
 end

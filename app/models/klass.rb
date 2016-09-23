@@ -18,4 +18,19 @@ class Klass < ApplicationRecord
   def full_title
     subject.title + ' ' + self.title
   end
+
+  def scoring_criteria
+    self[:scoring_criteria] || ''
+  end
+
+  def scoring_criteria_as_array
+    scoring_criteria
+      .split("\n")
+      .map{|criterion| criterion.gsub(/[^\w ]/,'')}
+      .reject{|criterion| criterion.empty?}
+  end
+
+  def max_score
+    scoring_criteria_as_array.count * 5
+  end
 end

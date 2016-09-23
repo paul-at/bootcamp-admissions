@@ -33,6 +33,12 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :scoring_criteria %>
+    <%= f.text_area :scoring_criteria, rows: 5, class: 'form-control' %>
+    <small class="form-text text-muted">One criterion per line.</small>
+  </div>
+
+  <div class="form-group">
     <%= f.label :admission_committee_members %>
     <fieldset class="input-group">
       <% members = klass.admission_committee_members.map(&:user_id) %>

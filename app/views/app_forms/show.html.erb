@@ -140,6 +140,9 @@
         <td>
           Average score
         </td>
+        <td colspan="<%= @app_form.klass.admission_committee_members.count %>">
+          <%= link_to_scores @app_form %>
+        </td>
       </tr>
     </tbody>
   </table>

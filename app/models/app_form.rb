@@ -7,6 +7,7 @@ class AppForm < ApplicationRecord
   has_many :attachments
   has_many :histories, dependent: :destroy
   has_many :votes, dependent: :destroy
+  has_many :scores, dependent: :destroy
 
   attr_accessor :log_user
 
@@ -114,6 +115,27 @@ class AppForm < ApplicationRecord
 
   def similar
     AppForm.where('(firstname = ? AND lastname = ? OR email = ?) AND id <> ?', firstname, lastname, email, id)
+  end
+
+  def scores_for(user)
+    if scores.where(user: user).count > 0
+      scores_array = scores.where(user: user)
+    else
+      scores_array = klass.scoring_criteria_as_array.map do |criterion|
+        Score.new({
+          app_form: self,
+          user: user,
+          criterion: criterion,
+        })
+      end
+    end
+    UserScores.new(scores_array)
+  end
+
+  def average_score
+    return 0 if scores.empty?
+    total = scores.map(&:score).compact.reduce(:+)
+    total * klass.scoring_criteria_as_array.count / scores.count
   end
 
   # scopes available for external querying
