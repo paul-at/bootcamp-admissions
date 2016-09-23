@@ -8,7 +8,6 @@
     <tr>
       <th>Firstname <%= fa_icon 'sort' %></th>
       <th>Lastname <%= fa_icon 'sort' %></th>
-      <th>Email <%= fa_icon 'sort' %></th>
       <th>Country <%= fa_icon 'sort' %></th>
       <th>Residence <%= fa_icon 'sort' %></th>
       <th>G.<%= fa_icon 'sort' %></th>
@@ -24,7 +23,6 @@
       <tr>
         <td><%= link_to app_form.firstname, app_form %></td>
         <td><%= link_to app_form.lastname, app_form %></td>
-        <td><%= app_form.email %></td>
         <td><i class="flag f16 <%= app_form.country.downcase %>"></i> <%= app_form.country %></td>
         <td><i class="flag f16 <%= app_form.residence.downcase %>"></i> <%= app_form.residence %></td>
         <td><%= app_form.gender %></td>
