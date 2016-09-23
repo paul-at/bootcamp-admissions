@@ -191,7 +191,7 @@ class AppForm < ApplicationRecord
       result[names[i]] = self.where('aasm_state = ? AND (SELECT COUNT(*) FROM votes WHERE votes.app_form_id = app_forms.id AND votes.user_id = ?) = 0', :applied, user.id)
       i += 1
     end
-    result[names[i]] = self.where("aasm_state = ? AND (SELECT COUNT(user_id) FROM votes WHERE app_form_id = app_forms.id GROUP BY user_id) >= ?", :applied, admission_committee_members.count)
+    result[names[i]] = self.where("aasm_state = ? AND (SELECT COUNT(*) FROM (SELECT DISTINCT user_id FROM votes WHERE app_form_id = app_forms.id) AS temp) >= ?", :applied, admission_committee_members.count)
     result
   end
 
