@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  has_many :admission_committee_members
+
   def name
     e = email
     e[0..e.index('@')-1].titleize

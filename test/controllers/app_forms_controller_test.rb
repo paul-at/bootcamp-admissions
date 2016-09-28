@@ -9,10 +9,22 @@ class AppFormsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get index" do
-    sign_in users(:staff)
+    user = users(:staff)
+    sign_in user
 
-    get app_forms_url, params: { search: AppForm.searches.keys.first, klass_id: @klass.id }
+    klass = user.admission_committee_members.first!
+
+    get app_forms_url, params: { search: AppForm.searches.keys.first, klass_id: klass.id }
     assert_response :success
+  end
+
+  test "show not get index when accessed by staff not in admissions committee for the class" do
+    user = users(:staff)
+    sign_in user
+
+    assert_raises CanCan::AccessDenied do
+      get app_forms_url, params: { search: AppForm.searches.keys.first, klass_id: @klass.id }
+    end
   end
 
   test "should get new" do
@@ -46,14 +58,31 @@ class AppFormsControllerTest < ActionDispatch::IntegrationTest
   test "should show app_form" do
     sign_in users(:staff)
   
-    get app_form_url(@app_form)
+    get app_form_url(app_forms(:two))
     assert_response :success
+  end
+
+  test "show not show app_form when accessed by staff not in admissions committee for the class" do
+    sign_in users(:staff)
+  
+    assert_raises CanCan::AccessDenied do
+      get app_form_url(@app_form)
+    end
   end
 
   test "should update app_form" do
     sign_in users(:staff)
+    app_form = app_forms(:two)
 
-    patch app_form_url(@app_form), params: { app_form: { klass_id: @klass.id, country: @app_form.country, dob: @app_form.dob, email: @app_form.email, firstname: @app_form.firstname, gender: @app_form.gender, lastname: @app_form.lastname, referral: @app_form.referral, residence: @app_form.residence, city: @app_form.city } }
-    assert_redirected_to app_form_url(@app_form)
+    patch app_form_url(app_form), params: { app_form: { klass_id: @klass.id, country: @app_form.country, dob: @app_form.dob, email: @app_form.email, firstname: @app_form.firstname, gender: @app_form.gender, lastname: @app_form.lastname, referral: @app_form.referral, residence: @app_form.residence, city: @app_form.city } }
+    assert_redirected_to app_form_url(app_form)
+  end
+
+  test "should not update app_form when accessed by staff not in admissions committee for the class" do
+    sign_in users(:staff)
+
+    assert_raises CanCan::AccessDenied do
+      patch app_form_url(@app_form)
+    end
   end
 end

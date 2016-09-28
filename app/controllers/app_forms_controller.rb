@@ -7,12 +7,17 @@ class AppFormsController < ApplicationController
 
   # GET /app_forms
   def index
-    @app_forms = Klass.find(params[:klass_id]).searches[params[:search].to_sym]
+    klass = Klass.find(params[:klass_id])
+    authorize! :read, klass
+
+    @app_forms = klass.searches[params[:search].to_sym]
   end
 
   # GET /app_forms/1
   def show
     interview_event = @app_form.histories.where(to: 'Interviewed').last
+    authorize! :read, @app_form.klass
+
     @interviewer = interview_event.user if interview_event
   end
 
@@ -43,6 +48,8 @@ class AppFormsController < ApplicationController
   # PATCH/PUT /app_forms/1
   # PATCH/PUT /app_forms/1.json
   def update
+    authorize! :read, @app_form.klass
+    
     @app_form.assign_attributes(app_form_params)
     respond_to do |format|
       if @app_form.save

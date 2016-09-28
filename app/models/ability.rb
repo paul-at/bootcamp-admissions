@@ -31,7 +31,9 @@ class Ability
     if user.admin?
       can :manage, :all
     else # staff permissions
-      can :read, :all
+      can :read, Klass do |klass|
+        klass.admission_committee_members.where(user: user).any?
+      end
     end
     can :score, AppForm do |app_form|
       app_form.klass.admission_committee_members.where(user: user).any?

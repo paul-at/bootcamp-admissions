@@ -13,6 +13,9 @@ class DashboardControllerTest < ActionController::TestCase
     sign_in @staff
 
     get :index
+
+    refute_includes assigns(:klasses), klasses(:one)
+    assert_includes assigns(:klasses), klasses(:two)
     assert_response :success
   end
 
