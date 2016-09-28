@@ -1,1 +1,7 @@
 <%= render partial: 'klass', collection: @klasses, as: :klass %>
+
+<% unless params[:archived] %>
+  <%= link_to 'Show Archived Classes', root_path(archived: true) %>
+<% else %>
+  <%= link_to 'Show Active Classes', root_path %>
+<% end %>
