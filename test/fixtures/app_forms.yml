@@ -5,6 +5,7 @@ one:
   email: MyString
   country: US
   residence: US
+  city: New York
   gender: M
   dob: 2016-09-04
   referral: MyString
@@ -16,6 +17,7 @@ two:
   email: MyString
   country: UK
   residence: UK
+  city: London
   gender: F
   dob: 2016-09-04
   referral: MyString

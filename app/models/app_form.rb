@@ -104,9 +104,9 @@ class AppForm < ApplicationRecord
   validates :email, presence: true
   validates :country, presence: true, length: { is: 2 }
   validates :residence, presence: true, length: { is: 2 }
+  validates :city, presence: true
   validates :gender, presence: true, length: { is: 1 }
   validates :dob, presence: true
-  validates :terms_and_conditions, acceptance: true
 
   def age
     now = Time.now.utc.to_date

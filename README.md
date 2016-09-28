@@ -16,19 +16,30 @@ Set following environment variables for production:
 * AWS_SECRET_ACCESS_KEY
 * AWS_REGION
 
-* Database creation
-
-* Database initialization
-
 Set ALLOW_FAKER environment variable to enable fake data generator at /setup/.
 
-* How to run the test suite
+## Application Form API
 
-* Services (job queues, cache servers, search engines, etc.)
+Admissions offer an API for submitting an application form. It is designed to be consumed by AJAX frontend and available as a POST endpoint at `/app_forms/` URI. The endpoint can handle multipart form for file upload and expects following request parameters:
+* `app_form[klass_id]` an integer representing Class id to apply for. Required.
+* `app_form[firstname]` and `app_form[lastname]` - applicant name. Required.
+* `app_form[email]` - applicant email. Required.
+* `app_form[country]` - applicant country of origin. Two-letter ISO code. Required.
+* `app_form[residence]` - applicant current country of residence. Two-letter ISO code. Required.
+* `app_form[city]` - applicant current city of residence. A string. Required.
+* `app_form[gender]` - a gender code. One uppercase character. Required.
+* `app_form[dob]` - date of birth in YYYY-MM-DD format. Required. Can be submitted as three individual fields:
+  * `app_form[dob(1i)]` - year of birth.
+  * `app_form[dob(2i)]` - month of birth. An integer, January=1.
+  * `app_form[dob(3i)]` - day of birth.
+* `app_form[referral]` - marketing source. A string.
 
-* Deployment instructions
+In addition to the closed list of parameters, any number of arbitrary string answers and file uploads can be passed. File uploads are limited to 5Mb each.
 
-* ...
+* `app_form[answers[question_name]]` answer to `question_name` question. For example: `app_form[answers[linkedin_page_url]]`.
+* `app_form[uploads[kind_of_file]]` file upload that will be stored as `kind_of_file`. For example: `app_form[uploads[cv]]`.
+
+Backend returns 200 status code on success and 422 status in case if there is a validation error. In latter case response body would be a JSON document with validation errors.
 
 ## Generate Documentation
 
