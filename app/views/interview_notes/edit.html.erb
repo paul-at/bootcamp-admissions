@@ -1,0 +1,10 @@
+<h2>
+  <%= @app_form.firstname + ' ' + @app_form.lastname %>
+  <small class="text-muted"><%= @app_form.klass.full_title %></small>
+</h2>
+
+<h3>Editing Interview Notes</h3>
+
+<%= render 'form', interview_note: @interview_note %>
+
+<%= link_to 'Back', @app_form %>

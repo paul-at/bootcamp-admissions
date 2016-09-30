@@ -1,0 +1,56 @@
+<link href="https://cdn.quilljs.com/1.0.5/quill.snow.css" rel="stylesheet">
+
+<%= form_for([@app_form, interview_note], remote: true) do |f| %>
+  <%= f.hidden_field :text %>
+
+  <div id="editor">
+    <%= interview_note.text ? interview_note.text.html_safe : '' %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit class: 'btn btn-primary' %>
+    <span id="editor_status"></span>
+  </div>
+<% end %>
+
+<!-- Include the Quill library -->
+<script src="https://cdn.quilljs.com/1.0.5/quill.js"></script>
+
+<!-- Initialize Quill editor -->
+<script type="text/javascript">
+  var quill = new Quill('#editor', {
+    modules: {
+      'toolbar': [
+        [{ 'font': [] }, { 'size': [] }],
+        [ 'bold', 'italic', 'underline', 'strike' ],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'script': 'super' }, { 'script': 'sub' }],
+        [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block' ],
+        [{ 'list': 'ordered' }, { 'list': 'bullet'}, { 'indent': '-1' }, { 'indent': '+1' }],
+        [ 'direction', { 'align': [] }],
+        [ 'link', 'image', 'video', 'formula' ],
+        [ 'clean' ]
+      ],
+    },
+    theme: 'snow'
+  });
+
+  quill.on('text-change', function(delta, oldDelta, source) {
+    $('#editor_status').text('Modified');
+  });
+
+  $(document).on('turbolinks:load', function() {
+    $('form').submit(function() {
+      $('#interview_note_text').val($('#editor .ql-editor').html());
+      $('#editor_status').text('Saving...');
+    });
+
+    $('form').on("ajax:success", function (e, data, status, xhr) {
+      $('#editor_status').text('Saved');
+    }).on("ajax:error", function (e, xhr, status, error) {
+      $('#editor_status').text('Error ' + status + ': ' + error);
+    });
+
+    $('#editor_status').text('Ready');
+  });
+</script>

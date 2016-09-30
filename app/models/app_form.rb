@@ -8,6 +8,7 @@ class AppForm < ApplicationRecord
   has_many :histories, dependent: :destroy
   has_many :votes, dependent: :destroy
   has_many :scores, dependent: :destroy
+  has_many :interview_notes, dependent: :destroy
 
   attr_accessor :log_user
 
@@ -136,6 +137,10 @@ class AppForm < ApplicationRecord
     return 0 if scores.empty?
     total = scores.map(&:score).compact.reduce(:+)
     total * klass.scoring_criteria_as_array.count / scores.count
+  end
+
+  def full_name
+    "#{firstname} #{lastname}"
   end
 
   # scopes available for external querying

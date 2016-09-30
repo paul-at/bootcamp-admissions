@@ -77,6 +77,7 @@
   <% end %>
 </div></div>
 
+<!-- Application Overview -->
 <div class="col-md-6"><div class="appformsection">
   <h4>Application Overview</h4>
 
@@ -84,6 +85,7 @@
   Last changed <a href="#history" data-turbolinks="false"><%= time_ago_in_words @app_form.updated_at %> ago</a>.</p>
 </div></div>
 
+<!-- Actions -->
 <div class="col-md-6"><div class="appformsection">
   <h1 class="display-4"><%= @app_form.aasm_state.humanize %></h1>
   <% unless @app_form.aasm.events.empty? %>
@@ -103,6 +105,7 @@
   <% end %>
 </div></div>
 
+<!-- Screening -->
 <div class="col-md-6"><div class="appformsection">
   <table class="table">
     <tbody>
@@ -153,6 +156,7 @@
   </table>
 </div></div>
 
+<!-- Previous Applications -->
 <div class="col-md-6"><div class="appformsection">
   <h4>Previous Applications</h4>
   <% if @app_form.similar.count == 0 %>
@@ -165,6 +169,22 @@
     </ul>
   <% end %>
 </div></div>
+
+<!-- Balance -->
+<div class="col-md-6">
+<div class="appformsection">
+  <h4>Balance Paid</h4>
+  <%= form_tag({ action: 'payment' }, class: 'form-inline') do %>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-addon">$</div>
+        <%= number_field_tag 'paid', @app_form.paid, step: 'any', min: 0, class: 'form-control' %>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  <% end %>
+</div>
+</div>
 
 <div class="col-md-12">
 <div class="appformsection">
@@ -200,32 +220,49 @@
 </div>
 </div>
 
-<div class="col-md-6">
-<div class="appformsection">
-  <h4>Balance Paid</h4>
-  <%= form_tag({ action: 'payment' }, class: 'form-inline') do %>
-    <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-addon">$</div>
-        <%= number_field_tag 'paid', @app_form.paid, step: 'any', min: 0, class: 'form-control' %>
-      </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  <% end %>
-</div>
-</div>
+<!-- Interview Notes -->
+<div class="col-md-12"><div class="appformsection">
+  <h4>Interview Notes</h4>
 
-<div class="col-md-6">
-<div class="appformsection">
-  <h4>Leave Note</h4>
-  <%= form_tag({ action: 'comment' }, class: 'form') do %>
-    <div class="form-group">
-      <%= text_area_tag 'note', '', class: 'form-control' %>
-    </div>
-    <button type="submit" class="btn btn-primary">Leave Note</button>
-  <% end %>
-</div>
-</div>
+  <div class="card-deck-wrapper"><div class="card-deck">
+    <% user_has_note = false %>
+    <% @app_form.interview_notes.each do |note| %>
+      <% user_has_note ||= note.user == current_user %>
+      <div class="card">
+        <%
+          if note.user == current_user
+            link_destination = edit_app_form_interview_note_path(@app_form, note)
+          else
+            link_destination = [@app_form, note]
+          end
+        %>
+        <%= link_to link_destination, data: { turbolinks: false } do %>
+          <div class="card-block">
+            <h4 class="card-title"><%= note.user.name %></h4>
+            <p class="card-text"><%= note.text.gsub(/<(.+?)>/, '').truncate_words(50) %></p>
+            <p class="card-text">
+              <small class="text-muted">
+                Last updated <%= time_ago_in_words note.updated_at %> ago
+              </small>
+            </p>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <% unless user_has_note %>
+      <div class="card">
+        <div class="card-block">
+          <h4 class="card-title"><%= current_user.name %></h4>
+          <p class="card-text">
+            <%= link_to 'Write Note', new_app_form_interview_note_path(@app_form), class: 'btn btn-primary', data: { turbolinks: false } %>
+          </p>
+        </div>
+      </div>
+    <% end %>
+  </div></div>
+</div></div>
+
+
 
 <div class="col-md-12">
 <div class="appformsection">
@@ -276,5 +313,17 @@
     <% end %>
     </tbody>
     </table>
+</div>
+</div>
+
+<div class="col-md-12">
+<div class="appformsection">
+  <h4>Leave Note in History</h4>
+  <%= form_tag({ action: 'comment' }, class: 'form') do %>
+    <div class="form-group">
+      <%= text_area_tag 'note', '', class: 'form-control' %>
+    </div>
+    <button type="submit" class="btn btn-primary">Leave Note</button>
+  <% end %>
 </div>
 </div>

@@ -1,0 +1,19 @@
+<h2>
+  <%= @app_form.firstname + ' ' + @app_form.lastname %>
+  <small class="text-muted"><%= @app_form.klass.full_title %></small>
+</h2>
+
+<h3>Interview Notes</h3>
+
+<p><em>
+  Written by
+  <%= @interview_note.user.name %>,
+  last updated
+  <%= time_ago_in_words @interview_note.updated_at %> ago
+</p></em>
+
+<p>
+  <%= @interview_note.text.html_safe %>
+</p>
+
+<%= link_to 'Back', @app_form %>

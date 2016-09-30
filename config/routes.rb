@@ -15,6 +15,7 @@ Rails.application.routes.draw do
         delete '/', to: 'votes#destroy'
       end
     end
+    resources :interview_notes
     member do
       post 'event'
       post 'payment'
