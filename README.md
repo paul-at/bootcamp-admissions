@@ -11,12 +11,13 @@ To generate automated documentation using railroady gem in development environme
 ### Configuration
 
 Set following environment variables for production:
-* S3_BUCKET_NAME
-* AWS_ACCESS_KEY_ID
-* AWS_SECRET_ACCESS_KEY
-* AWS_REGION
+* `S3_BUCKET_NAME`
+* `AWS_ACCESS_KEY_ID`
+* `AWS_SECRET_ACCESS_KEY`
+* `AWS_REGION`
+* `CORS_DOMAINS` - comma-separated list of domain names (without protocol and trailing slash) that will be allowed to create applications using AJAX. For example: `a.com,b.com`.
 
-Set ALLOW_FAKER environment variable to enable fake data generator at /setup/.
+Set `ALLOW_FAKER` environment variable to enable fake data generator at /setup/.
 
 ## Application Form API
 
