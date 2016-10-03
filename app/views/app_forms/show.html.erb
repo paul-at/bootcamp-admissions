@@ -212,7 +212,7 @@
     <% @app_form.attachments.each do |attachment| %>
       <tr>
         <td><%= attachment.field.humanize %></td>
-        <td><%= link_to attachment.original_file_name, attachment.upload.url %></td>
+        <td><%= link_to attachment.original_file_name, attachment.upload.url, target: '_blank' %></td>
         <% if attachment.user %>
           <td>by <%= attachment.user.name %> on <%= attachment.created_at %></td>
         <% end %>
@@ -226,7 +226,7 @@
     <dt><%= answer.question.humanize %></dt>
     <dd>
       <% if answer.answer[0..6] == 'http://' %>
-        <%= link_to answer.answer, answer.answer %>
+        <%= link_to answer.answer, answer.answer, target: '_blank' %>
       <% else %>
         <%= answer.answer %>
       <% end %>
