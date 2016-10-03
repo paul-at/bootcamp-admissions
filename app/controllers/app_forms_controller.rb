@@ -1,5 +1,7 @@
 class AppFormsController < ApplicationController
   before_action :set_app_form, only: [:show, :update, :event, :payment, :comment]
+  # TODO: remove once testing is over
+  before_action :city_workaround, only: [:update, :event, :payment]
 
   # Allow to file application from third-party website
   allow_cors :create, :new
@@ -49,10 +51,6 @@ class AppFormsController < ApplicationController
   # PATCH/PUT /app_forms/1.json
   def update
     authorize! :read, @app_form.klass
-
-    # TODO: remove once testing is over
-    # Workaround to prevent validation errors due to required 'city' field added after testing began
-    @app_form.city = 'N/A' unless @app_form.city
     
     @app_form.assign_attributes(app_form_params)
     respond_to do |format|
@@ -90,7 +88,7 @@ class AppFormsController < ApplicationController
   def payment
     @app_form.paid = params[:paid].to_f
     @app_form.payment if @app_form.may_payment?
-    @app_form.save
+    @app_form.save!
     log_change
     redirect_to @app_form, notice: 'Payment recorded.'
   end
@@ -155,5 +153,10 @@ class AppFormsController < ApplicationController
           user: current_user,
         })
       end
+    end
+
+    # Workaround to prevent validation errors due to required 'city' field added after testing began
+    def city_workaround
+      @app_form.city = 'N/A' unless @app_form.city
     end
 end

@@ -218,6 +218,17 @@
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   <% end %>
+
+  <table class="table table-sm table-striped"><tbody>
+  <% @app_form.histories.each do |history| %>
+    <% if history.text == 'Field Paid' %>
+      <tr>
+        <td><%= number_to_currency(history.to.to_f - history.from.to_f) %></td>
+        <td><%= history.created_at.to_formatted_s(:short) %></td>
+      </tr>
+    <% end %>
+  <% end %>
+  </tbody></table>
 </div>
 </div>
 
