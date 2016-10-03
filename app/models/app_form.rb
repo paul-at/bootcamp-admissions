@@ -57,9 +57,12 @@ class AppForm < ApplicationRecord
       transitions from: :invite_email_sent, to: :invite_no_response
     end
 
+    event :no_show do
+      transitions from: :interview_scheduled, to: :no_show
+    end
+
     event :wont_come do
       transitions from: [ :admit_email_sent, :scholarship_not_awarded, :extension, :scholarship_awarded, :deposit_paid, :tuition_paid ], to: :not_coming
-      transitions from: :interview_scheduled, to: :no_show
     end
 
     event :will_come do
