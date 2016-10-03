@@ -20,9 +20,12 @@
 
   <tbody>
     <% @app_forms.each do |app_form| %>
+      <% path = app_form_path(app_form, {
+        search: params[:search],
+      }) %>
       <tr>
-        <td><%= link_to app_form.firstname, app_form %></td>
-        <td><%= link_to app_form.lastname, app_form %></td>
+        <td><%= link_to app_form.firstname, path %></td>
+        <td><%= link_to app_form.lastname, path %></td>
         <td><i class="flag f16 <%= app_form.country.downcase %>"></i> <%= app_form.country %></td>
         <td><i class="flag f16 <%= app_form.residence.downcase %>"></i> <%= app_form.residence %></td>
         <td><%= app_form.gender %></td>

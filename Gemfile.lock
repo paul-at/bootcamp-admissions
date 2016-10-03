@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/paul-at/prev-next
+  revision: 989bb9dce626a405ef2ce48d0c1e5beebc86b065
+  specs:
+    prev-next (0.1.0)
+
+GIT
   remote: git://github.com/world-flags/world-flags.git
   revision: b6ea11dbec91d1ec07cc6808215a05d182e67d65
   specs:
@@ -236,6 +242,7 @@ DEPENDENCIES
   listen (~> 3.0.5)
   paperclip
   pg
+  prev-next!
   puma (~> 3.0)
   railroady
   rails (~> 5.0.0, >= 5.0.0.1)

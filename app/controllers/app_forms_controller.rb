@@ -15,6 +15,10 @@ class AppFormsController < ApplicationController
   # GET /app_forms/1
   def show
     authorize! :read, @app_form.klass
+
+    if params[:search]
+      @prevnext = Prev::Next.index(@app_form.klass.searches[params[:search].to_sym])
+    end
   end
 
   # GET /app_forms/new

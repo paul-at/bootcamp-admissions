@@ -32,6 +32,7 @@ gem 'sparkpost_rails'
 gem 'bootstrap', '~> 4.0.0.alpha4'
 # World flags for display
 gem 'world-flags', github: 'world-flags/world-flags'
+gem 'prev-next', git: 'git://github.com/paul-at/prev-next'
 # Country codes
 gem 'countries'
 # Icons

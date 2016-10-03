@@ -3,6 +3,24 @@
   <small class="text-muted"><%= @app_form.klass.full_title %></small>
 </h2>
 
+<% if params[:search] %>
+  <ul class="nav">
+    <li class="nav-item col-md-4">
+      <% if @prevnext[@app_form.id][:prev] %>
+        <%= link_to @prevnext[@app_form.id][:prev].full_name, app_form_path(@prevnext[@app_form.id][:prev], search: params[:search]) %>
+      <% end %>
+    </li>
+    <li class="nav-item col-md-4 text-md-center">
+      <%= link_to params[:search].humanize, app_forms_path(search: params[:search], klass_id: @app_form.klass_id), class: 'nav-link' %>
+    </li>
+    <li class="nav-item col-md-4 text-md-right">
+      <% if @prevnext[@app_form.id][:next] %>
+        <%= link_to @prevnext[@app_form.id][:next].full_name, app_form_path(@prevnext[@app_form.id][:next], search: params[:search]) %>
+      <% end %>
+    </li>
+  </ul>
+<% end %>
+
 <div class="col-md-6"><div class="appformsection">
   <h4>
     Personal Details
@@ -123,12 +141,12 @@
         <td>
           <div id="screening-vote" style="display:none">
             <div class="btn-group" role="group">
-              <%= link_to 'Reject', @app_form.id.to_s + '/votes?vote=false', method: :post, remote: true, class: 'btn btn-secondary' %>
-              <%= link_to 'Invite', @app_form.id.to_s + '/votes?vote=true', method: :post, remote: true, class: 'btn btn-secondary' %>
+              <%= link_to 'Reject', app_form_votes_path(@app_form, vote:false), method: :post, remote: true, class: 'btn btn-secondary' %>
+              <%= link_to 'Invite', app_form_votes_path(@app_form, vote:true), method: :post, remote: true, class: 'btn btn-secondary' %>
             </div>
           </div>
           <div id="screening-revoke" style="display:none">
-            <%= link_to 'Revoke', @app_form.id.to_s + '/votes', method: :delete, remote: true, class: 'btn btn-secondary' %>
+            <%= link_to 'Revoke', app_form_votes_path(@app_form), method: :delete, remote: true, class: 'btn btn-secondary' %>
           </div>
         </td>
       </tr>

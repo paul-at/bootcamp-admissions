@@ -1,5 +1,5 @@
 refreshVotes = () ->
-  $.getJSON(url: document.location.href + '/votes').done (json) ->
+  $.getJSON(url: document.location.origin + document.location.pathname + '/votes').done (json) ->
     $("[id^=voter]").removeClass 'tag-success tag-danger'
     current_voter = $('.voter-current')
     if current_voter.length > 0
