@@ -113,7 +113,7 @@
         <div class="form-check">
           <label class="form-check-label">
             <%= radio_button_tag 'event', event, nil, class: 'form-radio-input' %>
-            <%= event.to_s.humanize %>
+            <%= event_name event %>
           </label>
         </div>
       <% end %>

@@ -26,6 +26,8 @@ en:
     attributes:
       app_form:
         aasm_state: Status override
+        event_names:
+          wont_come: Won't come
       klass:
         payment_tier: Default Payment Tier
         admission_committee_members: Admission committee
