@@ -3,6 +3,7 @@ class AppForm < ApplicationRecord
 
   belongs_to :klass
   belongs_to :payment_tier
+  belongs_to :interviewer, class_name: 'User'
   has_many :answers, dependent: :destroy
   has_many :attachments
   has_many :histories, dependent: :destroy
@@ -141,6 +142,10 @@ class AppForm < ApplicationRecord
 
   def full_name
     "#{firstname} #{lastname}"
+  end
+
+  def can_change_interviewer?
+    [ :applied, :decided_to_invite, :invite_email_sent, :interview_scheduled ].include?(self.aasm_state.to_sym)
   end
 
   # scopes available for external querying

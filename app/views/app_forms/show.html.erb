@@ -133,16 +133,33 @@
         </td>
       </tr>
       <tr>
-        <td>
-          Interviewed by
-        </td>
-        <td colspan="<%= @app_form.klass.admission_committee_members.count %>">
-          <% if @interviewer %>
-            <%= @interviewer.name %>
-          <% else %>
-            &mdash;
-          <% end %>
-        </td>
+        <% if @app_form.can_change_interviewer? %>
+          <td>
+            Interviewer
+          </td>
+          <td>
+            <%= form_for(@app_form, remote: true, html: { id: 'interviewer_form' }, format: :json) do |f| %>
+              <div class="form-group">
+                <%= f.select :interviewer_id, options_for_select([['Not assigned', nil]] + @app_form.
+                  klass.
+                  admission_committee_members.
+                  collect(&:user).
+                  map{|user| [user.name, user.id]}, selected: @app_form.interviewer_id),
+                  {}, class: 'form-control', onChange: '$("#interviewer_form").trigger("submit.rails")' %>
+              </div>
+            <% end %>
+        <% else %>
+          <td>
+            Interviewed by
+          </td>
+          <td colspan="<%= @app_form.klass.admission_committee_members.count %>">
+            <% if @app_form.interviewer %>
+              <%= @app_form.interviewer.name %>
+            <% else %>
+              &mdash;
+            <% end %>
+          </td>
+        <% end %>
       </tr>
       <tr>
         <td>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160928104021) do
+ActiveRecord::Schema.define(version: 20161003100030) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,10 +49,12 @@ ActiveRecord::Schema.define(version: 20160928104021) do
     t.integer  "klass_id"
     t.integer  "payment_tier_id"
     t.string   "city"
+    t.integer  "interviewer_id"
     t.index ["aasm_state"], name: "index_app_forms_on_aasm_state", using: :btree
     t.index ["country"], name: "index_app_forms_on_country", using: :btree
     t.index ["email"], name: "index_app_forms_on_email", using: :btree
     t.index ["firstname"], name: "index_app_forms_on_firstname", using: :btree
+    t.index ["interviewer_id"], name: "index_app_forms_on_interviewer_id", using: :btree
     t.index ["klass_id"], name: "index_app_forms_on_klass_id", using: :btree
     t.index ["lastname"], name: "index_app_forms_on_lastname", using: :btree
     t.index ["payment_tier_id"], name: "index_app_forms_on_payment_tier_id", using: :btree
@@ -170,6 +172,7 @@ ActiveRecord::Schema.define(version: 20160928104021) do
   add_foreign_key "answers", "app_forms"
   add_foreign_key "app_forms", "klasses"
   add_foreign_key "app_forms", "payment_tiers"
+  add_foreign_key "app_forms", "users", column: "interviewer_id"
   add_foreign_key "attachments", "app_forms"
   add_foreign_key "attachments", "users"
   add_foreign_key "histories", "app_forms"

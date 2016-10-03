@@ -14,10 +14,7 @@ class AppFormsController < ApplicationController
 
   # GET /app_forms/1
   def show
-    interview_event = @app_form.histories.where(to: 'Interviewed').last
     authorize! :read, @app_form.klass
-
-    @interviewer = interview_event.user if interview_event
   end
 
   # GET /app_forms/new
@@ -48,13 +45,17 @@ class AppFormsController < ApplicationController
   # PATCH/PUT /app_forms/1.json
   def update
     authorize! :read, @app_form.klass
+
+    # TODO: remove once testing is over
+    # Workaround to prevent validation errors due to required 'city' field added after testing began
+    @app_form.city = 'N/A' unless @app_form.city
     
     @app_form.assign_attributes(app_form_params)
     respond_to do |format|
       if @app_form.save
         log_change
         format.html { redirect_to @app_form, notice: 'App form was successfully updated.' }
-        format.json { render :show, status: :ok, location: @app_form }
+        format.json { render json: nil, status: :ok }
       else
         format.html { render :show }
         format.json { render json: @app_form.errors, status: :unprocessable_entity }
@@ -108,7 +109,7 @@ class AppFormsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def app_form_params
-      params.require(:app_form).permit(:klass_id, :firstname, :lastname, :email, :country, :residence, :city, :gender, :dob, :referral, :aasm_state, :payment_tier_id)
+      params.require(:app_form).permit(:klass_id, :firstname, :lastname, :email, :country, :residence, :city, :gender, :dob, :referral, :aasm_state, :payment_tier_id, :interviewer_id)
     end
 
     def save_answers!
