@@ -168,8 +168,9 @@ class AppForm < ApplicationRecord
       interviews_rejected: self.where('aasm_state in (?)', [:decided_to_reject_application, :application_reject_email_sent]),
       #_interview_reject_emails_sent: self.where('aasm_state = ?', :application_reject_email_sent),
       _interview_reject_emails_pending: self.where('aasm_state = ?', :decided_to_reject_application),
+      not_reviewed: self.where('aasm_state = ?', :applied),
 
-      not_reviewed: self.where('aasm_state = ? AND (SELECT COUNT(*) FROM votes WHERE votes.app_form_id = app_forms.id) = 0', :applied),
+      none_reviewed: self.where('aasm_state = ? AND (SELECT COUNT(*) FROM votes WHERE votes.app_form_id = app_forms.id) = 0', :applied),
 
       interviewed: self.where('aasm_state in (?)', [:interviewed, :waitlisted, :waitlist_email_sent, :admitted, :admit_email_sent, :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :decision_reject_email_sent, :coming, :not_coming]),
       no_show: self.where('aasm_state = ?', :no_show),

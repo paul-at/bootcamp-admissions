@@ -21,6 +21,7 @@
     <%= statistic_group [
       :interviews,  
       :interviews_rejected,
+      :not_reviewed,
     ], klass %>
   </div>
   <div class="col-md-3">
@@ -39,7 +40,7 @@
   </div>
   <div class="col-md-3">
     <%= statistic_group [
-        :not_reviewed,
+        :none_reviewed,
       ] + klass.dynamic_screening_searches_names, klass %>
   </div>
   <div class="col-md-3">
