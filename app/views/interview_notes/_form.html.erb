@@ -7,7 +7,7 @@
     <%= interview_note.text ? interview_note.text.html_safe : '' %>
   </div>
 
-  <div class="actions">
+  <div id="actions">
     <%= f.submit class: 'btn btn-primary' %>
     <span id="editor_status"></span>
   </div>
@@ -18,6 +18,8 @@
 
 <!-- Initialize Quill editor -->
 <script type="text/javascript">
+  has_unsaved_changes = false;
+
   var quill = new Quill('#editor', {
     modules: {
       'toolbar': [
@@ -35,8 +37,19 @@
     theme: 'snow'
   });
 
+  function updateStatusClass() {
+    if (has_unsaved_changes && !($('#actions').hasClass('bg-warning'))) {
+      $('#actions').addClass('bg-warning');
+    }
+    if (!has_unsaved_changes && ($('#actions').hasClass('bg-warning'))) {
+      $('#actions').removeClass('bg-warning');
+    }
+  }
+
   quill.on('text-change', function(delta, oldDelta, source) {
     $('#editor_status').text('Modified');
+    has_unsaved_changes = true;
+    updateStatusClass();
   });
 
   $(document).on('turbolinks:load', function() {
@@ -47,10 +60,30 @@
 
     $('form').on("ajax:success", function (e, data, status, xhr) {
       $('#editor_status').text('Saved');
+      has_unsaved_changes = false;
+      updateStatusClass();
     }).on("ajax:error", function (e, xhr, status, error) {
       $('#editor_status').text('Error ' + status + ': ' + error);
     });
 
     $('#editor_status').text('Ready');
+  });
+
+  // prevent back button etc with usnaved changes
+  window.onbeforeunload = function(e) {
+    var dialogText = "Do you really want to leave without saving changes?";
+    if (has_unsaved_changes) {
+      e.returnValue = dialogText
+      return dialogText;
+    } else {
+      return;
+    }
+  };
+
+  // prevent turbolinks with unsaved changes
+  $(document).on('turbolinks:before-visit', function() {
+    if (has_unsaved_changes) {
+      return confirm('Do you really want to leave without saving changes?');
+    }
   });
 </script>
