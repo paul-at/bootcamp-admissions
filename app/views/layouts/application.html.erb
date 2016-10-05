@@ -21,11 +21,16 @@
             </a>
           </li>
           <li class="nav-item pull-xs-right">
-            <a class="nav-link" href="/klasses/">
-              <%= fa_icon 'cog' %>
-              Settings
-            </a>
+            <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: 'nav-link' %>
           </li>
+          <% if user_signed_in? && can?(:manage, Klass) %>
+            <li class="nav-item pull-xs-right">
+              <a class="nav-link" href="/klasses/">
+                <%= fa_icon 'cog' %>
+                Settings
+              </a>
+            </li>
+          <% end %>
        </ul>
       </div>
     </nav>
