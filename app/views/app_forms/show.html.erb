@@ -105,7 +105,7 @@
 
 <!-- Actions -->
 <div class="col-md-6"><div class="appformsection">
-  <h1 class="display-4"><%= @app_form.aasm_state.humanize %></h1>
+  <h1 class="display-4" id="application_state"><%= @app_form.aasm_state.humanize %></h1>
   <% unless @app_form.aasm.events.empty? %>
     <%= form_tag action: 'event' do %>
       <fieldset class="form-group">
@@ -133,7 +133,7 @@
         </td>
         <td>
           <% @app_form.klass.admission_committee_members.each do |voter| %>
-            <span class="<% if voter.user.id == current_user.id %>voter-current <% end %>tag tag-default" id="voter<%= voter.user.id %>"><%= voter.user.name %></span>
+            <span class="voter <% if voter.user.id == current_user.id %>voter-current <% end %>tag tag-default" id="voter<%= voter.user.id %>"><%= voter.user.name %></span>
           <% end %>
         </td>
       </tr>

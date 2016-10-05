@@ -6,13 +6,25 @@ refreshVotes = () ->
       current_voter = parseInt current_voter[0].id.substring(5)
     $('#screening-revoke').hide()
     $('#screening-vote').hide()
+
+    positive_votes = 0
+
     for vote in json
+      if vote.vote
+        positive_votes++
       c = if vote.vote then 'tag-success' else 'tag-danger'
       $('#voter' + vote.user_id).addClass c
       if vote.user_id == current_voter
         $('#screening-revoke').show()
     if $('#screening-revoke').is(':hidden')
       $('#screening-vote').show()
+
+    if $('#application_state').text() == 'Applied'
+      state_change_disabled = false
+      if positive_votes / $('.voter').length <= 0.5
+        state_change_disabled = true
+      $('#event_invite').prop('disabled', state_change_disabled)
+      $('#event_reject').prop('disabled', state_change_disabled)
 
 $(document).on "turbolinks:load", ->
   if $('#screening-vote').length > 0
