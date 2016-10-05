@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161003100030) do
+ActiveRecord::Schema.define(version: 20161005115237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20161003100030) do
     t.text     "answer"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["app_form_id", "question"], name: "index_answers_on_app_form_id_and_question", using: :btree
     t.index ["app_form_id"], name: "index_answers_on_app_form_id", using: :btree
   end
 
