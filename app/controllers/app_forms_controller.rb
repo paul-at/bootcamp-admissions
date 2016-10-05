@@ -111,7 +111,7 @@ class AppFormsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def app_form_params
-      params.require(:app_form).permit(:klass_id, :firstname, :lastname, :email, :country, :residence, :city, :gender, :dob, :referral, :aasm_state, :payment_tier_id, :interviewer_id)
+      params.require(:app_form).permit(:klass_id, :firstname, :lastname, :email, :country, :residence, :city, :residence_city, :gender, :dob, :referral, :aasm_state, :payment_tier_id, :interviewer_id)
     end
 
     def save_answers!
@@ -158,5 +158,6 @@ class AppFormsController < ApplicationController
     # Workaround to prevent validation errors due to required 'city' field added after testing began
     def city_workaround
       @app_form.city = 'N/A' unless @app_form.city
+      @app_form.residence_city = 'N/A' unless  @app_form.residence_city
     end
 end

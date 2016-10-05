@@ -110,6 +110,7 @@ class AppForm < ApplicationRecord
   validates :country, presence: true, length: { is: 2 }
   validates :residence, presence: true, length: { is: 2 }
   validates :city, presence: true
+  validates :residence_city, presence: true
   validates :gender, presence: true, length: { is: 1 }
   validates :dob, presence: true
 
