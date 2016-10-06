@@ -65,7 +65,7 @@
 
   <div class="field">
     <%= f.label :dob %>
-    <%= f.date_select :dob %>
+    <%= f.date_select :dob, start_year: Date.today.year-100, end_year: Date.today.year-14, class: 'form-control', disabled: 'true' %>
   </div>
 
   <div class="field">
