@@ -26,12 +26,12 @@ Admissions offer an API for submitting an application form. It is designed to be
 * `app_form[klass_id]` an integer representing Class id to apply for. Required.
 * `app_form[firstname]` and `app_form[lastname]` - applicant name. Required.
 * `app_form[email]` - applicant email. Required.
-* `app_form[country]` - applicant country of origin. Two-letter ISO code. Required.
-* `app_form[city]` - applicant's city and region of origin. A string. Required.
-* `app_form[residence]` - applicant current country of residence. Two-letter ISO code. Required.
-* `app_form[residence_city]` - applicant current city and region or address of residence. A string. Required.
-* `app_form[gender]` - a gender code. One uppercase character. Required.
-* `app_form[dob]` - date of birth in YYYY-MM-DD format. Required. Can be submitted as three individual fields:
+* `app_form[country]` - applicant country of origin. Two-letter ISO code.
+* `app_form[city]` - applicant's city and region of origin. A string.
+* `app_form[residence]` - applicant current country of residence. Two-letter ISO code.
+* `app_form[residence_city]` - applicant current city and region or address of residence. A string.
+* `app_form[gender]` - a gender code. One uppercase character.
+* `app_form[dob]` - date of birth in YYYY-MM-DD format. Can be submitted as three individual fields:
   * `app_form[dob(1i)]` - year of birth.
   * `app_form[dob(2i)]` - month of birth. An integer, January=1.
   * `app_form[dob(3i)]` - day of birth.

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161005120700) do
+ActiveRecord::Schema.define(version: 20161006145413) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 20161005120700) do
     t.string   "city"
     t.integer  "interviewer_id"
     t.string   "residence_city"
+    t.string   "phone"
     t.index ["aasm_state"], name: "index_app_forms_on_aasm_state", using: :btree
     t.index ["country"], name: "index_app_forms_on_country", using: :btree
     t.index ["email"], name: "index_app_forms_on_email", using: :btree

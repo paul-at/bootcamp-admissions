@@ -107,12 +107,12 @@ class AppForm < ApplicationRecord
   validates :firstname, presence: true
   validates :lastname, presence: true
   validates :email, presence: true
-  validates :country, presence: true, length: { is: 2 }
-  validates :residence, presence: true, length: { is: 2 }
-  validates :city, presence: true
-  validates :residence_city, presence: true
-  validates :gender, presence: true, length: { is: 1 }
-  validates :dob, presence: true
+  validates :country, length: { maximum: 2 }
+  validates :residence, length: { maximum: 2 }
+  #validates :city, presence: true
+  #validates :residence_city, presence: true
+  #validates :gender, presence: true, length: { is: 1 }
+  #validates :dob, presence: true
 
   def age
     now = Time.now.utc.to_date

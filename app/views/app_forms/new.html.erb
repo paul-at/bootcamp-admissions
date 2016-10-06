@@ -34,6 +34,11 @@
   </div>
 
   <div class="field">
+    <%= f.label :phone %>
+    <%= f.text_field :phone %>
+  </div>
+
+  <div class="field">
     <%= f.label :country %>
     <%= f.text_field :country %>
   </div>
@@ -69,14 +74,29 @@
   </div>
 
   <div class="field">
-    <%= label_tag 'app_form[answers[why_do_you_come]]', 'Why do you want to come to the bootcamp?' %>
-    <%= text_area_tag 'app_form[answers[why_do_you_come]]' %>
+    <%= label_tag 'app_form[uploads[cv]]', 'Resume' %>
+    <%= file_field_tag 'app_form[uploads[cv]]', class: 'form-control' %>
   </div>
 
   <div class="field">
-    <%= label_tag 'app_form[uploads[cv]]', 'CV' %>
-    <%= file_field_tag 'app_form[uploads[cv]]' %>
+    <%= label_tag 'app_form[uploads[peer_recommendation]]', 'Peer recommendation' %>
+    <%= file_field_tag 'app_form[uploads[peer_recommendation]]', class: 'form-control' %>
   </div>
+
+  <% [
+    '01 Startup pitch OR Problem to solve',
+    '02 What is the world going to be like in 30 years',
+    '03 Personal Growth summary OR Most significant accomplishment to date',
+    '04 Why do you want to come to bootcamp',
+    '05 Anything else interesting or unique about yourself',
+  ].each do |essay|
+    element_name = 'app_form[answers[' + essay.gsub(' ', '_') + ']]'
+  %>
+    <div class="field">
+      <%= label_tag element_name, essay %>
+      <%= text_area_tag element_name, nil, class: 'form-control' %>
+    </div>
+  <% end %>
 
   <div class="actions">
     <%= f.submit %>

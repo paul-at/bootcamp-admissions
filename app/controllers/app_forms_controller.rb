@@ -1,7 +1,5 @@
 class AppFormsController < ApplicationController
   before_action :set_app_form, only: [:show, :update, :event, :payment, :comment]
-  # TODO: remove once testing is over
-  before_action :city_workaround, only: [:update, :event, :payment]
 
   # Allow to file application from third-party website
   allow_cors :create, :new
@@ -111,7 +109,7 @@ class AppFormsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def app_form_params
-      params.require(:app_form).permit(:klass_id, :firstname, :lastname, :email, :country, :residence, :city, :residence_city, :gender, :dob, :referral, :aasm_state, :payment_tier_id, :interviewer_id)
+      params.require(:app_form).permit(:klass_id, :firstname, :lastname, :email, :phone, :country, :residence, :city, :residence_city, :gender, :dob, :referral, :aasm_state, :payment_tier_id, :interviewer_id)
     end
 
     def save_answers!
@@ -153,11 +151,5 @@ class AppFormsController < ApplicationController
           user: current_user,
         })
       end
-    end
-
-    # Workaround to prevent validation errors due to required 'city' field added after testing began
-    def city_workaround
-      @app_form.city = 'N/A' unless @app_form.city
-      @app_form.residence_city = 'N/A' unless  @app_form.residence_city
     end
 end
