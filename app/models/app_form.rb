@@ -5,7 +5,7 @@ class AppForm < ApplicationRecord
   belongs_to :payment_tier
   belongs_to :interviewer, class_name: 'User'
   has_many :answers, -> { order(:question) }, dependent: :destroy
-  has_many :attachments
+  has_many :attachments, dependent: :destroy
   has_many :histories, dependent: :destroy
   has_many :votes, dependent: :destroy
   has_many :scores, dependent: :destroy
