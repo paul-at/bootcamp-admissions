@@ -26,6 +26,7 @@ Admissions offer an API for submitting an application form. It is designed to be
 * `app_form[klass_id]` an integer representing Class id to apply for. Required.
 * `app_form[firstname]` and `app_form[lastname]` - applicant name. Required.
 * `app_form[email]` - applicant email. Required.
+* `app_form[phone]` - applicant phone.
 * `app_form[country]` - applicant country of origin. Two-letter ISO code.
 * `app_form[city]` - applicant's city and region of origin. A string.
 * `app_form[residence]` - applicant current country of residence. Two-letter ISO code.
