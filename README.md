@@ -1,5 +1,7 @@
 # README
 
+This document outlines server setup and configuration. Please refer to the [User's Guide](doc/USAGE.md) for usage instructions.
+
 ## Installation and prerequisites
 
 ### System dependencies

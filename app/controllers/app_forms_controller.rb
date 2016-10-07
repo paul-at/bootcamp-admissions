@@ -84,7 +84,8 @@ class AppFormsController < ApplicationController
   end
 
   def payment
-    @app_form.paid = params[:paid].to_f
+    @app_form.paid = 0 unless @app_form.paid
+    @app_form.paid += params[:paid].to_f
     @app_form.payment if @app_form.may_payment?
     @app_form.save!
     log_change

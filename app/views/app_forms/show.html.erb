@@ -223,10 +223,10 @@
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">$</div>
-        <%= number_field_tag 'paid', @app_form.paid, step: 'any', min: 0, class: 'form-control' %>
+        <%= number_field_tag 'paid', 0, step: 'any', min: 0, class: 'form-control' %>
       </div>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Add payment</button>
   <% end %>
 
   <table class="table table-sm table-striped"><tbody>
@@ -238,6 +238,12 @@
       </tr>
     <% end %>
   <% end %>
+  <tr>
+    <td colspan="2"><strong>
+      <%= number_to_currency(@app_form.paid) %>
+      total
+    </strong></td>
+  </tr>
   </tbody></table>
 </div>
 </div>
