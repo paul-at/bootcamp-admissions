@@ -25,8 +25,6 @@ gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-# Mail delivery
-gem 'sparkpost_rails'
 
 # UI look and feel
 gem 'bootstrap', '~> 4.0.0.alpha4'
@@ -41,6 +39,8 @@ gem 'jquery-tablesorter'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+# New Relic monitoring
+gem 'newrelic_rpm'
 
 # State machine
 gem 'aasm'
