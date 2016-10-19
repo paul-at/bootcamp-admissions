@@ -1,4 +1,4 @@
-<h2>
+<h2 <% if @app_form.deleted? %>style="text-decoration:line-through"<% end %>>
   <%= @app_form.firstname + ' ' + @app_form.lastname %>
   <small class="text-muted"><%= @app_form.klass.full_title %></small>
 </h2>
@@ -111,24 +111,40 @@
 
   <p>Created on <%= @app_form.created_at.to_s(:long) %>.<br>
   Last changed <a href="#history" data-turbolinks="false"><%= time_ago_in_words @app_form.updated_at %> ago</a>.</p>
+
+  <% if can?(:delete, @app_form) && !@app_form.deleted? %>
+    <p>
+      <%= link_to fa_icon('trash') + ' Delete', delete_app_form_path(@app_form), method: :post %>
+    </p>
+  <% end %>
 </div></div>
 
 <!-- Actions -->
 <div class="col-md-6"><div class="appformsection">
-  <h1 class="display-4" id="application_state"><%= @app_form.aasm_state.humanize %></h1>
-  <% unless @app_form.aasm.events.empty? %>
-    <%= form_tag action: 'event' do %>
-      <fieldset class="form-group">
-      <% @app_form.aasm.events(:permitted => true).map(&:name).each do |event| %>
-        <div class="form-check">
-          <label class="form-check-label">
-            <%= radio_button_tag 'event', event, nil, class: 'form-radio-input' %>
-            <%= event_name event %>
-          </label>
-        </div>
+  <% unless @app_form.deleted? %>
+    <h1 class="display-4" id="application_state"><%= @app_form.aasm_state.humanize %></h1>
+    <% unless @app_form.aasm.events.empty? %>
+      <%= form_tag action: 'event' do %>
+        <fieldset class="form-group">
+        <% @app_form.aasm.events(:permitted => true).map(&:name).each do |event| %>
+          <div class="form-check">
+            <label class="form-check-label">
+              <%= radio_button_tag 'event', event, nil, class: 'form-radio-input' %>
+              <%= event_name event %>
+            </label>
+          </div>
+        <% end %>
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Submit</button>
       <% end %>
-      </fieldset>
-      <button type="submit" class="btn btn-primary">Submit</button>
+    <% end %>
+  <% else %>
+    <h1 class="display-4">Deleted</h1>
+    <p>(Was <%= @app_form.aasm_state.humanize %>.)</p>
+    <% if can?(:delete, @app_form) %>
+      <p>
+        <%= link_to 'Restore', restore_app_form_path(@app_form), method: :post %>
+      </p>
     <% end %>
   <% end %>
 </div></div>

@@ -16,10 +16,17 @@ Rails.application.routes.draw do
       end
     end
     resources :interview_notes
+
+    collection do
+      get 'deleted', to: 'app_forms#deleted'
+    end
+
     member do
       post 'event'
       post 'payment'
       post 'comment'
+      post 'delete'
+      post 'restore'
     end
   end
 

@@ -1,6 +1,8 @@
 <h2>
-  <%= params[:search].humanize %>
-  <small class="text-muted"><%= Klass.find_by_id(params[:klass_id].to_i).full_title %></small>
+  <%= @title %>
+  <% if params[:klass_id] %>
+    <small class="text-muted"><%= Klass.find_by_id(params[:klass_id].to_i).full_title %></small>
+  <% end %>
 </h2>
 
 <table class="table table-sm tablesorter" id="applicationList">

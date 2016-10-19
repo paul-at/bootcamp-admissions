@@ -1,5 +1,5 @@
 class AppFormsController < ApplicationController
-  before_action :set_app_form, only: [:show, :update, :event, :payment, :comment]
+  before_action :set_app_form, only: [:show, :update, :event, :payment, :comment, :delete, :restore]
 
   # Allow to file application from third-party website
   allow_cors :create, :new
@@ -9,7 +9,15 @@ class AppFormsController < ApplicationController
     klass = Klass.find(params[:klass_id])
     authorize! :read, klass
 
+    @title = params[:search].humanize
     @app_forms = klass.searches[params[:search].to_sym]
+  end
+
+  # GET /app_forms/deleted
+  def deleted
+    @title = 'Deleted Applications'
+    @app_forms = AppForm.where(deleted:true).order(updated_at: :asc)
+    render 'index'
   end
 
   # GET /app_forms/1
@@ -84,6 +92,8 @@ class AppFormsController < ApplicationController
   end
 
   def payment
+    authorize! :read, @app_form.klass
+
     @app_form.paid = 0 unless @app_form.paid
     @app_form.paid += params[:paid].to_f
     @app_form.payment if @app_form.may_payment?
@@ -99,6 +109,14 @@ class AppFormsController < ApplicationController
       user: current_user
     })
     redirect_to @app_form, notice: 'Note recorded.'
+  end
+
+  def delete
+    toggle_deleted(true)
+  end
+
+  def restore
+    toggle_deleted(false)
   end
 
   private
@@ -152,5 +170,21 @@ class AppFormsController < ApplicationController
           user: current_user,
         })
       end
+    end
+
+    def toggle_deleted(deleted)
+      authorize! :delete, @app_form
+
+      @app_form.deleted = deleted
+      @app_form.save!
+      log_change
+
+      if deleted
+        message = 'Application Form deleted.'
+      else
+        message = 'Application Form restored.'
+      end
+
+      redirect_to @app_form, notice: message
     end
 end

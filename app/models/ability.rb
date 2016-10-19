@@ -35,7 +35,7 @@ class Ability
         klass.admission_committee_members.where(user: user).any?
       end
     end
-    can :manage, AppForm do |app_form|
+    can [ :read, :score, :update ], AppForm do |app_form|
       app_form.klass.admission_committee_members.where(user: user).any?
     end
   end

@@ -13,7 +13,7 @@ class Klass < ApplicationRecord
     klass_searches = Hash.new
     AppForm.searches.
       merge(AppForm.dynamic_screening_searches(admission_committee_members.map(&:user))).
-      each { |s,sc| klass_searches[s] = sc.where(klass: self) }
+      each { |s,sc| klass_searches[s] = sc.where(klass: self, deleted: false) }
     return klass_searches
   end
 

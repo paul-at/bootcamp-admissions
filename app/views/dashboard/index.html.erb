@@ -5,3 +5,7 @@
 <% else %>
   <%= link_to 'Show Active Classes', root_path %>
 <% end %>
+
+<% if can? :delete, AppForm %>
+  | <%= link_to 'Show Deleted Applications', deleted_app_forms_path %>
+<% end %>
