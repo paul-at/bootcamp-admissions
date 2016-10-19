@@ -6,6 +6,9 @@ class DashboardController < ApplicationController
       klasses = Klass.archived
     end
 
-    @klasses = klasses.select{ |klass| can? :read, klass }
+    @klasses = klasses.
+      includes(:subject).
+      order('subjects.title', 'klasses.title').
+      select{ |klass| can? :read, klass }
   end
 end
