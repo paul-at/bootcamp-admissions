@@ -16,6 +16,8 @@ Rails.application.routes.draw do
       end
     end
     resources :interview_notes
+    resources :attachments
+    resources :answers
 
     collection do
       get 'deleted', to: 'app_forms#deleted'

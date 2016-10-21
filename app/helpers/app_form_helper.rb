@@ -9,4 +9,13 @@ module AppFormHelper
   rescue I18n::MissingTranslationData => e
     event.to_s.humanize
   end
+
+  def uri?(string)
+    uri = URI.parse(string)
+    %w( http https ).include?(uri.scheme)
+  rescue URI::BadURIError
+    false
+  rescue URI::InvalidURIError
+    false
+  end
 end

@@ -275,8 +275,20 @@
         <td><%= attachment.field.humanize %></td>
         <td><%= link_to attachment.original_file_name, attachment.upload.url, target: '_blank' %></td>
         <% if attachment.user %>
-          <td>by <%= attachment.user.name %> on <%= attachment.created_at %></td>
+          <td>by <%= attachment.user.name %> on <%= attachment.created_at.to_formatted_s(:short) %></td>
         <% end %>
+      </tr>
+    <% end %>
+    <%= form_for([@app_form, Attachment.new], html: { multipart: true }) do |f| %>
+      <tr>
+        <td>
+          <%= f.text_field :field, class: 'form-control form-control-sm', placeholder: 'Upload name' %>
+        </td>
+        <td>
+          <%= fa_icon 'upload' %>
+          <%= f.file_field :upload %>
+          <%= f.submit class: 'btn btn-secondary btn-sm' %>
+        </td>
       </tr>
     <% end %>
   </tbody>
@@ -286,13 +298,14 @@
   <% @app_form.answers.each do |answer| %>
     <dt><%= answer.question.humanize %></dt>
     <dd>
-      <% if answer.answer[0..6] == 'http://' %>
-        <%= link_to answer.answer, answer.answer, target: '_blank' %>
+      <% if uri?(answer.answer.strip) %>
+        <%= link_to answer.answer, answer.answer.strip, target: '_blank' %>
       <% else %>
         <%= answer.answer %>
       <% end %>
     </dd>
   <% end %>
+    <dt><%= link_to fa_icon('plus') + ' Insert Answer', new_app_form_answer_path(@app_form) %></dt>
   </dl>
 
 </div>

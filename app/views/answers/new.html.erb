@@ -1,0 +1,35 @@
+<h2>
+  <%= @app_form.firstname + ' ' + @app_form.lastname %>
+  <small class="text-muted"><%= @app_form.klass.full_title %></small>
+</h2>
+
+<h3>Insert a Question Answer</h3>
+
+<% unless @answer.errors.messages.empty? %>
+  <div class="alert alert-danger" role="alert">
+    <strong>Errors in the form:</strong>
+    <ul>
+      <% @answer.errors.messages.each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_for [@app_form, @answer], url: { action: 'create' } do |f| %>
+  <div class="form-group row">
+    <%= f.label :question, class: 'col-md-2 col-form-label' %>
+    <div class="col-md-10">
+      <%= f.text_field :question, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group row">
+    <%= f.label :answer, class: 'col-md-2 col-form-label' %>
+    <div class="col-md-10">
+      <%= f.text_area :answer, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group row">
+    <%= f.submit class: 'btn btn-primary' %>
+  </div>
+<% end %>
