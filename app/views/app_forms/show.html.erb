@@ -287,7 +287,7 @@
         <td>
           <%= fa_icon 'upload' %>
           <%= f.file_field :upload %>
-          <%= f.submit class: 'btn btn-secondary btn-sm' %>
+          <%= f.submit 'Attach File', class: 'btn btn-secondary btn-sm' %>
         </td>
       </tr>
     <% end %>
@@ -305,8 +305,12 @@
       <% end %>
     </dd>
   <% end %>
-    <dt><%= link_to fa_icon('plus') + ' Insert Answer', new_app_form_answer_path(@app_form) %></dt>
   </dl>
+
+  <nav class="nav nav-inline">
+    <%= link_to fa_icon('edit') + ' Edit Answers', app_form_answers_path(@app_form), class: 'nav-link' %>
+    <%= link_to fa_icon('plus') + ' Insert Answer', new_app_form_answer_path(@app_form), class: 'nav-link' %>
+  </nav>
 
 </div>
 </div>

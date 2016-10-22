@@ -1,0 +1,20 @@
+<h2>
+  <%= @app_form.firstname + ' ' + @app_form.lastname %>
+  <small class="text-muted"><%= @app_form.klass.full_title %></small>
+</h2>
+
+<h3>Answers</h3>
+
+<%= form_tag app_form_answers_path(@app_form), method: 'PATCH' do %>
+  <% @app_form.answers.each do |answer| %>
+    <div class="form-group row">
+      <%= label_tag "answers[#{answer.id}]", answer.question.humanize, class: 'col-md-2 col-form-label' %>
+      <div class="col-md-10">
+        <%= text_area_tag "answers[#{answer.id}]", answer.answer, class: 'form-control' %>
+      </div>
+    </div>
+  <% end %>
+  <div class="form-group row">
+    <%= submit_tag 'Update Answers', class: 'btn btn-primary' %>
+  </div>
+<% end %>

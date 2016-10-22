@@ -17,4 +17,13 @@ class AnswersController < ApplicationController
       render :new
     end
   end
+
+  def update
+    answer_ids = @app_form.answers.collect(&:id).map{|id| id.to_s.to_sym }
+    answers = params.require(:answers).permit(answer_ids)
+    answers.each do |id, answer|
+      Answer.find(id).update(answer: answer)
+    end
+    redirect_to @app_form, notice: 'Answers updated.'
+  end
 end

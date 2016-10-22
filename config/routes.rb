@@ -17,7 +17,11 @@ Rails.application.routes.draw do
     end
     resources :interview_notes
     resources :attachments
-    resources :answers
+    resources :answers do
+      collection do
+        patch '/', to: 'answers#update'
+      end
+    end
 
     collection do
       get 'deleted', to: 'app_forms#deleted'
