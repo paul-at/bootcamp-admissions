@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161019093552) do
+ActiveRecord::Schema.define(version: 20161026013805) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,14 @@ ActiveRecord::Schema.define(version: 20161019093552) do
     t.datetime "updated_at",          null: false
     t.index ["app_form_id"], name: "index_attachments_on_app_form_id", using: :btree
     t.index ["user_id"], name: "index_attachments_on_user_id", using: :btree
+  end
+
+  create_table "email_templates", force: :cascade do |t|
+    t.string   "title"
+    t.string   "subject"
+    t.text     "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "histories", force: :cascade do |t|

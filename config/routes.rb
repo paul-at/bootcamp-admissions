@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   resources :klasses
   resources :subjects
   resources :payment_tiers
+  resources :email_templates
   get 'administrators', to: 'administrators#index'
   post 'administrators/(:id)', to: 'administrators#update'
   

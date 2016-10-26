@@ -1,0 +1,69 @@
+<link href="https://cdn.quilljs.com/1.0.5/quill.snow.css" rel="stylesheet">
+
+<%= form_for(email_template) do |f| %>
+  <% if email_template.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(email_template.errors.count, "error") %> prohibited this email_template from being saved:</h2>
+
+      <ul>
+      <% email_template.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :title %>
+    <%= f.text_field :title, class: 'form-control' %>
+    <small class="form-text text-muted">Name of this E-mail Template for internal reference.</small>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :subject %>
+    <%= f.text_field :subject, class: 'form-control' %>
+    <small class="form-text text-muted">Subject of the E-mail.</small>
+  </div>
+
+  <div class="form-group">
+    <%= f.hidden_field :body %>
+    <%= f.label :body %>
+    <div id="editor" style="height:35em">
+      <%= email_template.body ? email_template.body.html_safe : '' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+
+<!-- Include the Quill library -->
+<script src="https://cdn.quilljs.com/1.0.5/quill.js"></script>
+
+<!-- Initialize Quill editor -->
+<script type="text/javascript">
+  var quill = new Quill('#editor', {
+    modules: {
+      'toolbar': [
+        [{ 'font': [] }, { 'size': [] }],
+        [ 'bold', 'italic', 'underline', 'strike' ],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'script': 'super' }, { 'script': 'sub' }],
+        [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block' ],
+        [{ 'list': 'ordered' }, { 'list': 'bullet'}, { 'indent': '-1' }, { 'indent': '+1' }],
+        [ 'direction', { 'align': [] }],
+        [ 'link', 'image', 'video', 'formula' ],
+        [ 'clean' ]
+      ],
+    },
+    theme: 'snow'
+  });
+
+  $(document).on('turbolinks:load', function() {
+    $('form').submit(function() {
+      $('#email_template_body').val($('#editor .ql-editor').html());
+    });
+  });
+</script>

@@ -1,0 +1,17 @@
+<h2>
+  <%= @email_template.title %>
+</h2>
+
+<div class="card"><div class="card-block">
+<p class="card-text">
+  <strong>Subject:</strong>
+  <%= @email_template.subject %>
+</p>
+
+<p class="card-text">
+  <%= @email_template.body.html_safe %>
+</p>
+</div></div>
+
+<%= link_to 'Edit', edit_email_template_path(@email_template), data: { turbolinks: false } %> |
+<%= link_to 'Back', email_templates_path %>
