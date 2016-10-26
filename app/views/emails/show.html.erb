@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Subject:</strong>
+  <%= @email.subject %>
+</p>
+
+<p>
+  <strong>Body:</strong>
+  <%= @email.body %>
+</p>
+
+<p>
+  <strong>App form:</strong>
+  <%= @email.app_form %>
+</p>
+
+<p>
+  <strong>Copy team:</strong>
+  <%= @email.copy_team %>
+</p>
+
+<p>
+  <strong>Sent:</strong>
+  <%= @email.sent %>
+</p>
+
+<p>
+  <strong>Sent to:</strong>
+  <%= @email.sent_to %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @email.user %>
+</p>
+
+<%= link_to 'Edit', edit_email_path(@email) %> |
+<%= link_to 'Back', emails_path %>

@@ -5,6 +5,12 @@ GIT
     prev-next (0.1.0)
 
 GIT
+  remote: git://github.com/paul-at/quill-rails5.git
+  revision: 059ca35ab2aa9c6f312a1fdc0ed0c2e2378ae9bc
+  specs:
+    quill-rails5 (1.1.3)
+
+GIT
   remote: git://github.com/world-flags/world-flags.git
   revision: b6ea11dbec91d1ec07cc6808215a05d182e67d65
   specs:
@@ -244,6 +250,7 @@ DEPENDENCIES
   pg
   prev-next!
   puma (~> 3.0)
+  quill-rails5!
   railroady
   rails (~> 5.0.0, >= 5.0.0.1)
   rails-controller-testing

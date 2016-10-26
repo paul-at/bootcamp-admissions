@@ -15,7 +15,7 @@
 
   <div class="field">
     Class
-    <%= f.select :klass_id, options_for_select(Klass.active.collect{ |klass| [ klass.full_title, klass.id ] }), {}, class: 'form-control' %>
+    <%= f.select :klass_id, options_for_select(Klass.active_for_select), {}, class: 'form-control' %>
   </div>
 
   <div class="field">

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161026013805) do
+ActiveRecord::Schema.define(version: 20161026023538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,20 @@ ActiveRecord::Schema.define(version: 20161026013805) do
     t.text     "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "emails", force: :cascade do |t|
+    t.string   "subject"
+    t.text     "body"
+    t.integer  "app_form_id",                 null: false
+    t.boolean  "copy_team",   default: false, null: false
+    t.boolean  "sent",        default: false, null: false
+    t.string   "sent_to"
+    t.integer  "user_id"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.index ["app_form_id"], name: "index_emails_on_app_form_id", using: :btree
+    t.index ["user_id"], name: "index_emails_on_user_id", using: :btree
   end
 
   create_table "histories", force: :cascade do |t|
@@ -187,6 +201,8 @@ ActiveRecord::Schema.define(version: 20161026013805) do
   add_foreign_key "app_forms", "users", column: "interviewer_id"
   add_foreign_key "attachments", "app_forms"
   add_foreign_key "attachments", "users"
+  add_foreign_key "emails", "app_forms"
+  add_foreign_key "emails", "users"
   add_foreign_key "histories", "app_forms"
   add_foreign_key "histories", "users"
   add_foreign_key "interview_notes", "app_forms"

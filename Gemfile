@@ -30,7 +30,10 @@ gem 'jbuilder', '~> 2.5'
 gem 'bootstrap', '~> 4.0.0.alpha4'
 # World flags for display
 gem 'world-flags', github: 'world-flags/world-flags'
+# Pagination
 gem 'prev-next', git: 'git://github.com/paul-at/prev-next'
+# Quill rich-tet editor
+gem 'quill-rails5', github: 'paul-at/quill-rails5'
 # Country codes
 gem 'countries'
 # Icons

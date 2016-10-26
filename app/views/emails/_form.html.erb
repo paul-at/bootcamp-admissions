@@ -1,0 +1,45 @@
+<%= form_for(email) do |f| %>
+  <% if email.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(email.errors.count, "error") %> prohibited this email from being saved:</h2>
+
+      <ul>
+      <% email.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <label>To the applicants for</label>
+    <%= select_tag(:klass_id, options_for_select(Klass.active_for_select), class: 'form-control') %>
+  </div>
+
+  <div class="form-group">
+    <label>who are currently</label>
+    <%= select_tag(:state, options_for_select(AppForm.aasm.states.collect{|state| [state.name.to_s.humanize, state.name] }), class: 'form-control') %>
+  </div>
+
+  <div class="form-group">
+    <%= f.check_box :copy_team %>
+    <%= f.label :copy_team %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :subject %>
+    <%= f.text_field :subject, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :body %>
+    <%= quill({}, style: 'height:35em') do %>
+      <%= email.body ? email.body.html_safe: '' %>
+    <% end %>
+    <%= quill_field f, :body %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit class: 'btn btn-primary' %>
+  </div>
+<% end %>

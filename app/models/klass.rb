@@ -9,6 +9,10 @@ class Klass < ApplicationRecord
   scope :active, -> { where(archived: false) }
   scope :archived, -> { where(archived: true) }
 
+  def self.active_for_select
+    self.active.collect{ |klass| [ klass.full_title, klass.id ] }
+  end
+
   def searches
     klass_searches = Hash.new
     AppForm.searches.
