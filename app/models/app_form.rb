@@ -10,6 +10,7 @@ class AppForm < ApplicationRecord
   has_many :votes, dependent: :destroy
   has_many :scores, dependent: :destroy
   has_many :interview_notes, dependent: :destroy
+  has_many :emails, dependent: :destroy
 
   attr_accessor :log_user
 
@@ -146,6 +147,10 @@ class AppForm < ApplicationRecord
 
   def full_name
     "#{firstname} #{lastname}"
+  end
+
+  def full_email
+    "\"#{full_name}\" <#{email}>"
   end
 
   def can_change_interviewer?

@@ -264,6 +264,7 @@
 </div>
 </div>
 
+<!-- Answers and Files -->
 <div class="col-md-12">
 <div class="appformsection">
   <h4>Answers and Files</h4>
@@ -358,7 +359,7 @@
 </div></div>
 
 
-
+<!-- Application History -->
 <div class="col-md-12">
 <div class="appformsection">
   <h4><a name="history">Application History</a></h4>
@@ -377,23 +378,34 @@
       <td colspan="3">Applied</td>
       <td colspan="2"><em><%= time_ago_in_words @app_form.created_at %> ago</em></td>
     </tr>
-    <% @app_form.histories.each do |history| %>
+    <% @history.each do |history| %>
       <tr>
-        <% if history.from || history.to %>
-          <td>
-            <%= history.text %>
-          </td>
-          <td>
-            <%= history.from %>
-          </td>
-          <td>
-            <%= history.to %>
+        <% if history.is_a?(History) %>
+          <% if history.from || history.to %>
+            <td>
+              <%= history.text %>
+            </td>
+            <td>
+              <%= history.from %>
+            </td>
+            <td>
+              <%= history.to %>
+            </td>
+          <% else %>
+            <td colspan="3">
+              <div class="card card-block">
+                <%= simple_format history.text, class: 'card-text' %>
+              </div>
+            </td>
+          <% end %>
+        <% elsif history.is_a?(Email) %>
+          <td colspan="3">
+            "<%= link_to history.subject, history %>"
+            E-mail <%= history.sent ? 'Sent' : 'Queued' %>
           </td>
         <% else %>
           <td colspan="3">
-            <div class="card card-block">
-              <%= simple_format history.text, class: 'card-text' %>
-            </div>
+            Unsupported History Object <%= history %>
           </td>
         <% end %>
         <td>

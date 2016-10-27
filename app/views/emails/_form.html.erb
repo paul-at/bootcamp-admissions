@@ -11,6 +11,7 @@
     </div>
   <% end %>
 
+<% unless @app_forms %>
   <div class="form-group">
     <label>To the applicants for</label>
     <%= select_tag(:klass_id, options_for_select(Klass.active_for_select), class: 'form-control') %>
@@ -20,11 +21,33 @@
     <label>who are currently</label>
     <%= select_tag(:state, options_for_select(AppForm.aasm.states.collect{|state| [state.name.to_s.humanize, state.name] }), class: 'form-control') %>
   </div>
-
+<% else %>
   <div class="form-group">
-    <%= f.check_box :copy_team %>
-    <%= f.label :copy_team %>
+    <label>
+      To:
+      <small>
+        (applicants who are currently <%= params[:state].humanize(capitalize: false) %> to the <%= Klass.find(params[:klass_id]).full_title %>)
+      </small>
+    </label>
+    <% @app_forms.each do |app_form| %>
+      <div class="form-check">
+        <label class="form-check-label">
+          <%= check_box_tag('app_form_ids[]', app_form.id, true, class: 'form-check-input') %>
+          <%= app_form.full_email %>
+        </label>
+        <%= link_to fa_icon('external-link-square'), app_form, target: '_blank' %>
+      </div>
+    <% end %>
   </div>
+  
+  <div class="form-group">
+    <%= f.label :copy_team, 'Bcc:' %>
+    <div class="form-check"><label class="form-check-label">
+      <%= f.check_box :copy_team, class: 'form-check-input' %>
+      Admissions team
+    </label></div>
+  </div>
+<% end %>
 
   <div class="form-group">
     <%= f.label :subject %>
@@ -39,7 +62,11 @@
     <%= quill_field f, :body %>
   </div>
 
-  <div class="actions">
-    <%= f.submit class: 'btn btn-primary' %>
+  <div class="form-group">
+    <% if @app_forms %>
+      <%= f.submit 'Send E-mails', class: 'btn btn-primary' %>
+    <% else %>
+      <%= f.submit 'Preview', class: 'btn btn-primary' %>
+    <% end %>
   </div>
 <% end %>

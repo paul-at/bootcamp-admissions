@@ -1,0 +1,35 @@
+<h1>E-mail Queue</h1>
+
+<p>This page displays e-mails, queued by the admissions system that were not delivered yet.</p>
+
+<p>If the queue does not decrease over several minutes, it may indicate a server issue with sending emails.</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Subject</th>
+      <th>Application</th>
+      <th>Copy team</th>
+      <th>Queued</th>
+      <th>By</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @emails.each do |email| %>
+      <tr>
+        <td><%= link_to email.subject, email %></td>
+        <td><%= link_to email.app_form.full_name, email.app_form %> (<%= email.app_form.klass.full_title %>)</td>
+        <td><%= email.copy_team %></td>
+        <td><%= time_ago_in_words email.created_at %> ago</td>
+        <% if email.user %>
+          <td><%= email.user.name %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Email', new_email_path, data: { turbolinks: false } %>

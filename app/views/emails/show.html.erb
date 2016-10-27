@@ -1,4 +1,40 @@
-<p id="notice"><%= notice %></p>
+<p>
+  <strong>To:</strong>
+  <% if @email.sent %>
+    <%= @email.sent_to %>
+  <% else %>
+    <%= @email.app_form.full_email %>
+  <% end %>
+</p>
+
+<% if @email.copy_team %>
+  <p>
+    <strong>Bcc:</strong>
+    Admissions team
+  </p>
+<% end %>
+
+<p>
+  <strong>Re:</strong>
+  <%= link_to 'An Application', @email.app_form %>
+  to the <%= @email.app_form.klass.full_title %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <% if @email.sent %>
+    <%= @email.updated_at %>
+  <% else %>
+    Queued
+  <% end %>
+</p>
+
+<% if @email.user %>
+  <p>
+    <strong>By:</strong>
+    <%= @email.user.name %>
+  </p>
+<% end %>
 
 <p>
   <strong>Subject:</strong>
@@ -6,33 +42,7 @@
 </p>
 
 <p>
-  <strong>Body:</strong>
-  <%= @email.body %>
-</p>
-
-<p>
-  <strong>App form:</strong>
-  <%= @email.app_form %>
-</p>
-
-<p>
-  <strong>Copy team:</strong>
-  <%= @email.copy_team %>
-</p>
-
-<p>
-  <strong>Sent:</strong>
-  <%= @email.sent %>
-</p>
-
-<p>
-  <strong>Sent to:</strong>
-  <%= @email.sent_to %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @email.user %>
+  <%= @email.body.html_safe %>
 </p>
 
 <%= link_to 'Edit', edit_email_path(@email) %> |

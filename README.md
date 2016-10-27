@@ -20,7 +20,30 @@ Set following environment variables for production:
 * `AWS_REGION`
 * `CORS_DOMAINS` - comma-separated list of domain names (without protocol and trailing slash) that will be allowed to create applications using AJAX. For example: `a.com,b.com`.
 
+These are the only required settings. Optionally:
+
 Set `ALLOW_FAKER` environment variable to enable fake data generator at /setup/.
+
+To deliver emails, configure SMTP settings from Rails console.
+
+```ruby
+Setting.smtp = {address: 'smtp.gmail.com', port:587, enable_starttls_auto:true, user_name: 'noreply@domain.com', password: 'noreply'}
+Setting.mail_options = {from: 'noreply@domain.com'}
+```
+
+### Running
+
+Start the web server:
+
+```bash
+rails server
+```
+
+Optionally start email delivery process:
+
+```bash
+bundle exec rake jobs:work
+```
 
 ## Application Form API
 

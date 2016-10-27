@@ -27,6 +27,9 @@ class AppFormsController < ApplicationController
     if params[:search]
       @prevnext = Prev::Next.index(@app_form.klass.searches[params[:search].to_sym])
     end
+
+    @history = @app_form.histories + @app_form.emails
+    @history = @history.sort_by(&:created_at)
   end
 
   # GET /app_forms/new

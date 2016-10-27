@@ -50,6 +50,8 @@ gem 'aasm'
 # Uploads store
 gem 'paperclip'
 gem 'aws-sdk', '~> 2.3'
+# Settings store
+gem "rails-settings-cached"
 # Generate fake data for testing
 gem 'faker'
 # Authentication

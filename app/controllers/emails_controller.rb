@@ -3,7 +3,7 @@ class EmailsController < ApplicationController
 
   # GET /emails
   def index
-    @emails = Email.all
+    @emails = Email.where(sent: false)
   end
 
   # GET /emails/1
@@ -19,20 +19,25 @@ class EmailsController < ApplicationController
   def create
     @email = Email.new(email_params)
 
-    respond_to do |format|
-      if @email.save
-        format.html { redirect_to @email, notice: 'Email was successfully queued for delivery.' }
-        format.json { render :show, status: :created, location: @email }
-      else
-        format.html { render :new }
-        format.json { render json: @email.errors, status: :unprocessable_entity }
+    if params[:klass_id] && params[:state]  # Step 2 - pick recipients
+      @app_forms = AppForm.where(klass_id: params[:klass_id], aasm_state: params[:state])
+    elsif params[:app_form_ids]             # Step 3 - send emails
+      @app_forms = AppForm.find(params[:app_form_ids])
+      if @email.valid?
+        @app_forms.each do |app_form|
+          Email.create!(email_params.merge(app_form: app_form, user: current_user))
+        end
+        redirect_to emails_path, notice: 'E-mails were successfully queued for delivery.'
+        return
       end
     end
+
+    render :new
   end
 
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def email_params
-      params.require(:email).permit(:subject, :body, :app_form_id, :copy_team)
+      params.require(:email).permit(:subject, :body, :copy_team)
     end
 end

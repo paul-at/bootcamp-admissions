@@ -1,4 +1,8 @@
-<h1>Send Email</h1>
+<% unless @app_forms %>
+  <h1>Compose E-mail</h1>
+<% else %>
+  <h1>Preview E-mail</h1>
+<% end %>
 
 <%= render 'form', email: @email %>
 

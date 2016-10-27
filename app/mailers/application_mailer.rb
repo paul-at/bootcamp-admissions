@@ -1,4 +1,7 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'from@example.com'
   layout 'mailer'
+
+  def rendered_email(to, subject, body)
+    mail(to: to, body: body, content_type: 'text/html', subject: subject)
+  end
 end
