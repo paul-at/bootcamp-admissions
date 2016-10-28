@@ -4,6 +4,7 @@ class Klass < ApplicationRecord
   has_many :app_forms
   has_many :admission_committee_members, dependent: :destroy
   has_many :email_rules, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   validates :title, presence: true
 

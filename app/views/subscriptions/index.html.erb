@@ -1,0 +1,12 @@
+<h1>Subscriptions</h1>
+
+<p>Choose, for which Classes you would like to receive notifications. Only E-mails and Templates with "Copy Team" option enabled will be sent. The notifications will be delivered to <%= current_user.email %>.</p>
+
+<%= form_tag action: :create do %>
+  <h2>Active Classes</h2>
+  <%= render partial: 'class', collection: Klass.active.includes(:subject).order('subjects.title, klasses.title'), as: :item %>
+  <% @subject = nil %>
+  <h2>Archived Classes</h2>
+  <%= render partial: 'class', collection: Klass.archived.includes(:subject).order('subjects.title, klasses.title'), as: :item %>
+  <%= submit_tag 'Update Subscriptions', class: 'btn btn-primary' %>
+<% end %>

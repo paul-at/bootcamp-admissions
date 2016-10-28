@@ -1,0 +1,11 @@
+<% if @subject != item.subject_id %>
+  <strong><%= item.subject.title %></strong>
+  <% @subject = item.subject_id %>
+<% end %>
+<% disabled = !can?(:read, item) %>
+<div class="form-check<% if disabled %> disabled<% end %>">
+  <label class="form-check-label">
+    <%= check_box_tag 'klass_ids[]', item.id, @subscriptions.include?(item.id), class: 'form-check-input', disabled: disabled %>
+    <%= item.title %>
+  </label>
+</div>

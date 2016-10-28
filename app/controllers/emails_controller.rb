@@ -21,6 +21,7 @@ class EmailsController < ApplicationController
 
     if params[:klass_id] && params[:state]  # Step 2 - pick recipients
       @app_forms = AppForm.where(klass_id: params[:klass_id], aasm_state: params[:state])
+      @subscriptions = Klass.find(params[:klass_id]).subscriptions
     elsif params[:app_form_ids]             # Step 3 - send emails
       @app_forms = AppForm.find(params[:app_form_ids])
       if @email.valid?

@@ -11,7 +11,13 @@ class DeliverMailJob < ApplicationJob
 private
   def send_email(email)
     email.sent_to = email.app_form.full_email
-    ApplicationMailer.rendered_email(email.sent_to, email.subject, email.body).deliver
+    if email.copy_team
+      bcc = email.app_form.klass.subscriptions.map { |subscription| subscription.user.email }
+    else
+      bcc = []
+    end
+    ApplicationMailer.rendered_email(to: email.sent_to, subject: email.subject, body: email.body, bcc: bcc).deliver
+    email.sent_to += ',' + bcc.join(',') unless bcc.empty?
     email.sent = true
     email.save!
 

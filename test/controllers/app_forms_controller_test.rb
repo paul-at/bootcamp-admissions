@@ -28,6 +28,9 @@ class AppFormsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
+    user = users(:staff)
+    sign_in user
+
     get new_app_form_url
     assert_response :success
   end

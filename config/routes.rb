@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   end
 
   resources :emails
+  resources :subscriptions
 
   # Settings pages
   resources :klasses
