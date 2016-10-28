@@ -22,4 +22,11 @@ class AppFormTest < ActiveSupport::TestCase
     @appform.payment
     assert_equal 'tuition_paid', @appform.aasm_state 
   end
+
+  test "Email is generated when AppForm changes status" do
+    @appform.aasm_state = 'interviewed'
+    assert_difference('Email.count') do
+      @appform.admit
+    end
+  end
 end

@@ -8,6 +8,6 @@ one:
 
 two:
   klass: two
-  state: MyString
+  state: admitted
   email_template: one # leave template two unreferenced for tests
   copy_team: false

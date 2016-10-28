@@ -23,7 +23,7 @@ class AppForm < ApplicationRecord
     state :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded
     state :coming
 
-    after_all_transitions :log_status_change
+    after_all_transitions [:log_status_change, :run_email_templates]
 
     event :invite do
       transitions from: :applied, to: :decided_to_invite
@@ -155,6 +155,12 @@ class AppForm < ApplicationRecord
 
   def can_change_interviewer?
     [ :applied, :decided_to_invite, :invite_email_sent, :interview_scheduled ].include?(self.aasm_state.to_sym)
+  end
+
+  def run_email_templates
+    EmailRule.where(klass_id: klass_id, state: aasm.to_state).each do |rule|
+      rule.create_email_for(self)
+    end
   end
 
   # scopes available for external querying
