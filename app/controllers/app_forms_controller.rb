@@ -50,6 +50,7 @@ class AppFormsController < ApplicationController
     if @app_form.save
       save_answers!
       save_uploads!
+      @app_form.run_email_rules
       render plain: 'Application was successfully submitted.'
     else
       render json: @app_form.errors, status: :unprocessable_entity

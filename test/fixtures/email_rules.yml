@@ -2,7 +2,7 @@
 
 one:
   klass: one
-  state: MyString
+  state: applied
   email_template: one
   copy_team: false
 

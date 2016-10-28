@@ -40,6 +40,12 @@ class AppFormsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "Email is generated when AppForm created with initial status" do
+    assert_difference('Email.count') do
+      post app_forms_url, params: { app_form: { klass_id: @klass.id, country: @app_form.country, dob: @app_form.dob, email: @app_form.email, firstname: @app_form.firstname, gender: @app_form.gender, lastname: @app_form.lastname, referral: @app_form.referral, residence: @app_form.residence, city: @app_form.city, residence_city: @app_form.city } }
+    end
+  end
+
   test "should store answers to arbitrary question" do
     assert_difference("Answer.where(question: 'q', answer: 'a').count") do
       post app_forms_url, params: { app_form: { klass_id: @klass.id, country: @app_form.country, dob: @app_form.dob, email: @app_form.email, firstname: @app_form.firstname, gender: @app_form.gender, lastname: @app_form.lastname, referral: @app_form.referral, residence: @app_form.residence, city: @app_form.city, residence_city: @app_form.city,

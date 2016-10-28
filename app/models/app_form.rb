@@ -23,7 +23,7 @@ class AppForm < ApplicationRecord
     state :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded
     state :coming
 
-    after_all_transitions [:log_status_change, :run_email_templates]
+    after_all_transitions [:log_status_change, :run_email_rules]
 
     event :invite do
       transitions from: :applied, to: :decided_to_invite
@@ -157,8 +157,9 @@ class AppForm < ApplicationRecord
     [ :applied, :decided_to_invite, :invite_email_sent, :interview_scheduled ].include?(self.aasm_state.to_sym)
   end
 
-  def run_email_templates
-    EmailRule.where(klass_id: klass_id, state: aasm.to_state).each do |rule|
+  def run_email_rules
+    run_for_state = aasm.to_state || aasm_state # run for current state if no transition in progress
+    EmailRule.where(klass_id: klass_id, state: run_for_state).each do |rule|
       rule.create_email_for(self)
     end
   end
