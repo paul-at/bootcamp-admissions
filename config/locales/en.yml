@@ -23,11 +23,14 @@ en:
   activerecord:
     models:
       klass: Class
+      email_rule: E-mail Rule
     attributes:
       app_form:
         aasm_state: Status override
         event_names:
           wont_come: Won't come
+      email_rule:
+        email_template_id: Template
       klass:
         payment_tier: Default Payment Tier
         admission_committee_members: Admission committee

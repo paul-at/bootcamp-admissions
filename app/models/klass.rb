@@ -3,6 +3,7 @@ class Klass < ApplicationRecord
   belongs_to :payment_tier
   has_many :app_forms
   has_many :admission_committee_members, dependent: :destroy
+  has_many :email_rules, dependent: :destroy
 
   validates :title, presence: true
 

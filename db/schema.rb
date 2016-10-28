@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161027120619) do
+ActiveRecord::Schema.define(version: 20161028094439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,18 @@ ActiveRecord::Schema.define(version: 20161027120619) do
     t.datetime "updated_at",          null: false
     t.index ["app_form_id"], name: "index_attachments_on_app_form_id", using: :btree
     t.index ["user_id"], name: "index_attachments_on_user_id", using: :btree
+  end
+
+  create_table "email_rules", force: :cascade do |t|
+    t.integer  "klass_id",                          null: false
+    t.string   "state",                             null: false
+    t.integer  "email_template_id",                 null: false
+    t.boolean  "copy_team",         default: false, null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.index ["email_template_id"], name: "index_email_rules_on_email_template_id", using: :btree
+    t.index ["klass_id", "state"], name: "index_email_rules_on_klass_id_and_state", using: :btree
+    t.index ["klass_id"], name: "index_email_rules_on_klass_id", using: :btree
   end
 
   create_table "email_templates", force: :cascade do |t|
@@ -211,6 +223,8 @@ ActiveRecord::Schema.define(version: 20161027120619) do
   add_foreign_key "app_forms", "users", column: "interviewer_id"
   add_foreign_key "attachments", "app_forms"
   add_foreign_key "attachments", "users"
+  add_foreign_key "email_rules", "email_templates"
+  add_foreign_key "email_rules", "klasses"
   add_foreign_key "emails", "app_forms"
   add_foreign_key "emails", "users"
   add_foreign_key "histories", "app_forms"

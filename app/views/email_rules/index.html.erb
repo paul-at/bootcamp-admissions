@@ -1,0 +1,28 @@
+<% if @email_rules.empty? %>
+  <em>No E-mail Rules were set up.</em>
+<% end %>
+
+<% last_klass_id = 0 %>
+<ul>
+<% @email_rules.each do |email_rule| %>
+  <% if email_rule.klass_id != last_klass_id %>
+    <h2><%= email_rule.klass.full_title %></h2>
+    <% last_klass_id = email_rule.klass_id %>
+  <% end %>
+
+  <li>
+    <em>When</em> <%= email_rule.state.humanize %>,
+    <em>email</em> Applicant
+    <% if email_rule.copy_team %>
+      and Ad.Com.
+    <% end %>
+    <em>with</em>
+    <%= email_rule.email_template.title %>
+
+    [<%= link_to 'Edit', edit_email_rule_path(email_rule) %>]
+    [<%= link_to 'Remove', email_rule, method: :delete, data: { confirm: 'Are you sure?' } %>]
+  </li>
+<% end %>
+</ul>
+
+<%= link_to 'New E-mail Rule', new_email_rule_path %>

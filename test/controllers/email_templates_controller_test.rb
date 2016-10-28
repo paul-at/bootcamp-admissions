@@ -6,6 +6,7 @@ class EmailTemplatesControllerTest < ActionDispatch::IntegrationTest
   setup do
     sign_in users(:admin)
     @email_template = email_templates(:one)
+    @unreferenced_email_template = email_templates(:two)
   end
 
   test "should get index" do
@@ -41,11 +42,18 @@ class EmailTemplatesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to email_template_url(@email_template)
   end
 
-  test "should destroy email_template" do
+  test "should destroy email_template that is not referenced" do
+    post email_templates_url, params: { email_template: { body: @unreferenced_email_template.body, subject: @unreferenced_email_template.subject, title: @unreferenced_email_template.title } }
     assert_difference('EmailTemplate.count', -1) do
-      delete email_template_url(@email_template)
+      delete email_template_url(@unreferenced_email_template)
     end
 
     assert_redirected_to email_templates_url
+  end
+
+  test "should not destroy email_template that is referenced in rules" do
+    assert_raises ActiveRecord::InvalidForeignKey do
+      delete email_template_url(@email_template)
+    end
   end
 end

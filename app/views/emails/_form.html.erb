@@ -19,7 +19,7 @@
 
   <div class="form-group">
     <label>who are currently</label>
-    <%= select_tag(:state, options_for_select(AppForm.aasm.states.collect{|state| [state.name.to_s.humanize, state.name] }), class: 'form-control') %>
+    <%= select_tag(:state, options_for_select(AppForm.states_for_select), class: 'form-control') %>
   </div>
 <% else %>
   <div class="form-group">

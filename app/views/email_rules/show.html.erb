@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Class:</strong>
+  <%= @email_rule.klass.full_title %>
+</p>
+
+<p>
+  <strong>State:</strong>
+  <%= @email_rule.state.humanize %>
+</p>
+
+<p>
+  <strong>Email template:</strong>
+  <%= @email_rule.email_template.title %>
+</p>
+
+<p>
+  <strong>Copy team:</strong>
+  <%= @email_rule.copy_team %>
+</p>
+
+<%= link_to 'Edit', edit_email_rule_path(@email_rule) %> |
+<%= link_to 'Back', email_rules_path %>

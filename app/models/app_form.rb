@@ -219,6 +219,10 @@ class AppForm < ApplicationRecord
     admission_committee_members.map(&:name).map{|user| "for_#{user}_review".to_sym } + [:reviewed_and_in_limbo]
   end
 
+  def self.states_for_select
+    self.aasm.states.collect{|state| [state.name.to_s.humanize, state.name] }
+  end
+
   private
   def deposit_paid?
     return false unless payment_tier

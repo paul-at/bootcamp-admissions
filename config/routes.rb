@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :emails
   devise_for :users
 
   root 'dashboard#index'
@@ -37,10 +36,13 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :emails
+
   # Settings pages
   resources :klasses
   resources :subjects
   resources :payment_tiers
+  resources :email_rules
   resources :email_templates
   get 'administrators', to: 'administrators#index'
   post 'administrators/(:id)', to: 'administrators#update'

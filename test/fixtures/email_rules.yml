@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  klass: one
+  state: MyString
+  email_template: one
+  copy_team: false
+
+two:
+  klass: two
+  state: MyString
+  email_template: one # leave template two unreferenced for tests
+  copy_team: false
