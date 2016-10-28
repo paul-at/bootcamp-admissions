@@ -8,10 +8,13 @@ refreshVotes = () ->
     $('#screening-vote').hide()
 
     positive_votes = 0
+    negative_votes = 0
 
     for vote in json
       if vote.vote
         positive_votes++
+      else
+        negative_votes++
       c = if vote.vote then 'tag-success' else 'tag-danger'
       $('#voter' + vote.user_id).addClass c
       if vote.user_id == current_voter
@@ -20,11 +23,14 @@ refreshVotes = () ->
       $('#screening-vote').show()
 
     if $('#application_state').text() == 'Applied'
-      state_change_disabled = false
+      invite_disabled = false
+      reject_disabled = false
       if positive_votes / $('.voter').length <= 0.5
-        state_change_disabled = true
-      $('#event_invite').prop('disabled', state_change_disabled)
-      $('#event_reject').prop('disabled', state_change_disabled)
+        invite_disabled = true
+      if negative_votes / $('.voter').length <= 0.5
+        reject_disabled = true
+      $('#event_invite').prop('disabled', invite_disabled)
+      $('#event_reject').prop('disabled', reject_disabled)
 
 $(document).on "turbolinks:load", ->
   if $('#screening-vote').length > 0
