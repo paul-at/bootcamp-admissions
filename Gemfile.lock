@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/paul-at/activerecord-mergetags.git
+  revision: 9c824760e656839cd52f41754d73f7149df3b09f
+  specs:
+    activerecord-mergetags (0.1.0)
+
+GIT
   remote: git://github.com/paul-at/prev-next
   revision: 989bb9dce626a405ef2ce48d0c1e5beebc86b065
   specs:
@@ -234,6 +240,7 @@ PLATFORMS
 
 DEPENDENCIES
   aasm
+  activerecord-mergetags!
   aws-sdk (~> 2.3)
   bootstrap (~> 4.0.0.alpha4)
   byebug

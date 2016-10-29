@@ -4,6 +4,7 @@ class DeliverMailJob < ApplicationJob
   def perform(*args)
     queue = Email.where(sent: false)
     queue.each do |email|
+      email.merge
       send_email(email)
     end
   end
@@ -16,7 +17,12 @@ private
     else
       bcc = []
     end
-    ApplicationMailer.rendered_email(to: email.sent_to, subject: email.subject, body: email.body, bcc: bcc).deliver
+    ApplicationMailer.rendered_email({
+      to: email.sent_to,
+      subject: email.subject,
+      body: email.body,
+      bcc: bcc,
+    }).deliver
     email.sent_to += ',' + bcc.join(',') unless bcc.empty?
     email.sent = true
     email.save!

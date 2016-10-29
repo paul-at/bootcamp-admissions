@@ -40,6 +40,9 @@ gem 'countries'
 gem "font-awesome-rails"
 gem 'jquery-tablesorter'
 
+# Merge tags for emails
+gem 'activerecord-mergetags', github: 'paul-at/activerecord-mergetags'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 # New Relic monitoring

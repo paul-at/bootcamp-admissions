@@ -36,7 +36,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :emails
+  resources :emails do
+    collection do
+      get 'mergetags', to: 'emails#mergetags'
+    end
+  end
   resources :subscriptions
 
   # Settings pages

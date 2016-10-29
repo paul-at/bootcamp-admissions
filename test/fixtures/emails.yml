@@ -2,7 +2,7 @@
 
 one:
   subject: MyString
-  body: MyText
+  body: "Dear *|FIRSTNAME|*"
   app_form: one
   copy_team: false
   sent: false

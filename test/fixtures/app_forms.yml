@@ -1,6 +1,6 @@
 one:
   klass: one
-  firstname: MyString
+  firstname: Bob
   lastname: MyString
   email: MyString
   country: US

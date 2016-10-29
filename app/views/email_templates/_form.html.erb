@@ -24,7 +24,10 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :body %>
+    <%= f.label :body do %>
+      E-mail Body
+      <small><%= link_to 'Merge Tags reference', mergetags_emails_path, target: '_blank' %></small>
+    <% end %>
     <%= quill({}, style: 'height:35em') do %>
       <%= email_template.body ? email_template.body.html_safe: '' %>
     <% end %>

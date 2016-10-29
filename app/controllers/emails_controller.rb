@@ -36,9 +36,27 @@ class EmailsController < ApplicationController
     render :new
   end
 
+  # GET /email/mergetags
+  def mergetags
+    @mergetags = generate_mergetags_for(AppForm.last).flatten.compact
+    render layout: false
+  end
+
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def email_params
       params.require(:email).permit(:subject, :body, :copy_team)
+    end
+
+    def generate_mergetags_for(obj, path = '')
+      return nil unless obj
+      obj.attributes.keys.map do |attribute|
+        if /_id$/.match(attribute)
+          association = attribute.gsub(/_id$/, '')
+          generate_mergetags_for(obj.send(association), path + association.upcase + '.')
+        else
+          "*|#{path}#{attribute.upcase}|*"
+        end
+      end
     end
 end
