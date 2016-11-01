@@ -27,7 +27,7 @@ class SettingsController < ApplicationController
       end
       result = Hash.new
       example.to_h.each do |subkey, subvalue|
-        result[subkey] = apply_types(value[subkey], subvalue)
+        result[subkey.to_sym] = apply_types(value[subkey], subvalue)
       end
       return result
     else
