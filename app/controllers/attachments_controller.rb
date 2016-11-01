@@ -9,6 +9,6 @@ class AttachmentsController < ApplicationController
       user: current_user,
     })
     
-    redirect_to app_form_path(@app_form, params[:search]), notice: 'File saved.'
+    redirect_to app_form_path(@app_form, search: params[:search]), notice: 'File saved.'
   end
 end
