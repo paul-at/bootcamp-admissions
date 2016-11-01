@@ -1,0 +1,24 @@
+<%= form_tag action:'update' do %>
+  <% @settings.each do |setting,value| %>
+    <div class="form-group">
+      <h4><%= setting.humanize %></h4>
+      <% if value.is_a?(Hash) %>
+        <% value.each do |key,subvalue| %>
+          <div class="form-group row">
+            <label class="col-xs-2 col-form-label">
+              <%= key.humanize %>
+            </label>
+            <div class="col-xs-10">
+              <%= text_field_tag "settings[#{setting}[#{key}]]", subvalue, class: 'form-control' %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <%= text_field_tag "settings[#{setting}]", value, class: 'form-control' %>
+      <% end %>
+    </div>
+  <% end %>
+  <div class="form-group">
+    <%= submit_tag 'Save changes', class: 'btn btn-primary' %>
+  </div>
+<% end %>

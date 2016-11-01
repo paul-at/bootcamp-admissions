@@ -6,6 +6,7 @@
     [ 'email_rules', 'E-mail Rules' ],
     [ 'email_templates', 'E-mail Templates' ],
     [ 'administrators', 'Users' ],
+    [ 'settings', 'System Settings' ],
   ].each do |item| %>
     <li class="nav-item">
       <a href="/<%= item[0] %>/" class="nav-link<% if controller_name == item[0] %> active<% end %>"><%= item[1] %></a>

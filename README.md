@@ -24,12 +24,7 @@ These are the only required settings. Optionally:
 
 Set `ALLOW_FAKER` environment variable to enable fake data generator at /setup/.
 
-To deliver emails, configure SMTP settings from Rails console.
-
-```ruby
-Setting.smtp = {address: 'smtp.gmail.com', port:587, enable_starttls_auto:true, user_name: 'noreply@domain.com', password: 'noreply'}
-Setting.mail_options = {from: 'noreply@domain.com'}
-```
+To deliver emails, configure SMTP settings from application user interface under Settings - System Settings menu using "Mail options" and "Smtp" sections.
 
 ### Running
 

@@ -1,7 +1,13 @@
 # config/app.yml for rails-settings-cached
 defaults: &defaults
-  foo: "Foo"
-  bar: 123
+  mail_options:
+    from: no-reply@nowhere.com
+  smtp:
+    address: smtp.server.com
+    port: 587
+    enable_starttls_auto: true
+    user_name: user@name
+    password: password
 
 development:
   <<: *defaults
