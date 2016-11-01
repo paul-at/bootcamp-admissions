@@ -66,7 +66,7 @@ class AppFormsController < ApplicationController
     respond_to do |format|
       if @app_form.save
         log_change
-        format.html { redirect_to @app_form, notice: 'App form was successfully updated.' }
+        format.html { redirect_with notice: 'App form was successfully updated.' }
         format.json { render json: nil, status: :ok }
       else
         format.html { render :show }
@@ -77,21 +77,21 @@ class AppFormsController < ApplicationController
 
   def event
     unless params[:event]
-      redirect_to @app_form, alert: 'Action not selected.'
+      redirect_with alert: 'Action not selected.'
       return
     end
 
     unless @app_form.aasm.events.map(&:name).include?(params[:event].to_sym)
-      redirect_to @app_form, alert: "Action #{params[:event]} is not available."
+      redirect_with alert: "Action #{params[:event]} is not available."
       return
     end
 
     begin
       @app_form.send(params[:event])
       @app_form.save!
-      redirect_to @app_form
+      redirect_with
     rescue RuntimeError => e
-      redirect_to @app_form, alert: 'Error: ' + e.inspect
+      redirect_with(alert: 'Error: ' + e.inspect)
     end
   end
 
@@ -103,7 +103,7 @@ class AppFormsController < ApplicationController
     @app_form.payment if @app_form.may_payment?
     @app_form.save!
     log_change
-    redirect_to @app_form, notice: 'Payment recorded.'
+    redirect_with notice: 'Payment recorded.'
   end
 
   def comment
@@ -112,7 +112,7 @@ class AppFormsController < ApplicationController
       text: params[:note],
       user: current_user
     })
-    redirect_to @app_form, notice: 'Note recorded.'
+    redirect_with notice: 'Note recorded.'
   end
 
   def delete
@@ -189,6 +189,10 @@ class AppFormsController < ApplicationController
         message = 'Application Form restored.'
       end
 
-      redirect_to @app_form, notice: message
+      redirect_with notice: message
+    end
+
+    def redirect_with(redirect_params = {})
+      redirect_to app_form_path(@app_form, search: params[:search]), redirect_params
     end
 end

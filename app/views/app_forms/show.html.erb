@@ -30,7 +30,7 @@
     </button>
   </h4>
 
-  <%= form_for @app_form, url: { action: 'update' } do |f| %>
+  <%= form_for @app_form, url: { search: params[:search], action: 'update' } do |f| %>
 
     <div class="form-group">
       <%= f.label :firstname %>
@@ -124,7 +124,7 @@
   <% unless @app_form.deleted? %>
     <h1 class="display-4" id="application_state"><%= @app_form.aasm_state.humanize %></h1>
     <% unless @app_form.aasm.events.empty? %>
-      <%= form_tag action: 'event' do %>
+      <%= form_tag action: 'event', search: params[:search] do %>
         <fieldset class="form-group">
         <% @app_form.aasm.events(:permitted => true).map(&:name).each do |event| %>
           <div class="form-check">
@@ -235,7 +235,7 @@
 <div class="col-md-6">
 <div class="appformsection">
   <h4>Balance Paid</h4>
-  <%= form_tag({ action: 'payment' }, class: 'form-inline') do %>
+  <%= form_tag({ action: 'payment', search: params[:search] }, class: 'form-inline') do %>
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">$</div>
@@ -280,7 +280,7 @@
         <% end %>
       </tr>
     <% end %>
-    <%= form_for([@app_form, Attachment.new], html: { multipart: true }) do |f| %>
+    <%= form_for([@app_form, Attachment.new], url: { search: params[:search] }, html: { multipart: true }) do |f| %>
       <tr>
         <td>
           <%= f.text_field :field, class: 'form-control form-control-sm', placeholder: 'Upload name' %>
@@ -426,7 +426,7 @@
 <div class="col-md-12">
 <div class="appformsection">
   <h4>Leave Note in History</h4>
-  <%= form_tag({ action: 'comment' }, class: 'form') do %>
+  <%= form_tag({ action: 'comment', search: params[:search] }, class: 'form') do %>
     <div class="form-group">
       <%= text_area_tag 'note', '', class: 'form-control' %>
     </div>
