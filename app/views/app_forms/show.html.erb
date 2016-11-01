@@ -3,7 +3,7 @@
   <small class="text-muted"><%= @app_form.klass.full_title %></small>
 </h2>
 
-<% if params[:search] %>
+<% if params[:search] && @prevnext[@app_form.id] %>
   <ul class="nav">
     <li class="nav-item col-md-4">
       <% if @prevnext[@app_form.id][:prev] %>
@@ -114,7 +114,7 @@
 
   <% if can?(:delete, @app_form) && !@app_form.deleted? %>
     <p>
-      <%= link_to fa_icon('trash') + ' Delete', delete_app_form_path(@app_form), method: :post %>
+      <%= link_to fa_icon('trash') + ' Delete', delete_app_form_path(@app_form, search: params[:search]), method: :post %>
     </p>
   <% end %>
 </div></div>
@@ -143,7 +143,7 @@
     <p>(Was <%= @app_form.aasm_state.humanize %>.)</p>
     <% if can?(:delete, @app_form) %>
       <p>
-        <%= link_to 'Restore', restore_app_form_path(@app_form), method: :post %>
+        <%= link_to 'Restore', restore_app_form_path(@app_form, search: params[:search]), method: :post %>
       </p>
     <% end %>
   <% end %>
