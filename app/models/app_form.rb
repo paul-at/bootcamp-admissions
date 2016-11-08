@@ -153,10 +153,6 @@ class AppForm < ApplicationRecord
     "\"#{full_name}\" <#{email}>"
   end
 
-  def can_change_interviewer?
-    [ :applied, :decided_to_invite, :invite_email_sent, :interview_scheduled ].include?(self.aasm_state.to_sym)
-  end
-
   def run_email_rules
     run_for_state = aasm.to_state || aasm_state # run for current state if no transition in progress
     EmailRule.where(klass_id: klass_id, state: run_for_state).each do |rule|
