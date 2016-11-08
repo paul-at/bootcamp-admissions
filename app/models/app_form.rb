@@ -165,6 +165,7 @@ class AppForm < ApplicationRecord
     {
       applications: self.all,
       today: self.where('created_at >= ?', Date.today),
+      rejected_total: self.where('aasm_state in (?)', [:decided_to_reject_application, :application_reject_email_sent,:rejected_after_interview, :decision_reject_email_sent]),
 
       coming: self.where('aasm_state = ?', :coming),
       not_coming: self.where('aasm_state = ?', :not_coming),
