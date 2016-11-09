@@ -9,7 +9,7 @@ class AppForm < ApplicationRecord
   has_many :histories, dependent: :destroy
   has_many :votes, dependent: :destroy
   has_many :scores, dependent: :destroy
-  has_many :interview_notes, dependent: :destroy
+  has_many :interview_notes, -> { order(updated_at: :desc) }, dependent: :destroy
   has_many :emails, dependent: :destroy
 
   attr_accessor :log_user

@@ -27,6 +27,10 @@ en:
     attributes:
       app_form:
         aasm_state: Status override
+        lastname: Last name
+        firstname: First name
+        country: Country of origin
+        residence: Country of residence
         event_names:
           wont_come: Won't come
       email_rule:

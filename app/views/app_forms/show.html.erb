@@ -307,42 +307,35 @@
 <div class="col-md-12"><div class="appformsection">
   <h4>Interview Notes</h4>
 
-  <div class="card-deck-wrapper"><div class="card-deck">
-    <% user_has_note = false %>
-    <% @app_form.interview_notes.each do |note| %>
-      <% user_has_note ||= note.user == current_user %>
-      <div class="card">
-        <%
-          if note.user == current_user
-            link_destination = edit_app_form_interview_note_path(@app_form, note)
-          else
-            link_destination = [@app_form, note]
-          end
-        %>
-        <%= link_to link_destination, data: { turbolinks: false } do %>
-          <div class="card-block">
-            <h4 class="card-title"><%= note.user.name %></h4>
-            <p class="card-text"><%= note.text.gsub(/<(.+?)>/, '').truncate_words(50) %></p>
-            <p class="card-text">
-              <small class="text-muted">
-                Last updated <%= time_ago_in_words note.updated_at %> ago
-              </small>
-            </p>
-          </div>
-        <% end %>
+  <% user_has_note = false %>
+  <% @app_form.interview_notes.each do |note| %>
+    <% user_has_note ||= note.user == current_user %>
+    <div class="card">
+      <div class="card-block">
+        <h4 class="card-title"><%= note.user.name %></h4>
+        <p class="card-text"><%= note.text.html_safe %></p>
+        <p class="card-text">
+          <% if note.user == current_user %>
+            <%= link_to fa_icon('edit') + ' Edit note', edit_app_form_interview_note_path(@app_form, note), data: { turbolinks: false } %>
+            <br>
+          <% end %>
+          <small class="text-muted">
+            Last updated <%= time_ago_in_words note.updated_at %> ago
+          </small>
+        </p>
       </div>
-    <% end %>
-    <% unless user_has_note %>
-      <div class="card">
-        <div class="card-block">
-          <h4 class="card-title"><%= current_user.name %></h4>
-          <p class="card-text">
-            <%= link_to 'Write Note', new_app_form_interview_note_path(@app_form), class: 'btn btn-primary', data: { turbolinks: false } %>
-          </p>
-        </div>
+    </div>
+  <% end %>
+  <% unless user_has_note %>
+    <div class="card">
+      <div class="card-block">
+        <h4 class="card-title"><%= current_user.name %></h4>
+        <p class="card-text">
+          <%= link_to 'Write Note', new_app_form_interview_note_path(@app_form), class: 'btn btn-primary', data: { turbolinks: false } %>
+        </p>
       </div>
-    <% end %>
-  </div></div>
+    </div>
+  <% end %>
 </div></div>
 
 

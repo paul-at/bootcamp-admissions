@@ -1,12 +1,7 @@
 class InterviewNotesController < ApplicationController
   load_and_authorize_resource :app_form
-  before_action :set_interview_note, only: [:show, :edit, :update]
-  before_action :verify_app_form_id, only: [:shoe, :edit]
-
-  # GET /interview_notes/1
-  # GET /interview_notes/1.json
-  def show
-  end
+  before_action :set_interview_note, only: [:edit, :update]
+  before_action :verify_app_form_id, only: [:edit]
 
   # GET /interview_notes/new
   def new
