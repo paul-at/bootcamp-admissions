@@ -1,4 +1,6 @@
 <%= form_for(email) do |f| %>
+  <%= hidden_field_tag 'klass_id', params[:klass_id] %>
+  <%= hidden_field_tag 'state', params[:state] %>
   <% if email.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(email.errors.count, "error") %> prohibited this email from being saved:</h2>
@@ -70,6 +72,7 @@
 
   <div class="form-group">
     <% if @app_forms %>
+      <%= f.submit 'Test E-mail Myself', class: 'btn' %>
       <%= f.submit 'Send E-mails', class: 'btn btn-primary' %>
     <% else %>
       <%= f.submit 'Preview', class: 'btn btn-primary' %>

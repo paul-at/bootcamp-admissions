@@ -19,12 +19,14 @@ class EmailsController < ApplicationController
   def create
     @email = Email.new(email_params)
 
-    if params[:klass_id] && params[:state]  # Step 2 - pick recipients
+    if ['Preview','Test E-mail Myself'].include?(params[:commit]) # Step 2 - pick recipients
       @app_forms = AppForm.where(klass_id: params[:klass_id], aasm_state: params[:state])
       @subscriptions = Klass.find(params[:klass_id]).subscriptions
-    elsif params[:app_form_ids]             # Step 3 - send emails
-      @app_forms = AppForm.find(params[:app_form_ids])
-      if @email.valid?
+
+      deliver_test_email if params[:commit] == 'Test E-mail Myself'
+    elsif params[:app_form_ids]     # Step 3 - send emails
+      if params[:commit] == 'Send E-mails' && @email.valid?
+        @app_forms = AppForm.find(params[:app_form_ids])
         @app_forms.each do |app_form|
           Email.create!(email_params.merge(app_form: app_form, user: current_user))
         end
@@ -58,5 +60,14 @@ class EmailsController < ApplicationController
           "*|#{path}#{attribute.upcase}|*"
         end
       end
+    end
+
+    def deliver_test_email
+      ApplicationMailer.rendered_email({
+        to: current_user.email,
+        subject: @email.subject,
+        body: @email.formatted_body,
+      }).deliver
+      flash.now.notice = 'A test e-mail has been sent to ' + current_user.email
     end
 end
