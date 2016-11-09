@@ -313,7 +313,7 @@
     <div class="card">
       <div class="card-block">
         <h4 class="card-title"><%= note.user.name %></h4>
-        <p class="card-text"><%= note.text.html_safe %></p>
+        <p class="card-text"><%= note.formatted_text.html_safe %></p>
         <p class="card-text">
           <% if note.user == current_user %>
             <%= link_to fa_icon('edit') + ' Edit note', edit_app_form_interview_note_path(@app_form, note), data: { turbolinks: false } %>

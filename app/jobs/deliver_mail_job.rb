@@ -20,7 +20,7 @@ private
     ApplicationMailer.rendered_email({
       to: email.sent_to,
       subject: email.subject,
-      body: email.body,
+      body: email.formatted_body,
       bcc: bcc,
     }).deliver
     email.sent_to += ',' + bcc.join(',') unless bcc.empty?
