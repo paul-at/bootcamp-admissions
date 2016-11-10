@@ -19,6 +19,12 @@ class EmailsController < ApplicationController
   def create
     @email = Email.new(email_params)
 
+    if params[:email_template_id] && params[:email_template_id].to_i > 0
+      template = EmailTemplate.find(params[:email_template_id])
+      @email.body = template.body
+      @email.subject = template.subject
+    end
+
     if ['Preview','Test E-mail Myself'].include?(params[:commit]) # Step 2 - pick recipients
       @app_forms = AppForm.where(klass_id: params[:klass_id], aasm_state: params[:state])
       @subscriptions = Klass.find(params[:klass_id]).subscriptions

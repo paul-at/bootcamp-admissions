@@ -53,6 +53,10 @@
     </div>
   <% end %>
 <% end %>
+  <div class="form-group">
+    <label>Use Template</label>
+    <%= select_tag(:email_template_id, options_for_select([['N/A, use text below',0]] + EmailTemplate.all.map{|t| [t.title, t.id]}), class: 'form-control') %>
+  </div>
 
   <div class="form-group">
     <%= f.label :subject %>
@@ -72,6 +76,7 @@
 
   <div class="form-group">
     <% if @app_forms %>
+      <%= f.submit 'Preview', class: 'btn' %>
       <%= f.submit 'Test E-mail Myself', class: 'btn' %>
       <%= f.submit 'Send E-mails', class: 'btn btn-primary' %>
     <% else %>
