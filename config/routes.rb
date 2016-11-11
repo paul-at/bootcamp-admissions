@@ -25,6 +25,7 @@ Rails.application.routes.draw do
 
     collection do
       get 'deleted', to: 'app_forms#deleted'
+      get 'autocomplete'
     end
 
     member do

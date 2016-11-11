@@ -38,7 +38,10 @@ gem 'quill-rails5', github: 'paul-at/quill-rails5'
 gem 'countries'
 # Icons
 gem "font-awesome-rails"
+# Table sorter
 gem 'jquery-tablesorter'
+# Autocomplete search
+gem 'jquery-ui-rails'
 
 # Merge tags for emails
 gem 'activerecord-mergetags', github: 'paul-at/activerecord-mergetags'

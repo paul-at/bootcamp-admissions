@@ -18,4 +18,5 @@
 //= require bootstrap/button
 //= require bootstrap/dropdown
 //= require jquery-tablesorter
+//= require jquery-ui/autocomplete
 //= require_tree .

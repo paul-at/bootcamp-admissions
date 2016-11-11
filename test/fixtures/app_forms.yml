@@ -9,6 +9,7 @@ one:
   gender: M
   dob: 2016-09-04
   referral: MyString
+  aasm_state: applied
 
 two:
   klass: two
@@ -22,3 +23,4 @@ two:
   dob: 2016-09-04
   referral: MyString
   payment_tier: one
+  aasm_state: applied

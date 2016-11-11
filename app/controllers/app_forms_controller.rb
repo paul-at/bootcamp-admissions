@@ -20,6 +20,15 @@ class AppFormsController < ApplicationController
     render 'index'
   end
 
+  # GET /app_forms/autocomplete
+  def autocomplete
+    @app_forms = AppForm.order(:firstname, :lastname).includes(klass: [:subject])
+    q = '%' + params[:term] + '%'
+    render json: @app_forms.
+      where(["firstname ILIKE ? or lastname ILIKE ? or concat(firstname, ' ', lastname) ILIKE ? or email ILIKE ? or phone ILIKE ?", q, q, q, q, q ]).
+      collect{|f| {id: f.id, label: f.full_name + ' — ' + f.klass.full_title, value: f.full_name } }
+  end
+
   # GET /app_forms/1
   def show
     authorize! :read, @app_form.klass

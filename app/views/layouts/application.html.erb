@@ -33,6 +33,7 @@
                 Subscriptions
               </a>
             </li>
+
             <li class="nav-item pull-xs-right">
               <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: 'nav-link' %>
             </li>
@@ -41,6 +42,10 @@
                 <%= fa_icon 'cog' %>
                 Settings
               </a>
+            </li>
+
+           <li class="nav-item pull-xs-right">
+              <input id="navbar-search-input" class="form-control" type="text" placeholder="Search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
             </li>
           <% end %>
        </ul>

@@ -37,3 +37,9 @@ $(document).on "turbolinks:load", ->
     refreshVotes()
     $("a[data-remote]").on "ajax:success", (e, data, status, xhr) ->
       refreshVotes()
+
+  $("#navbar-search-input").autocomplete({
+    source: '/app_forms/autocomplete.json',
+    select: (event, ui) ->
+      document.location.href = '/app_forms/' + ui.item.id
+  })
