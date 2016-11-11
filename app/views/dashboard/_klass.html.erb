@@ -4,13 +4,13 @@
   <div class="col-md-3">
   </div>
   <div class="col-md-3">
-    <h3>Screen <small><%= klass.searches[:applications].count %></small></h3>
+    <h3>Screen <small><%= statistic_count klass, :applications %></small></h3>
   </div>
   <div class="col-md-3">
-    <h3>Interview <small><%= klass.searches[:interviews].count %></small></h3>
+    <h3>Interview <small><%= statistic_count klass, :interviews %></small></h3>
   </div>
   <div class="col-md-3">
-    <h3>Decision <small><%= klass.searches[:interviewed].count %></small></h3>
+    <h3>Decision <small><%= statistic_count klass, :interviewed %></small></h3>
   </div>
 </div>
 <div class="row">

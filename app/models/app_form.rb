@@ -165,45 +165,7 @@ class AppForm < ApplicationRecord
     {
       applications: self.all,
       today: self.where('created_at >= ?', Date.today),
-      rejected_total: self.where('aasm_state in (?)', [:decided_to_reject_application, :application_reject_email_sent,:rejected_after_interview, :decision_reject_email_sent]),
-
-      coming: self.where('aasm_state = ?', :coming),
-      not_coming: self.where('aasm_state = ?', :not_coming),
-
-
-      interviews: self.where('aasm_state in (?)', [:decided_to_invite, :invite_email_sent, :interview_scheduled, :invite_no_response, :no_show, :interviewed, :waitlisted, :waitlist_email_sent, :admitted, :admit_email_sent, :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :decision_reject_email_sent, :coming, :not_coming]),
-      _invite_emails_pending: self.where('aasm_state = ?', :decided_to_invite),
-      #_invite_emails_sent: self.where('aasm_state in (?)', [:invite_email_sent, :interview_scheduled, :invite_no_response, :no_show, :interviewed, :waitlisted, :waitlist_email_sent, :admitted, :admit_email_sent, :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :decision_reject_email_sent, :coming, :not_coming]),
-
-      interviews_rejected: self.where('aasm_state in (?)', [:decided_to_reject_application, :application_reject_email_sent]),
-      #_interview_reject_emails_sent: self.where('aasm_state = ?', :application_reject_email_sent),
-      _interview_reject_emails_pending: self.where('aasm_state = ?', :decided_to_reject_application),
-      not_reviewed: self.where('aasm_state = ?', :applied),
-
       none_reviewed: self.where('aasm_state = ? AND (SELECT COUNT(*) FROM votes WHERE votes.app_form_id = app_forms.id) = 0', :applied),
-
-      interviewed: self.where('aasm_state in (?)', [:interviewed, :waitlisted, :waitlist_email_sent, :admitted, :admit_email_sent, :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded, :deposit_paid, :extension, :tuition_paid, :rejected_after_interview, :decision_reject_email_sent, :coming, :not_coming]),
-      no_show: self.where('aasm_state = ?', :no_show),
-
-      decided_to_invite: self.where('aasm_state = ?', :decided_to_invite),
-      invite_emails_sent: self.where('aasm_state = ?', :invite_email_sent),
-      interviews_scheduled: self.where('aasm_state = ?', :interview_scheduled),
-      invite_no_response: self.where('aasm_state = ?', :invite_no_response),
-
-
-      admitted: self.where('aasm_state in (?)', [:admitted, :admit_email_sent, :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded, :deposit_paid, :extension, :tuition_paid, :coming, :not_coming]),
-      _admit_emails_pending: self.where('aasm_state = ?', :admitted),
-      #_admit_emails_sent: self.where('aasm_state in (?)', [:admit_email_sent, :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded, :deposit_paid, :extension, :tuition_paid, :coming, :not_coming]),
-
-      rejected: self.where('aasm_state in (?)', [:rejected_after_interview, :decision_reject_email_sent]),
-      #_reject_emails_sent: self.where('aasm_state = ?', :decision_reject_email_sent),
-      _reject_emails_pending: self.where('aasm_state = ?', :rejected_after_interview),
-
-      waitlisted: self.where('aasm_state in (?)', [:waitlisted, :waitlist_email_sent]),
-      #_waitlist_emails_sent: self.where('aasm_state = ?', :waitlist_email_sent),
-      _waitlist_emails_pending: self.where('aasm_state = ?', :waitlisted),
-
-      interviewed_and_in_limbo: self.where('aasm_state = ?', :interviewed),
     }
   end
 
