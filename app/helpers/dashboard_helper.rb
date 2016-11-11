@@ -30,6 +30,6 @@ module DashboardHelper
   end
 
   def statistic_count(klass, item)
-    @statistic_groups[klass.id][item] || klass.searches[item].count
+    @statistic_groups[klass.id][item] || (klass.searches[item] ? klass.searches[item].count : 0)
   end
 end
