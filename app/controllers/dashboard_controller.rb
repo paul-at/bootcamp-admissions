@@ -47,13 +47,18 @@ class DashboardController < ApplicationController
       select{ |klass| can? :read, klass }
 
     # query aggregate stats from database
-    statistic = AppForm.where(klass: klasses, deleted: false).group(:klass_id, :aasm_state).count
-    # calculate statistic groups
+    statistic = AppForm.where(klass: @klasses, deleted: false).group(:klass_id, :aasm_state).count
+
+    # initialise statistic groups
     @statistic_groups = Hash.new
+    @klasses.each do |klass|
+      @statistic_groups[klass.id] = Hash.new
+    end
+
+    # calculate statistic groups
     statistic.each do |k,count|
       klass_id = k[0]
       state = k[1].to_sym
-      @statistic_groups[klass_id] = Hash.new unless @statistic_groups[klass_id]
       STATISTIC_GROUPS.each do |group,constituents|
         if constituents.include?(state)
           @statistic_groups[klass_id][group] = @statistic_groups[klass_id][group].to_i + count

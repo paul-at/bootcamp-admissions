@@ -10,7 +10,7 @@ class AppFormsController < ApplicationController
     authorize! :read, klass
 
     @title = params[:search].humanize
-    @app_forms = klass.searches[params[:search].to_sym]
+    @app_forms = query_for_params(klass)
   end
 
   # GET /app_forms/deleted
@@ -34,7 +34,7 @@ class AppFormsController < ApplicationController
     authorize! :read, @app_form.klass
 
     if params[:search]
-      @prevnext = Prev::Next.index(@app_form.klass.searches[params[:search].to_sym])
+      @prevnext = Prev::Next.index(query_for_params(@app_form.klass))
     end
 
     @history = @app_form.histories + @app_form.emails
@@ -203,5 +203,12 @@ class AppFormsController < ApplicationController
 
     def redirect_with(redirect_params = {})
       redirect_to app_form_path(@app_form, search: params[:search]), redirect_params
+    end
+
+    def query_for_params(klass)
+      search = params[:search].to_sym
+      return klass.searches[search] ||
+        AppForm.where('klass_id = ? AND aasm_state IN (?)', klass.id,
+          DashboardController::STATISTIC_GROUPS[search])
     end
 end
