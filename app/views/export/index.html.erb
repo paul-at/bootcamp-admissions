@@ -1,0 +1,15 @@
+<% current_subject = nil %>
+<%= form_tag export_app_forms_path, method: 'post' do %>
+  <% @classes.each do |klass| %>
+    <% if klass.subject_id != current_subject %>
+      <h4><%= klass.subject.title %></h4>
+      <% current_subject = klass.subject_id %>
+    <% end %>
+    <label>
+      <%= check_box_tag 'klasses[]', klass.id %>
+      <%= klass.title %>
+    </label>
+    <br>
+  <% end %>
+  <%= submit_tag 'Download as CSV', class: 'btn btn-primary', data: { disable_with: false } %>
+<% end %>

@@ -52,6 +52,8 @@ Rails.application.routes.draw do
   resources :email_templates
   get 'administrators', to: 'administrators#index'
   post 'administrators/(:id)', to: 'administrators#update'
+  get 'export', to: 'export#index'
+  post 'export/app_forms'
   get 'settings', to: 'settings#index'
   post 'settings/update'
   

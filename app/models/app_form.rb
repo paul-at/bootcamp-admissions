@@ -1,3 +1,5 @@
+require 'csv'
+
 class AppForm < ApplicationRecord
   include AASM
 
@@ -187,6 +189,61 @@ class AppForm < ApplicationRecord
 
   def self.states_for_select
     self.aasm.states.collect{|state| [state.name.to_s.humanize, state.name] }
+  end
+
+  def self.to_csv
+    app_form_attributes = %w(
+      id
+      aasm_state
+      firstname
+      lastname
+      email
+      phone
+      country
+      residence
+      city
+      residence_city
+      gender
+      dob
+      referral
+      paid
+      created_at
+      updated_at
+      deleted
+    )
+
+    relation_attributes = %w(
+      Subject
+      Class
+      Interviewer
+      Payment_Tier
+    )
+
+    questions = Answer.where(app_form: all).select('question').group('question').map(&:question)
+
+    CSV.generate(headers: true) do |csv|
+      csv << app_form_attributes + relation_attributes + questions
+
+      all.includes(klass: [ :subject ], interviewer: [], payment_tier: [], answers: []).each do |app_form|
+        fields = app_form_attributes.map{ |attr| app_form.send(attr) }
+
+        # relation attributes
+        fields << app_form.klass.subject.title
+        fields << app_form.klass.title
+        fields << (app_form.interviewer ? app_form.interviewer.name : nil)
+        fields << (app_form.payment_tier ? app_form.payment_tier.title : nil)
+
+        # answers
+        answers = Hash.new
+        app_form.answers.each do |answer|
+          answers[answer.question] = answer.answer.gsub(/\s+/, ' ')
+        end
+        questions.each do |question|
+          fields << answers[question]
+        end
+        csv << fields
+      end
+    end
   end
 
   private
