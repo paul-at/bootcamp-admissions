@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   root 'dashboard#index'
+  get 'dashboard/user'
 
   # Application forms
   resources :app_forms do

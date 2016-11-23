@@ -45,4 +45,29 @@ class Klass < ApplicationRecord
   def max_score
     scoring_criteria_as_array.count * 5
   end
+
+  def consensus
+    (admission_committee_members.count / 2.0).ceil
+  end
+
+  def todo_statistics
+    AppForm.connection.select_all("SELECT
+      SUM(CASE WHEN aasm_state = 'applied' THEN 1 ELSE 0 END) AS applied,
+      SUM(CASE WHEN aasm_state = 'applied' AND (SELECT COUNT(*) FROM votes WHERE app_form_id = app_forms.id) >= #{consensus} THEN 1 ELSE 0 END) AS to_screen,
+      SUM(CASE WHEN aasm_state IN ('decided_to_invite', 'invite_email_sent') AND interviewer_id IS NULL THEN 1 ELSE 0 END) AS interviews_to_assign,
+      SUM(CASE WHEN aasm_state = 'interviewed' AND
+        (SELECT AVG(score) FROM scores WHERE app_form_id = app_forms.id) *
+        #{scoring_criteria_as_array.count} < #{admission_threshold || 0} THEN 1 ELSE 0 END) AS reject,
+      SUM(CASE WHEN aasm_state = 'interviewed' AND
+        (SELECT AVG(score) FROM scores WHERE app_form_id = app_forms.id) *
+        #{scoring_criteria_as_array.count} >= #{admission_threshold || max_score+1} THEN 1 ELSE 0 END) AS admit,
+      SUM(CASE WHEN aasm_state = 'interviewed' AND
+        (SELECT AVG(score) FROM scores WHERE app_form_id = app_forms.id) *
+        #{scoring_criteria_as_array.count} >= #{scholarship_threshold || max_score+1} THEN 1 ELSE 0 END) AS scholarship
+    FROM app_forms
+    WHERE
+      klass_id = #{id} AND
+      deleted = false",
+     ).to_ary[0]
+  end
 end

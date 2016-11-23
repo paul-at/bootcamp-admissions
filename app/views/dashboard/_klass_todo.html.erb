@@ -1,0 +1,23 @@
+<h1>For <%= klass.full_title %> you have today:</h1>
+
+<h4>Screen</h4>
+<ul>
+  <li><%= @klass_stats[klass.id]['applied'] - (@vote_stats[klass.id][current_user.id] || 0) %> applications to vote for</li>
+  <li><%= @klass_stats[klass.id]['to_screen'] %> applications to screen</li>
+</ul>
+
+<h4>Interview</h4>
+<ul>
+  <li><%= @klass_stats[klass.id]['interviews_to_assign'] %> interviews to assign</li>
+  <li><%= @interviewer_actions[klass.id]['interview_scheduled'].to_i + @interviewer_actions[klass.id]['invite_email_sent'].to_i %>
+    to interview</li>
+  <li><%= @interviewer_actions[klass.id]['interviewed'].to_i - (@vote_stats[klass.id][current_user.id] || 0) %>
+    to score</li>
+</ul>
+
+<h4>Decision Recommendations</h4>
+<ul>
+  <li><%= @klass_stats[klass.id]['reject'] %> to reject</li>
+  <li><%= @klass_stats[klass.id]['admit'] %> to admit</li>
+  <li><%= @klass_stats[klass.id]['scholarship'] %> to grant scholarship</li>
+</ul>

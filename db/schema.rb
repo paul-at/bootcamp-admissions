@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161028191547) do
+ActiveRecord::Schema.define(version: 20161123081110) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -140,11 +140,13 @@ ActiveRecord::Schema.define(version: 20161028191547) do
   create_table "klasses", force: :cascade do |t|
     t.integer  "subject_id"
     t.string   "title"
-    t.boolean  "archived",         default: false, null: false
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.boolean  "archived",              default: false, null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.integer  "payment_tier_id"
     t.text     "scoring_criteria"
+    t.integer  "admission_threshold"
+    t.integer  "scholarship_threshold"
     t.index ["payment_tier_id"], name: "index_klasses_on_payment_tier_id", using: :btree
     t.index ["subject_id"], name: "index_klasses_on_subject_id", using: :btree
   end

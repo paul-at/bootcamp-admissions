@@ -35,16 +35,7 @@ class DashboardController < ApplicationController
   }
 
   def index
-    unless params[:archived]
-      klasses = Klass.active
-    else
-      klasses = Klass.archived
-    end
-
-    @klasses = klasses.
-      includes(:subject).
-      order('subjects.title', 'klasses.title').
-      select{ |klass| can? :read, klass }
+    load_klasses
 
     # query aggregate stats from database
     statistic = AppForm.where(klass: @klasses, deleted: false).group(:klass_id, :aasm_state).count
@@ -65,5 +56,37 @@ class DashboardController < ApplicationController
         end
       end
     end
+  end
+
+  def user
+    load_klasses
+
+    @klass_stats = Hash.new
+    @vote_stats = Hash.new
+    @interviewer_actions = Hash.new
+
+    @klasses.each do |klass|
+      @klass_stats[klass.id] = klass.todo_statistics
+      @vote_stats[klass.id] = Vote.casted_in(klass)
+      @interviewer_actions[klass.id] = klass.app_forms.where(
+        deleted: false,
+        interviewer: current_user,
+        aasm_state: ['interview_scheduled', 'invite_email_sent', 'interviewed']).
+        group(:aasm_state).count
+    end
+  end
+
+  private
+  def load_klasses
+    unless params[:archived]
+      klasses = Klass.active
+    else
+      klasses = Klass.archived
+    end
+
+    @klasses = klasses.
+      includes(:subject).
+      order('subjects.title', 'klasses.title').
+      select{ |klass| can? :read, klass }
   end
 end
