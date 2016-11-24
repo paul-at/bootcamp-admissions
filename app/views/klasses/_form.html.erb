@@ -39,6 +39,18 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :admisssion_threshold %>
+    <%= f.number_field :admission_threshold, class: 'form-control' %>
+    <small class="form-text text-muted">This threshold separates interviewed and scored applications to recommended for rejection and recommended for admission on the Today screen.</small>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :scholarship_threshold %>
+    <%= f.number_field :scholarship_threshold, class: 'form-control' %>
+    <small class="form-text text-muted">This threshold separates interviewed and scored applications to recommended for admission with and without scholarship on the Today screen.</small>
+  </div>
+
+  <div class="form-group">
     <%= f.label :admission_committee_members %>
     <fieldset class="input-group">
       <% members = klass.admission_committee_members.map(&:user_id) %>

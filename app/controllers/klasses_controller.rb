@@ -72,7 +72,7 @@ class KlassesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def klass_params
-      params.require(:klass).permit(:subject_id, :title, :archived, :deposit, :tuition, :payment_tier_id, :scoring_criteria)
+      params.require(:klass).permit(:subject_id, :title, :archived, :deposit, :tuition, :payment_tier_id, :scoring_criteria, :admission_threshold, :scholarship_threshold)
     end
 
     def update_klass_committee

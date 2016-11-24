@@ -83,7 +83,10 @@ class Klass < ApplicationRecord
           #{scoring_criteria_as_array.count} < #{admission_threshold || 0}",
         recommended_to_admit: "aasm_state = 'interviewed' AND
           (SELECT AVG(score) FROM scores WHERE app_form_id = app_forms.id) *
-          #{scoring_criteria_as_array.count} >= #{admission_threshold || max_score+1}",
+          #{scoring_criteria_as_array.count} >= #{admission_threshold || max_score+1}
+            AND
+          (SELECT AVG(score) FROM scores WHERE app_form_id = app_forms.id) *
+          #{scoring_criteria_as_array.count} < #{scholarship_threshold || max_score+1}",
         recommended_to_scholarship: "aasm_state = 'interviewed' AND
           (SELECT AVG(score) FROM scores WHERE app_form_id = app_forms.id) *
           #{scoring_criteria_as_array.count} >= #{scholarship_threshold || max_score+1}",
