@@ -20,6 +20,12 @@
               Dashboard
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard/user">
+              Today
+            </a>
+          </li>
+
           <% if user_signed_in? && can?(:manage, Klass) %>
             <% if can?(:manage, Email) %>
               <li class="nav-item">
@@ -33,17 +39,24 @@
                 Subscriptions
               </a>
             </li>
+          <% end %>
 
+          <% if user_signed_in? %>
             <li class="nav-item pull-xs-right">
               <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: 'nav-link' %>
             </li>
+          <% end %>
+
+          <% if user_signed_in? && can?(:manage, Klass) %>
             <li class="nav-item pull-xs-right">
               <a class="nav-link" href="/klasses/">
                 <%= fa_icon 'cog' %>
                 Settings
               </a>
             </li>
+          <% end %>
 
+          <% if user_signed_in? %>
            <li class="nav-item pull-xs-right">
               <input id="navbar-search-input" class="form-control" type="text" placeholder="Search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
             </li>

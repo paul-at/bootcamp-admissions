@@ -14,6 +14,8 @@ class AppForm < ApplicationRecord
   has_many :interview_notes, -> { order(updated_at: :desc) }, dependent: :destroy
   has_many :emails, dependent: :destroy
 
+  scope :visible, -> { where(deleted: false) }
+
   attr_accessor :log_user
 
   aasm enum: false do

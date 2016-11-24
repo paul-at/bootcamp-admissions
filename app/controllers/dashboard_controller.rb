@@ -68,11 +68,12 @@ class DashboardController < ApplicationController
     @klasses.each do |klass|
       @klass_stats[klass.id] = klass.todo_statistics
       @vote_stats[klass.id] = Vote.casted_in(klass)
-      @interviewer_actions[klass.id] = klass.app_forms.where(
-        deleted: false,
+      @interviewer_actions[klass.id] = klass.app_forms.visible.where(
         interviewer: current_user,
         aasm_state: ['interview_scheduled', 'invite_email_sent', 'interviewed']).
         group(:aasm_state).count
+      # initialise searches with current user id
+      klass.app_forms_by_klass_conditions(current_user.id)
     end
   end
 

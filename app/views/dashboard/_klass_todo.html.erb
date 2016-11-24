@@ -1,23 +1,43 @@
-<h1>For <%= klass.full_title %> you have today:</h1>
+<h1 style="margin-top:1em">For <%= klass.full_title %> you have today:</h1>
 
-<h4>Screen</h4>
-<ul>
-  <li><%= @klass_stats[klass.id]['applied'] - (@vote_stats[klass.id][current_user.id] || 0) %> applications to vote for</li>
-  <li><%= @klass_stats[klass.id]['to_screen'] %> applications to screen</li>
+<h3>Screen</h3>
+<ul class="lead" style="list-style:none">
+  <%= todo_link klass.id, "for_#{current_user.name}_review",
+    @klass_stats[klass.id]['applied'] - @vote_stats[klass.id][current_user.id].to_i,
+    'applications to _vote_ for' %>
+  <% if can? :manage, klass %>
+    <%= todo_link klass.id, 'ready_to_screen',
+      @klass_stats[klass.id]['to_screen'],
+      'applications to _screen_' %>
+  <% end %>
 </ul>
 
-<h4>Interview</h4>
-<ul>
-  <li><%= @klass_stats[klass.id]['interviews_to_assign'] %> interviews to assign</li>
-  <li><%= @interviewer_actions[klass.id]['interview_scheduled'].to_i + @interviewer_actions[klass.id]['invite_email_sent'].to_i %>
-    to interview</li>
-  <li><%= @interviewer_actions[klass.id]['interviewed'].to_i - (@vote_stats[klass.id][current_user.id] || 0) %>
-    to score</li>
+<h3>Interview</h3>
+<ul class="lead" style="list-style:none">
+  <% if can? :manage, klass %>
+    <%= todo_link klass.id, 'interviews_to_assign',
+      @klass_stats[klass.id]['interviews_to_assign'],
+      'interviews to _assign_' %>
+  <% end %>
+  <%= todo_link klass.id, 'applicants_to_interview',
+    @interviewer_actions[klass.id]['interview_scheduled'].to_i + @interviewer_actions[klass.id]['invite_email_sent'].to_i,
+    'applicants to _interview_' %>
+  <%= todo_link klass.id, 'interviews_to_score',
+    klass.app_forms_that_are(:interviews_to_score).count,
+    'interviews to _score_' %>
 </ul>
 
-<h4>Decision Recommendations</h4>
-<ul>
-  <li><%= @klass_stats[klass.id]['reject'] %> to reject</li>
-  <li><%= @klass_stats[klass.id]['admit'] %> to admit</li>
-  <li><%= @klass_stats[klass.id]['scholarship'] %> to grant scholarship</li>
-</ul>
+<% if can? :manage, klass %>
+  <h3>Decision Recommendations</h3>
+  <ul class="lead" style="list-style:none">
+    <%= todo_link klass.id, 'recommended_to_reject',
+      @klass_stats[klass.id]['reject'],
+      'to _reject_' %>
+    <%= todo_link klass.id, 'recommended_to_admit',
+      @klass_stats[klass.id]['admit'],
+      'to _admit_' %>
+    <%= todo_link klass.id, 'recommended_to_scholarship',
+      @klass_stats[klass.id]['scholarship'],
+      'to grant _scholarship_' %>
+  </ul>
+<% end %>

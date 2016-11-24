@@ -207,6 +207,7 @@ class AppFormsController < ApplicationController
 
     def query_for_params(klass)
       search = params[:search].to_sym
+      return klass.app_forms_that_are(search) if klass.app_forms_by_klass_conditions(current_user.id).has_key?(search)
       return klass.searches[search] ||
         AppForm.where('klass_id = ? AND aasm_state IN (?)', klass.id,
           DashboardController::STATISTIC_GROUPS[search])
