@@ -28,8 +28,8 @@
       <tr>
         <td><%= link_to app_form.firstname, path %></td>
         <td><%= link_to app_form.lastname, path %></td>
-        <td><i class="flag f16 <%= app_form.country.downcase %>"></i> <%= app_form.country %></td>
-        <td><i class="flag f16 <%= app_form.residence.downcase %>"></i> <%= app_form.residence %></td>
+        <td><% if app_form.country %><i class="flag f16 <%= app_form.country.downcase %>"></i> <%= app_form.country %><% end %></td>
+        <td><% if app_form.residence %><i class="flag f16 <%= app_form.residence.downcase %>"></i> <%= app_form.residence %><% end %></td>
         <td><%= app_form.gender %></td>
         <td><%= app_form.age %></td>
         <td><%= app_form.created_at.to_s(:short) %></td>

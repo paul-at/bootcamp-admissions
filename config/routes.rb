@@ -55,6 +55,8 @@ Rails.application.routes.draw do
   post 'administrators/(:id)', to: 'administrators#update'
   get 'export', to: 'export#index'
   post 'export/app_forms'
+  get 'import', to: 'import#index'
+  post 'import/import'
   get 'settings', to: 'settings#index'
   post 'settings/update'
   

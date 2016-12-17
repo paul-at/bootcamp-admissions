@@ -111,7 +111,7 @@ class AppForm < ApplicationRecord
 
   validates :firstname, presence: true
   validates :lastname, presence: true
-  validates :email, presence: true
+  validates :email, presence: true, uniqueness: { scope: :klass_id, message: 'already applied to this Class' }
   validates :country, length: { maximum: 2 }
   validates :residence, length: { maximum: 2 }
   #validates :city, presence: true
@@ -162,6 +162,26 @@ class AppForm < ApplicationRecord
     EmailRule.where(klass_id: klass_id, state: run_for_state).each do |rule|
       rule.create_email_for(self)
     end
+  end
+
+  # try to guess country ISO code by country name
+  def guess_country
+    warnings = Array.new
+
+    country_name = country
+    residence_name = residence
+
+    if country_name && country_name.length > 2
+      self.country = lookup_isocode(country_name)
+      warnings << "Country of origin #{country_name} is not in ISO directory" unless country
+    end
+
+    if residence_name && residence_name.length > 2
+      self.residence = lookup_isocode(residence_name)
+      warnings << "Country of residence #{residence_name} is not in ISO directory" unless residence
+    end
+
+    return warnings
   end
 
   # scopes available for external querying
@@ -267,5 +287,15 @@ class AppForm < ApplicationRecord
       to: aasm.to_state.to_s.humanize,
       user: @log_user,
     })
+  end
+
+  def lookup_isocode(country_name)
+    return 'US' if country_name.upcase == 'USA'
+    c = ISO3166::Country.find_country_by_name(country_name)
+    if c
+      return c.alpha2
+    else
+      return nil
+    end
   end
 end

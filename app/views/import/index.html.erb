@@ -1,0 +1,90 @@
+<%= form_tag({ action: 'import' }, method: 'post', multipart: true) do %>
+  <div class="form-group">
+    <label>CSV file</label>
+    <%= file_field_tag 'csv', class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <label>To Class</label>
+    <%= select_tag(:klass_id, options_for_select(Klass.active_for_select), class: 'form-control') %>
+  </div>
+  <div class="form-group">
+    <%= submit_tag 'Test', class: 'btn btn-default' %>
+    <%= submit_tag 'Import', class: 'btn btn-danger', data: { confirm: "Are you sure you'd like to import selected file? This action cannot be reverted." } %>
+  </div>
+<% end %>
+
+<% if @fatal %>
+  <div class="alert alert-danger" role="alert">
+    <strong>Oh snap!</strong> <%= @fatal %>
+  </div>
+<% end %>
+
+<% if params[:commit] %>
+  <h4>Import Statistics</h4>
+
+  <p><%= @valid.count + @invalid.count %> rows read from CSV with <%= @warnings.count %> parse warnings</p>
+  <p><%= @invalid.count %> skipped due to validation errors</p>
+  <p><%= @valid.count %> are valid</p>
+
+  <% if @header_row %>
+
+    <p>See details below.</p>
+
+    <h4>CSV Columns Imported As</h4>
+
+    <div class="row">
+    <div class="col-md-4">
+      Personal Information
+      <ul>
+        <% @header_row.select{|column| AppForm.attribute_names.include?(column.downcase) }.each do |column| %>
+          <li>
+            <%= column.downcase %>
+            <% if @valid[0] %>
+              <br>
+              <small><%= @valid[0].send(column.downcase) %></small>
+            <% end %>
+          </li>
+        <% end %>
+      <ul>
+    </div>
+
+    <div class="col-md-4">
+      Question Answers
+      <ul>
+        <% @header_row.reject{|column| AppForm.attribute_names.include?(column.downcase) }.sort.each do |column| %>
+          <li><%= column %></li>
+        <% end %>
+      <ul>
+    </div>
+    </div>
+
+  <% end %>
+
+  <% if @invalid.count > 0 %>
+    <h4>Rows with errors, skipped</h4>
+    <dl>
+    <% @invalid.each do |row| %>
+      <dt><%= row.full_email %></dt>
+      <dd><%= row.errors.messages %></dt>
+    <% end %>
+    </dl>
+  <% end %>
+
+  <% if @valid.count > 0 %>
+    <h4>Valid rows</h4>
+    <ul>
+    <% @valid.each do |row| %>
+      <li>
+        <%= row.full_email %>
+        <% if @warnings[row.full_email] %>
+          <ul>
+            <% @warnings[row.full_email].each do |warning| %>
+              <li><%= warning %></li>
+            <% end %>
+          </ul>
+        <% end %>
+      </li>
+    <% end %>
+    </ul>
+  <% end %>
+<% end %>
