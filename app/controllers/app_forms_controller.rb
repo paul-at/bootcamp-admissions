@@ -10,7 +10,7 @@ class AppFormsController < ApplicationController
     authorize! :read, klass
 
     @title = params[:search].humanize
-    @app_forms = query_for_params(klass)
+    @app_forms = query_for_params(klass).order(created_at: :asc)
   end
 
   # GET /app_forms/deleted
