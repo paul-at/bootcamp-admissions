@@ -189,10 +189,8 @@
         <td>
           <%= form_for(@app_form, remote: true, html: { id: 'interviewer_form' }, format: :json) do |f| %>
             <div class="form-group">
-              <%= f.select :interviewer_id, options_for_select([['Not assigned', nil]] + @app_form.
-                klass.
-                admission_committee_members.
-                collect(&:user).
+              <%= f.select :interviewer_id, options_for_select([['Not assigned', nil]] + User.
+                all.
                 map{|user| [user.name, user.id]}, selected: @app_form.interviewer_id),
                 {}, class: 'form-control', onChange: '$("#interviewer_form").trigger("submit.rails")' %>
             </div>
