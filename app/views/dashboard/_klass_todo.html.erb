@@ -2,9 +2,11 @@
 
 <h3>Screen</h3>
 <ul class="lead" style="list-style:none">
-  <%= todo_link klass.id, "for_#{current_user.name}_review",
-    @klass_stats[klass.id]['applied'].to_i - @vote_stats[klass.id][current_user.id].to_i,
-    'applications to _vote_ for' %>
+  <% if klass.admission_committee_members.where(user: current_user).count > 0 %>
+    <%= todo_link klass.id, "for_#{current_user.name}_review",
+      @klass_stats[klass.id]['applied'].to_i - @vote_stats[klass.id][current_user.id].to_i,
+      'applications to _vote_ for' %>
+  <% end %>
   <% if can? :manage, klass %>
     <%= todo_link klass.id, 'ready_to_screen',
       @klass_stats[klass.id]['to_screen'],
