@@ -7,7 +7,7 @@
   <ul class="nav">
     <li class="nav-item col-md-4">
       <% if @prevnext[@app_form.id] && @prevnext[@app_form.id][:prev] %>
-        <%= link_to @prevnext[@app_form.id][:prev].full_name, app_form_path(@prevnext[@app_form.id][:prev], search: params[:search]) %>
+        <%= link_to '← ' + @prevnext[@app_form.id][:prev].full_name, app_form_path(@prevnext[@app_form.id][:prev], search: params[:search]) %>
       <% end %>
     </li>
     <li class="nav-item col-md-4 text-md-center">
@@ -16,12 +16,12 @@
     <li class="nav-item col-md-4 text-md-right">
       <% if @prevnext[@app_form.id] %>
         <% if @prevnext[@app_form.id][:next] %>
-          <%= link_to @prevnext[@app_form.id][:next].full_name, app_form_path(@prevnext[@app_form.id][:next], search: params[:search]) %>
+          <%= link_to @prevnext[@app_form.id][:next].full_name + ' →', app_form_path(@prevnext[@app_form.id][:next], search: params[:search]) %>
         <% end %>
       <% elsif @prevnext.size > 0 %>
         <!-- Current AppForm has been excluded from search results, link to the first one in list -->
         <% first_form = AppForm.find(@prevnext.keys.min.to_i) %>
-        <%= link_to first_form.full_name, app_form_path(first_form, search: params[:search]) %>
+        <%= link_to first_form.full_name + ' →', app_form_path(first_form, search: params[:search]) %>
       <% end %>
     </li>
   </ul>
