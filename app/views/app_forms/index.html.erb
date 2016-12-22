@@ -32,9 +32,9 @@
         <td><% if app_form.residence %><i class="flag f16 <%= app_form.residence.downcase %>"></i> <%= app_form.residence %><% end %></td>
         <td><%= app_form.gender %></td>
         <td><%= app_form.age %></td>
-        <td><%= app_form.created_at.to_s(:short) %></td>
+        <td><%= short_date app_form.created_at %></td>
         <td><%= app_form.aasm_state.humanize %></td>
-        <td><%= app_form.updated_at.to_s(:short) %></td>
+        <td><%= short_date app_form.updated_at %></td>
       </tr>
     <% end %>
   </tbody>

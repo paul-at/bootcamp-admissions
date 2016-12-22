@@ -18,4 +18,12 @@ module AppFormHelper
   rescue URI::InvalidURIError
     false
   end
+
+  def short_date(dt)
+    formatted = dt.to_s(:short)
+    if (Time.zone.now - dt).to_i / 1.day > 365
+      formatted += " #{dt.year}"
+    end
+    return formatted
+  end
 end
