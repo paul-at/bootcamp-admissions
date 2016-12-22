@@ -72,7 +72,7 @@ class ImportController < ApplicationController
     end
 
     if app_form.gender && app_form.gender.length > 1
-      app_form.gender = app_form.gender[0]
+      app_form.gender = app_form.gender[0].upcase
     end
 
     if app_form.valid?

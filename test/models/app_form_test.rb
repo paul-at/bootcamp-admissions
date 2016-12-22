@@ -29,4 +29,9 @@ class AppFormTest < ActiveSupport::TestCase
       @appform.admit
     end
   end
+
+  test "Return nil age when date of birth is missing" do
+    @appform.dob = nil
+    assert_nil @appform.age
+  end
 end
