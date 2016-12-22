@@ -84,11 +84,17 @@ class ImportController < ApplicationController
   end
 
   def save_valid
+    row = 0
     AppForm.transaction do
       @valid.each do |app_form|
-        app_form.save!
-        app_form.answers.each do |answer|
-          answer.save!
+        row += 1
+        begin
+          app_form.save!
+          app_form.answers.each do |answer|
+            answer.save!
+          end
+        rescue => e
+          raise "Row #{row} <#{app_form.email}>: #{e}"
         end
       end
     end
