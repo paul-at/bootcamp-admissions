@@ -293,7 +293,7 @@
       <% if uri?(answer.answer.strip) %>
         <%= link_to answer.answer, answer.answer.strip, target: '_blank' %>
       <% else %>
-        <%= answer.answer %>
+        <%= simple_format answer.answer %>
       <% end %>
     </dd>
   <% end %>

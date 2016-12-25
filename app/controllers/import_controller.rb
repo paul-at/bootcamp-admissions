@@ -11,6 +11,7 @@ class ImportController < ApplicationController
     @valid = Array.new
     @invalid = Array.new
     @warnings = Hash.new
+    @emails = Hash.new
 
     unless params[:csv] && params[:csv].tempfile
       @fatal = 'No CSV file selected'
@@ -19,22 +20,28 @@ class ImportController < ApplicationController
     end
 
     begin
+      row_number = 0
       CSV.parse(File.
           read(params[:csv].tempfile).
           force_encoding('BINARY').
           encode('UTF-8', :invalid => :replace, :undef => :replace, :replace => '?'),
           col_sep: ';') do |row|
+        row_number += 1
         if @header_row
           import_row row
         else
           @header_row = row
         end
       end
+    rescue => e
+      @fatal = "#{e} at row #{row_number}"
+    end
 
+    begin
       save_valid if params[:commit] == 'Import'
     rescue => e
       @fatal = e
-    end 
+    end
 
     render 'index'
   end
@@ -54,11 +61,21 @@ class ImportController < ApplicationController
     end
 
     ['dob', 'created_at', 'updated_at'].each do |date_field|
+      app_form_params[date_field] = nil if app_form_params[date_field] && app_form_params[date_field].empty?
       if app_form_params[date_field]
+        if app_form_params[date_field] =~ /^\d{1,2}\/\d{1,2}\/\d{4}/
+          date_format = "%m/%d/%Y"
+        else
+          date_format = "%m/%d/%y"
+        end
         begin
-          app_form_params[date_field] = DateTime.strptime(app_form_params[date_field], "%m/%d/%y %H:%M")
+          app_form_params[date_field] = DateTime.strptime(app_form_params[date_field], date_format + " %H:%M")
         rescue ArgumentError
-          app_form_params[date_field] = Date.strptime(app_form_params[date_field], "%m/%d/%y")
+          begin
+            app_form_params[date_field] = Date.strptime(app_form_params[date_field], date_format)
+          rescue ArgumentError
+            raise "Unable to parse date '#{app_form_params[date_field]}' as '#{date_format}"
+          end
         end
       end
     end
@@ -76,8 +93,14 @@ class ImportController < ApplicationController
     end
 
     if app_form.valid?
-      @valid << app_form
-      app_form.answers = app_form_answers
+      unless @emails[app_form.email]
+        @valid << app_form
+        app_form.answers = app_form_answers
+        @emails[app_form.email] = true
+      else
+        app_form.errors.add(:email, 'Email is duplicated within the import batch')
+        @invalid << app_form
+      end
     else
       @invalid << app_form
     end
