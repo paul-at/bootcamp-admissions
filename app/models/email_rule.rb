@@ -11,7 +11,7 @@ class EmailRule < ApplicationRecord
       app_form: app_form,
       subject: email_template.subject,
       body: email_template.body,
-      copy_team: copy_team,
+      bcc: (copy_team ? app_form.klass.subscribers.join(', ') : nil),
     )
   end
 end

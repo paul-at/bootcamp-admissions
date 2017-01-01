@@ -4,7 +4,6 @@ one:
   subject: MyString
   body: "Dear *|FIRSTNAME|*"
   app_form: one
-  copy_team: false
   sent: false
   sent_to: MyString
   user: one
@@ -13,7 +12,6 @@ two:
   subject: MyString
   body: MyText
   app_form: two
-  copy_team: false
   sent: false
   sent_to: MyString
   user: two

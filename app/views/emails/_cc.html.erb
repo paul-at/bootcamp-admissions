@@ -1,0 +1,20 @@
+  <div class="form-group">
+    <%= f.label cc %>
+    <%= f.text_field cc, class: 'form-control' %>
+    <p class="form-text text-muted">
+      <% if @klass.admission_committee_members.count > 0 %>
+        <%= email_hint 'Admission Committee Members', cc,
+          @klass.admission_committee_members.map{|m| m.user.email }.join(', ') %>
+      <% else %>
+        Admission Committee Members
+      <% end %>
+      |
+      <% if @klass.subscriptions.count > 0 %>
+        <%= email_hint 'Subscribers', cc, @klass.subscribers %>
+      <% else %>
+        Subscribers
+      <% end %>
+      |
+      <%= email_hint 'Myself', cc, current_user.email %>
+    </p>
+  </div>

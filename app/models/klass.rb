@@ -56,6 +56,10 @@ class Klass < ApplicationRecord
     (admission_committee_members.count / 2.0).ceil
   end
 
+  def subscribers
+    subscriptions.map{ |subscription| subscription.user.email }.join(', ')
+  end
+
   # SQL statistics
   def todo_statistics
     AppForm.connection.select_all("SELECT

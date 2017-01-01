@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161123081110) do
+ActiveRecord::Schema.define(version: 20161231151829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,12 +105,13 @@ ActiveRecord::Schema.define(version: 20161123081110) do
     t.string   "subject"
     t.text     "body"
     t.integer  "app_form_id",                 null: false
-    t.boolean  "copy_team",   default: false, null: false
     t.boolean  "sent",        default: false, null: false
     t.string   "sent_to"
     t.integer  "user_id"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.string   "cc"
+    t.string   "bcc"
     t.index ["app_form_id"], name: "index_emails_on_app_form_id", using: :btree
     t.index ["user_id"], name: "index_emails_on_user_id", using: :btree
   end

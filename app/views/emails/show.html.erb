@@ -7,10 +7,16 @@
   <% end %>
 </p>
 
-<% if @email.copy_team %>
+<% if @email.cc %>
+  <p>
+    <strong>Cc:</strong>
+    <%= @email.cc %>
+  </p>
+<% end %>
+<% if @email.bcc %>
   <p>
     <strong>Bcc:</strong>
-    Admissions team
+    <%= @email.bcc %>
   </p>
 <% end %>
 

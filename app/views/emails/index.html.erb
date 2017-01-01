@@ -9,7 +9,8 @@
     <tr>
       <th>Subject</th>
       <th>Application</th>
-      <th>Copy team</th>
+      <th>Cc</th>
+      <th>Bcc</th>
       <th>Queued</th>
       <th>By</th>
     </tr>
@@ -20,7 +21,8 @@
       <tr>
         <td><%= link_to email.subject, email %></td>
         <td><%= link_to email.app_form.full_name, email.app_form %> (<%= email.app_form.klass.full_title %>)</td>
-        <td><%= email.copy_team %></td>
+        <td><%= email.cc %></td>
+        <td><%= email.bcc %></td>
         <td><%= time_ago_in_words email.created_at %> ago</td>
         <% if email.user %>
           <td><%= email.user.name %></td>

@@ -20,7 +20,7 @@ class EmailsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create email" do
     assert_difference('Email.count') do
-      post emails_url, params: { commit: 'Send E-mails', app_form_ids: [app_forms(:one).id], email: { body: @email.body, copy_team: @email.copy_team, subject: @email.subject } }
+      post emails_url, params: { commit: 'Send E-mails', app_form_ids: [app_forms(:one).id], email: { body: @email.body, subject: @email.subject } }
     end
 
     assert_redirected_to emails_url

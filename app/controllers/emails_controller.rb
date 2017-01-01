@@ -27,7 +27,7 @@ class EmailsController < ApplicationController
 
     if ['Preview','Test E-mail Myself'].include?(params[:commit]) # Step 2 - pick recipients
       @app_forms = AppForm.where(klass_id: params[:klass_id], aasm_state: params[:state])
-      @subscriptions = Klass.find(params[:klass_id]).subscriptions
+      @klass = Klass.find(params[:klass_id])
 
       deliver_test_email if params[:commit] == 'Test E-mail Myself'
     elsif params[:app_form_ids]     # Step 3 - send emails
@@ -53,7 +53,7 @@ class EmailsController < ApplicationController
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def email_params
-      params.require(:email).permit(:subject, :body, :copy_team)
+      params.require(:email).permit(:subject, :body, :cc, :bcc)
     end
 
     def generate_mergetags_for(obj, path = '')

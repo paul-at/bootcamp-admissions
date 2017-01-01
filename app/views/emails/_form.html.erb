@@ -28,7 +28,7 @@
     <label>
       To:
       <small>
-        (applicants who are currently <%= params[:state].humanize(capitalize: false) %> to the <%= Klass.find(params[:klass_id]).full_title %>)
+        (applicants who are currently <%= params[:state].humanize(capitalize: false) %> to the <%= @klass.full_title %>)
       </small>
     </label>
     <% @app_forms.each do |app_form| %>
@@ -42,17 +42,9 @@
     <% end %>
   </div>
   
-  <% unless @subscriptions.empty? %>
-    <div class="form-group">
-      <%= f.label :copy_team, 'Bcc:' %>
-      <div class="form-check"><label class="form-check-label">
-        <%= f.check_box :copy_team, class: 'form-check-input' %>
-        Admissions team
-        (<%= @subscriptions.map{|s| s.user.email }.join(', ') %>)
-      </label></div>
-    </div>
-  <% end %>
+  <%= render partial: 'cc', collection: [:cc, :bcc], locals: { f: f }%>
 <% end %>
+
   <div class="form-group">
     <label>Use Template</label>
     <%= select_tag(:email_template_id, options_for_select([['N/A, use text below',0]] + EmailTemplate.all.map{|t| [t.title, t.id]}), class: 'form-control') %>
