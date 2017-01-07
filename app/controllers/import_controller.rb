@@ -82,6 +82,7 @@ class ImportController < ApplicationController
 
     app_form = AppForm.new(app_form_params)
     app_form.klass_id = params[:klass_id]
+    app_form.payment_tier_id = app_form.klass.payment_tier_id unless app_form.payment_tier_id
 
     guess_country_results = app_form.guess_country
     if guess_country_results.count > 0
