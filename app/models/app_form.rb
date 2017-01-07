@@ -25,7 +25,7 @@ class AppForm < ApplicationRecord
     state :decision_reject_email_sent, :waitlist_email_sent, :admit_email_sent
     state :admitted, :waitlisted, :extension, :deposit_paid, :tuition_paid, :not_coming
     state :scholarship_shortlisted, :scholarship_awarded, :scholarship_not_awarded
-    state :coming
+    state :attending, :coming
 
     after_all_transitions [:log_status_change, :run_email_rules]
 
@@ -67,7 +67,7 @@ class AppForm < ApplicationRecord
     end
 
     event :wont_come do
-      transitions from: [ :admit_email_sent, :scholarship_not_awarded, :extension, :scholarship_awarded, :deposit_paid, :tuition_paid ], to: :not_coming
+      transitions from: [ :admit_email_sent, :scholarship_not_awarded, :extension, :scholarship_awarded, :deposit_paid, :tuition_paid, :attending ], to: :not_coming
     end
 
     event :will_come do
@@ -76,6 +76,10 @@ class AppForm < ApplicationRecord
 
     event :admit do
       transitions from: [ :interviewed, :waitlist_email_sent ] , to: :admitted
+    end
+
+    event :will_attend do
+      transitions from: :admit_email_sent, to: :attending
     end
 
     event :waitlist do
@@ -99,13 +103,14 @@ class AppForm < ApplicationRecord
     end
 
     event :payment do
-      transitions from: [ :admit_email_sent, :scholarship_not_awarded, :deposit_paid, :extension ], to: :tuition_paid, guard: :tuition_paid?
-      transitions from: [ :admit_email_sent, :scholarship_not_awarded ], to: :deposit_paid, guard: :deposit_paid?
+      transitions from: [ :admit_email_sent, :scholarship_not_awarded, :deposit_paid, :extension, :attending ], to: :tuition_paid, guard: :tuition_paid?
+      transitions from: [ :admit_email_sent, :scholarship_not_awarded, :attending ], to: :deposit_paid, guard: :deposit_paid?
       transitions from: :admit_email_sent, to: :admit_email_sent
       transitions from: :scholarship_not_awarded, to: :scholarship_not_awarded
       transitions from: :deposit_paid, to: :deposit_paid
       transitions from: :tuition_paid, to: :tuition_paid
       transitions from: :extension, to: :extension
+      transitions from: :attending, to: :attending
     end
   end
 
