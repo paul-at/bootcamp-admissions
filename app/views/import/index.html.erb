@@ -14,6 +14,8 @@
   <div class="form-group">
     <%= submit_tag 'Test', class: 'btn btn-default' %>
     <%= submit_tag 'Import', class: 'btn btn-danger', data: { confirm: "Are you sure you'd like to import selected file? This action cannot be reverted." } %>
+    <%= submit_tag 'Test Update', class: 'btn btn-default' %>
+    <%= submit_tag 'Update', class: 'btn btn-danger', data: { confirm: "Are you sure you'd like to import selected file? Existing applications will be updated with the values from the CSV. This action cannot be reverted." } %>
   </div>
 <% end %>
 

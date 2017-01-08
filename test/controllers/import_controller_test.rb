@@ -19,8 +19,29 @@ class ImportControllerTest < ActionDispatch::IntegrationTest
         csv: fixture_file_upload('files/import.csv', 'text/csv')
       }
       assert_response :success
+      assert_select 'div.alert', 0
     end
 
     assert_equal klass.payment_tier_id, AppForm.last.payment_tier_id
+  end
+
+  test "should update existing record" do
+    sign_in users(:admin)
+
+    klass = klasses(:one)
+    app_form = klass.app_forms.where(email:'john@doe.com').take
+    unless app_form
+      app_form = AppForm.create!(firstname: 'a', lastname: 'b', email: 'john@doe.com', klass:klass)
+      Answer.create!(app_form: app_form, question: 'question', answer: 'wrong answer')
+    end
+
+    post import_import_path, params: {
+      commit: 'Update',
+      klass_id: klass.id,
+      csv: fixture_file_upload('files/import.csv', 'text/csv')
+    }
+    assert_response :success
+    assert_select 'div.alert', 0
+    assert_equal 'answer', Answer.where(question: 'question', app_form_id: app_form.id).take.answer
   end
 end
