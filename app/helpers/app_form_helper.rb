@@ -20,10 +20,6 @@ module AppFormHelper
   end
 
   def short_date(dt)
-    formatted = dt.to_s(:short)
-    if (Time.zone.now - dt).to_i / 1.day > 365
-      formatted += " #{dt.year}"
-    end
-    return formatted
+    dt.strftime('%b %d, %Y')
   end
 end
