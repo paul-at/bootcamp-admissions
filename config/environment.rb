@@ -12,3 +12,4 @@ ApplicationMailer.delivery_method = :smtp
 ApplicationMailer.smtp_settings = Setting.smtp
 ApplicationMailer.default_options = Setting.mail_options
 ApplicationMailer.raise_delivery_errors = true
+Devise::Mailer.smtp_settings = Setting.smtp
