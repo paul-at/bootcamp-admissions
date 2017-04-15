@@ -63,4 +63,7 @@ Rails.application.routes.draw do
   get 'setup', to: 'setup#index'
   # http://stackoverflow.com/questions/37008713/rails-5-1-routes-dynamic-action-parameters
   post 'setup/fake', to: 'setup#fake'
+
+  # API
+  get 'api/v1/user/(:email)', to: 'api#user'
 end

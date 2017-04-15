@@ -24,3 +24,17 @@ two:
   referral: MyString
   payment_tier: one
   aasm_state: applied
+
+three:
+  klass: four
+  firstname: MyString
+  lastname: MyString
+  email: MyString
+  country: UK
+  residence: UK
+  city: London
+  gender: F
+  dob: 2016-09-04
+  referral: MyString
+  payment_tier: one
+  aasm_state: applied

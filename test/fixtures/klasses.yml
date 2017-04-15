@@ -1,15 +1,20 @@
 one:
   subject: one
-  title: MyString
+  title: Class 1
   archived: false
   payment_tier: one
 
 two:
   subject: two
-  title: MyString
+  title: Class 2
   archived: false
 
 three:
   subject: two
-  title: MyString
+  title: Class 3
+  archived: false
+
+four:
+  subject: two
+  title: Class 4
   archived: false

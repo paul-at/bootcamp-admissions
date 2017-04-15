@@ -13,6 +13,7 @@ To generate automated documentation using railroady gem in development environme
 ### Configuration
 
 Set following environment variables for production:
+* `API_KEY` - shared secret to access API
 * `APP_HOST` - hostname that can be used to access the application externally.
 * `S3_BUCKET_NAME`
 * `AWS_ACCESS_KEY_ID`
