@@ -27,6 +27,7 @@ class ApiController < ApplicationController
           klasse_id: f.klass_id,
           klasse_name: f.klass.title,
           status: f.aasm_state,
+          is_user_eligible_to_pay: f.may_payment?,
         } }
     end
 

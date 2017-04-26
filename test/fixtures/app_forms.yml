@@ -37,4 +37,4 @@ three:
   dob: 2016-09-04
   referral: MyString
   payment_tier: one
-  aasm_state: applied
+  aasm_state: admit_email_sent
