@@ -9,12 +9,12 @@ class ApiControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not allow to access API without correct key" do
-    get '/api/v1/user/' + @app_form.email
+    get '/api/v1/user/?email=' + @app_form.email
     assert_response 401
   end
 
   test "should return missing response for applicant that has not applied" do
-    get '/api/v1/user/non@existent.com?key=' + ENV['API_KEY']
+    get '/api/v1/user/?email=non@existent.com&key=' + ENV['API_KEY']
     assert_response :missing
   end
 
@@ -28,7 +28,7 @@ class ApiControllerTest < ActionDispatch::IntegrationTest
     assert_equal @app_form_three.klass.subject_id, @app_form_two.klass.subject_id
     refute_equal @app_form_three.klass_id, @app_form_two.klass_id
 
-    get '/api/v1/user/' + @app_form.email + '?key=' + ENV['API_KEY']
+    get '/api/v1/user/?email=' + @app_form.email + '&key=' + ENV['API_KEY']
     assert_response :success
     assert_equal({
       user: @app_form.email,
@@ -38,8 +38,8 @@ class ApiControllerTest < ActionDispatch::IntegrationTest
           bootcamp_title: @app_form.klass.subject.title,
           klasses: [
             {
-              klasse_id: @app_form.klass_id,
-              klasse_name: @app_form.klass.title,
+              klass_id: @app_form.klass_id,
+              klass_name: @app_form.klass.title,
               status: @app_form.aasm_state,
               is_user_eligible_to_pay: false,
             },
@@ -50,14 +50,14 @@ class ApiControllerTest < ActionDispatch::IntegrationTest
           bootcamp_title: @app_form_two.klass.subject.title,
           klasses: [
             {
-              klasse_id: @app_form_two.klass_id,
-              klasse_name: @app_form_two.klass.title,
+              klass_id: @app_form_two.klass_id,
+              klass_name: @app_form_two.klass.title,
               status: @app_form_two.aasm_state,
               is_user_eligible_to_pay: false,
             },
             {
-              klasse_id: @app_form_three.klass_id,
-              klasse_name: @app_form_three.klass.title,
+              klass_id: @app_form_three.klass_id,
+              klass_name: @app_form_three.klass.title,
               status: @app_form_three.aasm_state,
               is_user_eligible_to_pay: true,
             },

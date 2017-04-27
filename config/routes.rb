@@ -65,5 +65,5 @@ Rails.application.routes.draw do
   post 'setup/fake', to: 'setup#fake'
 
   # API
-  get 'api/v1/user/(:email)', to: 'api#user'
+  get 'api/v1/user', to: 'api#user'
 end

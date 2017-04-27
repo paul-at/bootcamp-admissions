@@ -24,8 +24,8 @@ class ApiController < ApplicationController
       bootcamp[:klasses] = af.
         select{ |f| f.klass.subject_id == bootcamp[:bootcamp_id] }.
         map{ |f| {
-          klasse_id: f.klass_id,
-          klasse_name: f.klass.title,
+          klass_id: f.klass_id,
+          klass_name: f.klass.title,
           status: f.aasm_state,
           is_user_eligible_to_pay: f.may_payment?,
         } }
