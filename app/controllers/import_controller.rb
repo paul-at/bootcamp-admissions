@@ -93,7 +93,7 @@ class ImportController < ApplicationController
         app_form_answers = update_existing_answers(app_form, app_form_answers)
       else
         app_form = AppForm.new(app_form_params)
-        @warnings[app_form.full_email] = 'Existing Application Form to update not found, creating new one'
+        @warnings[app_form.full_email] = [ 'Existing Application Form to update not found, creating new one' ]
       end
     end
 
