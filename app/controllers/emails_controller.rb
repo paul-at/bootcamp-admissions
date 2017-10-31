@@ -26,7 +26,7 @@ class EmailsController < ApplicationController
     end
 
     if ['Preview','Test E-mail Myself'].include?(params[:commit]) # Step 2 - pick recipients
-      @app_forms = AppForm.where(klass_id: params[:klass_id], aasm_state: params[:state])
+      @app_forms = AppForm.visible.where(klass_id: params[:klass_id], aasm_state: params[:state])
       @klass = Klass.find(params[:klass_id])
 
       deliver_test_email if params[:commit] == 'Test E-mail Myself'
