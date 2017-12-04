@@ -3,7 +3,7 @@ require 'csv'
 class AppForm < ApplicationRecord
   include AASM
 
-  belongs_to :klass
+  belongs_to :klass, required: true
   belongs_to :payment_tier
   belongs_to :interviewer, class_name: 'User'
   has_many :answers, -> { order(:question) }, dependent: :destroy

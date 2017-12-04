@@ -34,4 +34,10 @@ class AppFormTest < ActiveSupport::TestCase
     @appform.dob = nil
     assert_nil @appform.age
   end
+
+  test "Refuses to create an AppForm not belonging to a class" do
+    appform = app_forms(:one)
+    appform.klass = nil
+    assert_not appform.valid?, "AppForm without a class should be invalid: #{appform.inspect}"
+  end
 end
